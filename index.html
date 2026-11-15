@@ -363,6 +363,7 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
 /* mlp */
 .ml-stage{display:grid;gap:8px}
 .ml-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ml-row .vec{flex-wrap:wrap;max-width:100%}
 .ml-l{min-width:150px;font-size:13px;font-weight:700;color:var(--fg)}
 .ml-l small{display:block;font-weight:400;color:var(--muted);font-family:var(--f-mono);font-size:11px}
 .ml-stage .vec i{width:30px;font-size:10.5px}
@@ -419,6 +420,125 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
 .av-tbl thead th{font-size:12px;color:var(--muted);font-weight:500}
 .anav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
 .anav a{font-size:13px;text-decoration:none;color:var(--die);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px}
+/* ---- 0단계 기초 위젯 (.bz) ---- */
+.bz{display:grid;gap:12px}
+.bz-sub{font-size:13px;font-weight:600;color:var(--fg2);margin-top:4px}
+.bz-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bz-out{background:var(--sunk);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.75}
+.bz-out .mini{display:inline-block;margin-top:4px}
+.bz-lbl{font-size:12px;color:var(--muted);margin-bottom:4px}
+.bz-big{font-family:var(--f-mono);font-size:18px}
+.bz-big.ok{color:var(--ok)} .bz-big.ng{color:var(--accent)}
+.bz svg{width:100%;height:auto;display:block;margin:0 auto;touch-action:none}
+.bz text{fill:var(--fg2);font-size:11px;font-family:var(--f-body)}
+.bz .bz-axis{stroke:var(--muted);stroke-width:1}
+.bz .bz-grid{stroke:var(--line);stroke-width:.6}
+.bz [data-s]{opacity:.12;transition:opacity .4s}
+.bz [data-s].on{opacity:1}
+.bz [data-s].now{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.bz-tag{display:inline-block;font-family:var(--f-mono);font-weight:700;font-size:11px;border:1.5px solid currentColor;border-radius:4px;padding:0 5px;margin-right:6px}
+/* embed */
+.bz-toks{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bz-sent{font-weight:600}.bz-arr{color:var(--muted)}
+.bz-tk{display:inline-grid;text-align:center;border:1px solid var(--line);border-radius:6px;padding:3px 8px;background:var(--surface)}
+.bz-tk b{font-weight:600;font-size:14px}.bz-tk i{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.bz-map{max-width:440px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.bz-pt{cursor:pointer}.bz-pt circle{fill:var(--die);transition:r .2s}.bz-pt text{font-size:12px;fill:var(--fg)}
+.bz-pt.sel circle{fill:var(--accent);r:7}.bz-pt.sel text{font-weight:700}
+.bz-pt:focus{outline:none}.bz-pt:focus-visible text{text-decoration:underline}
+.bz-links line{stroke:var(--accent);stroke-width:1.5;stroke-dasharray:4 3}
+/* dot */
+.bz-plane{max-width:300px}
+.bz-va{stroke:var(--q);stroke-width:3}.bz-vb{stroke:var(--k);stroke-width:3}
+.bz-ha{fill:var(--q)}.bz-hb{fill:var(--k)}
+.bz-ka{fill:var(--q);fill-opacity:.25;stroke:var(--q);cursor:grab}.bz-kb{fill:var(--k);fill-opacity:.25;stroke:var(--k);cursor:grab}
+.bz-la{fill:var(--q)!important;font-weight:700;font-size:14px!important}.bz-lb{fill:var(--k)!important;font-weight:700;font-size:14px!important}
+.bz-angle{fill:none;stroke:var(--muted);stroke-width:1.2}
+.bz-calc{font-family:var(--f-mono);font-size:13.5px;display:flex;gap:14px;flex-wrap:wrap}
+.bz-calc .a{color:var(--q)}.bz-calc .b{color:var(--k)}
+/* matmul */
+.bz-mm{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bz-op{font-size:20px;color:var(--muted)}
+.bz-mx{border-collapse:collapse}
+.bz-mx td{font-family:var(--f-mono);font-size:13px;width:42px;height:30px;text-align:center;border:1px solid var(--line);background:var(--surface);transition:background .3s}
+.bz-mx td.hl{background:var(--accent-soft);font-weight:700}
+.bz-mx td.o{color:transparent}.bz-mx td.o.shown{color:var(--fg)}
+/* softmax */
+.bz-sm{display:grid;gap:6px}
+.bz-smh,.bz-smr{display:grid;grid-template-columns:52px minmax(120px,1.3fr) 56px minmax(120px,1.4fr);gap:10px;align-items:center}
+.bz-smh{font-size:12px;color:var(--muted)}
+.bz-smr label{display:flex;gap:8px;align-items:center}.bz-smr input{flex:1;min-width:60px;accent-color:var(--accent)}
+.bz-smr .sv,.bz-smr .ev,.bz-smr .ss,.bz-smr .es,.bz-smr .ps{font-family:var(--f-mono);font-size:13px}
+.bz-smr .sv{width:34px;text-align:right}
+.bz-pb{display:flex;gap:8px;align-items:center}.bz-pb .pbar span{transition:width .3s}
+.bz-pb b{font-family:var(--f-mono);font-size:13px;width:38px;text-align:right}
+.bz-smr.sum{border-top:1px dashed var(--line);padding-top:6px;color:var(--fg2)}
+.bz-temp{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px}.bz-temp input{flex:1;min-width:140px;accent-color:var(--accent)}
+@media (max-width:560px){.bz-smh{display:none}.bz-smr{grid-template-columns:44px 1fr;row-gap:4px}.bz-smr .ev{display:none}.bz-smr .bz-pb{grid-column:2}.bz-smr.sum{display:none}}
+/* library */
+.bz-q{border:1.5px solid var(--q);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.bz-books{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.bz-book{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--surface);display:grid;gap:6px;font-size:13px;transition:border-color .3s,box-shadow .3s}
+.bz-book.win{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.bz-book.future{border-style:dashed;color:var(--muted)}
+.bz-bt{font-weight:700;font-size:15px}
+.bz-sc{font-family:var(--f-mono)}
+.bz-p{display:flex;gap:8px;align-items:center}.bz-p b{font-family:var(--f-mono)}
+.bz-res{background:var(--v-soft);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.8}
+.bz-res.big{font-size:16px}
+/* heads */
+.bz-hrow{display:flex;gap:6px;flex-wrap:wrap}
+.bz-hc{flex:1;min-width:70px;border-radius:8px;padding:10px 8px;text-align:center;display:grid;gap:2px;background:color-mix(in srgb,var(--accent) calc(var(--w)*100%),var(--sunk));transition:background .4s}
+.bz-hc b{font-size:14px}.bz-hc span{font-family:var(--f-mono);font-size:12px}
+.bz-gqa{display:grid;gap:6px;font-size:14px}.bz-gqa p{margin:4px 0 0}
+.bz-gl{display:flex;gap:3px;align-items:center}
+.bz-gl .lb{font-size:12px;color:var(--muted);width:64px;flex:none}
+.bz-gl i{font-style:normal;font-family:var(--f-mono);font-size:11px;text-align:center;padding:5px 0;border-radius:4px;flex:1;min-width:0;overflow:hidden}
+.bz-gl .qh{background:color-mix(in srgb,var(--q) calc(35% + var(--g)*12%),var(--surface));color:var(--fg)}
+.bz-gl .kh{background:var(--die-soft);color:var(--die);border:1px solid var(--die)}
+/* rope */
+.bz-sl label{display:grid;gap:4px;font-size:14px;flex:1;min-width:200px}.bz-sl input{accent-color:var(--accent)}
+.bz-dials{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.bz-dial{display:grid;justify-items:center;gap:4px;text-align:center}.bz-dial svg{max-width:130px}
+.bz-face{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.bz-hq{stroke:var(--q);stroke-width:4;stroke-linecap:round;transition:all .3s}.bz-hk{stroke:var(--k);stroke-width:4;stroke-linecap:round;transition:all .3s}
+.bz-hub{fill:var(--fg)}
+.bz-dn{font-size:12px;color:var(--fg2);line-height:1.6}
+/* norm */
+.bz-nm{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.bz-nmop{text-align:center;font-size:13px;color:var(--fg2);font-family:var(--f-mono)}
+.bz-bars{display:grid;gap:4px}
+.bz-b{display:grid;grid-template-columns:46px 1fr;gap:6px;align-items:center}
+.bz-bl{font-family:var(--f-mono);font-size:11px;text-align:right;color:var(--fg2)}
+.bz-bt2{position:relative;height:14px;background:var(--sunk);border-radius:3px}
+.bz-bt2::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--muted)}
+.bz-bt2 span{position:absolute;top:2px;bottom:2px;background:var(--die);border-radius:2px;transition:width .2s}
+.bz-bt2 span.ng{background:var(--accent)}
+.bz-ck{display:flex;gap:6px;align-items:center;font-size:14px}
+@media (max-width:560px){.bz-nm{grid-template-columns:1fr}.bz-nmop{padding:4px 0}}
+/* block */
+.bz-blk{display:grid;grid-template-columns:minmax(180px,1fr) minmax(200px,1.2fr);gap:14px;align-items:start}
+.bz-pipe{position:relative;display:grid;gap:6px;padding-right:54px}
+.bz-node{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;text-align:center;background:var(--surface);transition:all .3s}
+.bz-node.p1,.bz-node.p2{border-radius:20px;font-weight:700}
+.bz-node.at{border-color:var(--q)}.bz-node.ml{border-color:var(--v)}
+.bz-node.past{opacity:.55}
+.bz-node.now{background:var(--accent);border-color:var(--accent);color:var(--surface);opacity:1}
+.bz-skip{position:absolute;right:6px;top:18px;bottom:18px;width:30px;border:2px dashed var(--die);border-left:0;border-radius:0 12px 12px 0}
+.bz-skip span{position:absolute;right:-16px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-size:11px;color:var(--die);background:var(--surface);padding:4px 0}
+.bz-memo{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.bz-memo ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+.bz-memo li.new{color:var(--accent);font-weight:700}
+@media (max-width:560px){.bz-blk{grid-template-columns:1fr}}
+/* act */
+.bz-act{max-width:420px}
+.bz-lin{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:4 3}
+.bz-relu{fill:none;stroke:var(--die);stroke-width:2.5}.bz-silu{fill:none;stroke:var(--accent);stroke-width:2.5}
+.bz-cur{stroke:var(--muted);stroke-dasharray:3 3}
+.bz-dr{fill:var(--die)}.bz-ds{fill:var(--accent)}
+.bz-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--fg2)}
+.bz-leg i{display:inline-block;width:16px;height:3px;margin-right:6px;vertical-align:middle}
+.bz-leg i.l{background:var(--line)}.bz-leg i.r{background:var(--die)}.bz-leg i.s{background:var(--accent)}
 @media (prefers-reduced-motion:reduce){.an *{animation:none!important}.an .arc,.an .up,.an .rl{stroke-dashoffset:0}.an .uph,.an .nxt rect,.an .nxt text{opacity:1}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -440,7 +560,7 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
     <div>
       <div class="eyebrow">API 서버 → 스케줄러 → 커널 → SASS</div>
       <h1>인퍼런스 서버에서 시작해 <em>실리콘</em>까지 내려가기</h1>
-      <p>vLLM과 SGLang이 하는 일을 직접 만들어 보고, Triton과 CUDA 커널을 거쳐 Hopper와 Blackwell 하드웨어까지 파고드는 7단계 코스예요. 위에서 아래로 내려갈수록 GPU에 가까워져요. 항목을 열고 <b>강의 보기</b>를 누르면 한국어 설명, 직접 만져 보는 그림, 퀴즈, 맥에서 돌리는 실습 노트북이 나와요.</p>
+      <p>vLLM과 SGLang이 하는 일을 직접 만들어 보고, Triton과 CUDA 커널을 거쳐 Hopper와 Blackwell 하드웨어까지 파고드는 코스예요. 0단계 기초부터 7단계까지 있어요. 위에서 아래로 내려갈수록 GPU에 가까워져요. 항목을 열고 <b>강의 보기</b>를 누르면 한국어 설명, 직접 만져 보는 그림, 퀴즈, 맥에서 돌리는 실습 노트북이 나와요.</p>
     </div>
     <div class="progress-card" aria-live="polite">
       <div class="sub">전체 진도</div>
@@ -1171,8 +1291,452 @@ W.attvariants=(root)=>{
 
 </script>
 <script>
+/* 0단계 · 기초 다지기: 강의 11개 + 위젯. lessons.js, anim_widgets.js, anim_more.js 다음에 불러와요. */
+(function(L,W){
+const stepper=W._stepper;
+const f1=v=>(v<0?"−":"")+Math.abs(v).toFixed(1);
+const f2=v=>(v<0?"−":"")+Math.abs(v).toFixed(2);
+const pct=v=>(v*100).toFixed(0)+"%";
+const softmax=a=>{const m=Math.max(...a),e=a.map(v=>Math.exp(v-m)),z=e.reduce((x,y)=>x+y,0);return e.map(v=>v/z);};
+const reveal=(root,s)=>root.querySelectorAll("[data-s]").forEach(e=>{const n=+e.dataset.s;e.classList.toggle("on",s>=n);e.classList.toggle("now",s===n);});
+const svgPt=(svg,ev)=>{const p=svg.createSVGPoint();p.x=ev.clientX;p.y=ev.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());};
+const ctrl=`<div class="an-ctrl"></div><div class="an-cap"><p class="an-c"></p><p class="an-d"></p></div>`;
+const capper=(root,S)=>{const c=root.querySelector(".an-c"),d=root.querySelector(".an-d");return s=>{c.innerHTML=S[s].c;d.innerHTML=S[s].d||"";};};
+
+/* ---------- 1. 토큰과 임베딩 ---------- */
+W.b_embed=(root)=>{
+ const P={"왕":[1.8,7.6],"여왕":[3.1,8.2],"남자":[1.4,5.5],"여자":[2.7,6.1],"학교":[6.0,7.3],"병원":[7.3,7.9],"회사":[6.7,6.5],"사과":[7.4,2.1],"바나나":[8.5,2.9],"포도":[7.7,3.5],"걷다":[3.3,2.3],"뛰다":[2.4,1.5],"달리다":[3.1,1.0]};
+ const names=Object.keys(P),X=v=>20+v*30,Y=v=>230-v*25;
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-sub">① 문장 → 토큰 → 번호</div>
+  <div class="bz-toks"><span class="bz-sent">나는 학교에 갔다</span><span class="bz-arr">→</span>
+   ${[["나","1203"],["는","88"],[" 학교","4521"],["에","302"],[" 갔다","7781"]].map(t=>`<span class="bz-tk"><b>${t[0].replace(" ","␣")}</b><i>${t[1]}</i></span>`).join("")}</div>
+  <p class="mini">번호는 예시예요. 실제 번호는 모델마다 달라요. ␣는 띄어쓰기예요.</p>
+  <div class="bz-sub">② 번호 → 벡터. 비슷한 뜻은 가까이 모여요 (단어를 눌러 보세요)</div>
+  <svg viewBox="0 0 340 240" class="bz-map" role="img" aria-label="단어 의미 지도">
+   <g class="bz-links"></g>
+   ${names.map(n=>`<g class="bz-pt" data-w="${n}" tabindex="0"><circle cx="${X(P[n][0])}" cy="${Y(P[n][1])}" r="5"/><text x="${X(P[n][0])+8}" y="${Y(P[n][1])+4}">${n}</text></g>`).join("")}
+  </svg>
+  <div class="bz-out" id="bzEmb"></div></div>`;
+ const out=root.querySelector("#bzEmb"),links=root.querySelector(".bz-links");
+ const pick=w=>{
+  const d=names.filter(n=>n!==w).map(n=>[n,Math.hypot(P[n][0]-P[w][0],P[n][1]-P[w][1])]).sort((a,b)=>a[1]-b[1]).slice(0,2);
+  links.innerHTML=d.map(([n])=>`<line x1="${X(P[w][0])}" y1="${Y(P[w][1])}" x2="${X(P[n][0])}" y2="${Y(P[n][1])}"/>`).join("");
+  root.querySelectorAll(".bz-pt").forEach(g=>g.classList.toggle("sel",g.dataset.w===w));
+  out.innerHTML=`<b>${w}</b>의 벡터 = (${P[w][0].toFixed(1)}, ${P[w][1].toFixed(1)}) &nbsp;·&nbsp; 가장 가까운 단어: <b>${d.map(x=>x[0]).join(", ")}</b><br><span class="mini">여기서는 숫자 2개(가로, 세로)로 그렸어요. SmolLM2는 숫자 <b>576개</b>짜리 벡터라서 훨씬 많은 뜻의 차이를 담아요.</span>`;};
+ root.querySelectorAll(".bz-pt").forEach(g=>{g.addEventListener("click",()=>pick(g.dataset.w));g.addEventListener("keydown",e=>{if(e.key==="Enter")pick(g.dataset.w);});});
+ pick("학교");
+};
+
+/* ---------- 2. 벡터와 내적 ---------- */
+W.b_dot=(root)=>{
+ let A=[3,1],B=[2,3],drag=null;const S=20;
+ root.innerHTML=`<div class="an bz"><p class="mini">화살표 끝(동그라미)을 끌어 보세요. 아래 버튼으로 바로 바꿀 수도 있어요.</p>
+  <div class="bz-row"><button type="button" class="btn ghost" data-p="same">같은 방향</button><button type="button" class="btn ghost" data-p="right">직각</button><button type="button" class="btn ghost" data-p="opp">반대 방향</button><button type="button" class="btn ghost" data-p="long">길게</button></div>
+  <svg viewBox="-110 -110 220 220" class="bz-plane" role="img" aria-label="두 벡터">
+   <defs><marker id="bzHa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" class="bz-ha"/></marker>
+   <marker id="bzHb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" class="bz-hb"/></marker></defs>
+   ${[-4,-2,2,4].map(v=>`<line class="bz-grid" x1="${v*S}" y1="-100" x2="${v*S}" y2="100"/><line class="bz-grid" x1="-100" y1="${v*S}" x2="100" y2="${v*S}"/>`).join("")}
+   <line class="bz-axis" x1="-100" y1="0" x2="100" y2="0"/><line class="bz-axis" x1="0" y1="-100" x2="0" y2="100"/>
+   <path class="bz-angle"/>
+   <line class="bz-va" marker-end="url(#bzHa)"/><line class="bz-vb" marker-end="url(#bzHb)"/>
+   <circle class="bz-ka" r="9"/><circle class="bz-kb" r="9"/>
+   <text class="bz-la">a</text><text class="bz-lb">b</text></svg>
+  <div class="bz-out" id="bzDot"></div></div>`;
+ const svg=root.querySelector("svg"),q=s=>root.querySelector(s);
+ const draw=()=>{
+  const [ax,ay]=A,[bx,by]=B;
+  q(".bz-va").setAttribute("x1",0);q(".bz-va").setAttribute("y1",0);q(".bz-va").setAttribute("x2",ax*S);q(".bz-va").setAttribute("y2",-ay*S);
+  q(".bz-vb").setAttribute("x1",0);q(".bz-vb").setAttribute("y1",0);q(".bz-vb").setAttribute("x2",bx*S);q(".bz-vb").setAttribute("y2",-by*S);
+  q(".bz-ka").setAttribute("cx",ax*S);q(".bz-ka").setAttribute("cy",-ay*S);q(".bz-kb").setAttribute("cx",bx*S);q(".bz-kb").setAttribute("cy",-by*S);
+  q(".bz-la").setAttribute("x",ax*S+8);q(".bz-la").setAttribute("y",-ay*S-8);q(".bz-lb").setAttribute("x",bx*S+8);q(".bz-lb").setAttribute("y",-by*S-8);
+  const d=ax*bx+ay*by,la=Math.hypot(ax,ay),lb=Math.hypot(bx,by),c=la&&lb?d/(la*lb):0,deg=Math.acos(Math.max(-1,Math.min(1,c)))*180/Math.PI;
+  const a1=Math.atan2(ay,ax),a2=Math.atan2(by,bx),r=22;let da=a2-a1;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
+  q(".bz-angle").setAttribute("d",`M${r*Math.cos(a1)} ${-r*Math.sin(a1)} A${r} ${r} 0 0 ${da>0?0:1} ${r*Math.cos(a2)} ${-r*Math.sin(a2)}`);
+  const verdict=c>0.8?["같은 방향이에요","큰 양수 → <b>잘 맞아요</b>","ok"]:c>0.2?["비슷한 쪽이에요","양수 → 어느 정도 맞아요","ok"]:c>-0.2?["거의 직각이에요","0 근처 → <b>상관없어요</b>",""]:["반대 방향이에요","음수 → <b>안 맞아요</b>","ng"];
+  q("#bzDot").innerHTML=`<div class="bz-calc"><span class="a">a = (${f1(ax)}, ${f1(ay)})</span><span class="b">b = (${f1(bx)}, ${f1(by)})</span></div>
+   <div class="bz-calc">a · b = ${f1(ax)}×${f1(bx)} + ${f1(ay)}×${f1(by)} = <b class="bz-big ${verdict[2]}">${f1(d)}</b></div>
+   <div>사이 각도 ${deg.toFixed(0)}° · ${verdict[0]} · ${verdict[1]}</div>
+   <div class="mini">같은 자리 숫자끼리 곱해서 모두 더한 게 내적이에요. 방향이 같을수록, 그리고 화살표가 길수록 커져요.</div>`;};
+ const near=p=>{const da=Math.hypot(p.x-A[0]*S,p.y+A[1]*S),db=Math.hypot(p.x-B[0]*S,p.y+B[1]*S);return Math.min(da,db)<30?(da<db?"a":"b"):null;};
+ svg.addEventListener("pointerdown",e=>{const p=svgPt(svg,e);drag=near(p);if(drag){svg.setPointerCapture(e.pointerId);e.preventDefault();}});
+ svg.addEventListener("pointermove",e=>{if(!drag)return;const p=svgPt(svg,e);const v=[Math.max(-4.8,Math.min(4.8,Math.round(p.x/S*2)/2)),Math.max(-4.8,Math.min(4.8,Math.round(-p.y/S*2)/2))];if(drag==="a")A=v;else B=v;draw();});
+ svg.addEventListener("pointerup",()=>drag=null);svg.addEventListener("pointercancel",()=>drag=null);
+ const pre={same:[[3,1],[2.5,1]],right:[[3,1],[-1,3]],opp:[[3,1],[-3,-1.5]],long:[[4.5,1.5],[4,2.5]]};
+ root.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("click",()=>{[A,B]=pre[b.dataset.p].map(v=>v.slice());draw();}));
+ draw();
+};
+
+/* ---------- 3. 행렬곱 ---------- */
+W.b_matmul=(root)=>{
+ const x=[1,2,-1],M=[[0.5,-1,0,2],[1,0.5,-1,0],[0,1,1,-0.5]];
+ const out=M[0].map((_,j)=>x.reduce((s,xi,i)=>s+xi*M[i][j],0));
+ const S=[{c:"토큰 하나의 벡터 <b>x</b>(숫자 3개)에 가중치 표 <b>W</b>(3줄 × 4칸)를 곱해서, 숫자 4개짜리 새 벡터를 만들 거예요.",d:"W는 학습으로 정해진 숫자 표예요. 추론할 때는 절대 안 바뀌어요."}];
+ out.forEach((o,j)=>S.push({c:`결과의 ${j+1}번째 칸 = x와 W의 <b>${j+1}번째 세로줄</b>의 내적`,d:x.map((xi,i)=>`${f1(xi)}×${f1(M[i][j])}`).join(" + ")+` = <b>${f1(o)}</b>`}));
+ S.push({c:"끝! 행렬곱은 <b>내적을 여러 번</b> 한 거예요. 세로줄 하나가 '질문 하나'이고, 결과 칸은 그 질문에 대한 x의 점수예요.",d:"토큰이 3개면 x가 3줄이 되고 결과도 3줄이에요. 이 많은 곱셈·덧셈을 GPU가 한꺼번에 해요. Wq, Wk, Wv, MLP, LM head가 전부 이 모양이에요. SmolLM2의 Wq는 576줄 × 576칸이에요."});
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="bz-mm">
+  <div><div class="bz-lbl">x</div><table class="bz-mx"><tr>${x.map((v,i)=>`<td class="xr" data-i="${i}">${f1(v)}</td>`).join("")}</tr></table></div>
+  <div class="bz-op">×</div>
+  <div><div class="bz-lbl">W (학습된 숫자 표)</div><table class="bz-mx">${M.map((r,i)=>`<tr>${r.map((v,j)=>`<td data-j="${j}">${f1(v)}</td>`).join("")}</tr>`).join("")}</table></div>
+  <div class="bz-op">=</div>
+  <div><div class="bz-lbl">결과</div><table class="bz-mx"><tr>${out.map((v,j)=>`<td class="o" data-j="${j}">${f1(v)}</td>`).join("")}</tr></table></div></div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,s=>{cap(s);const j=s-1;
+  root.querySelectorAll(".bz-mx td[data-j]").forEach(td=>{const tj=+td.dataset.j;td.classList.toggle("hl",tj===j);if(td.classList.contains("o"))td.classList.toggle("shown",s>=S.length-1||tj<=j);});
+  root.querySelectorAll(".xr").forEach(td=>td.classList.toggle("hl",j>=0&&j<out.length));},2600);
+};
+
+/* ---------- 4. softmax ---------- */
+W.b_softmax=(root)=>{
+ const T=["나는","학교","에"];let sc=[-0.2,0.2,0.1];
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-row"><button type="button" class="btn ghost" data-p="0">그림 예시 (−0.2, 0.2, 0.1)</button><button type="button" class="btn ghost" data-p="1">학습된 모델처럼 (−1, 3, 0.5)</button><button type="button" class="btn ghost" data-p="2">모두 같게</button></div>
+  <div class="bz-sm">
+   <div class="bz-smh"><span></span><span>점수 (q·k)</span><span>e<sup>점수</sup></span><span>비율 = e<sup>점수</sup> ÷ 합</span></div>
+   ${T.map((t,i)=>`<div class="bz-smr"><b>${t}</b><label><input type="range" min="-3" max="4" step="0.1" data-i="${i}" aria-label="${t} 점수"><span class="sv"></span></label><span class="ev"></span><span class="bz-pb"><span class="pbar"><span></span></span><b class="pv"></b></span></div>`).join("")}
+   <div class="bz-smr sum"><b>합</b><span class="ss"></span><span class="es"></span><span class="ps">100%</span></div>
+  </div>
+  <label class="bz-temp">온도(temperature) <b id="bzTv">1.0</b><input type="range" id="bzT" min="0.2" max="3" step="0.1" value="1" aria-label="온도"></label>
+  <div class="bz-out" id="bzSmx"></div></div>`;
+ const q=s=>root.querySelector(s),ins=[...root.querySelectorAll("input[data-i]")];
+ const draw=()=>{const Tt=+q("#bzT").value;q("#bzTv").textContent=Tt.toFixed(1);
+  const e=sc.map(v=>Math.exp(v/Tt)),z=e.reduce((a,b)=>a+b,0),p=e.map(v=>v/z);
+  root.querySelectorAll(".bz-smr:not(.sum)").forEach((r,i)=>{r.querySelector(".sv").textContent=f1(sc[i]);r.querySelector(".ev").textContent=e[i].toFixed(2);r.querySelector(".pbar span").style.width=(p[i]*100).toFixed(1)+"%";r.querySelector(".pv").textContent=pct(p[i]);});
+  const s=sc.reduce((a,b)=>a+b,0);q(".ss").textContent=f1(s);q(".es").textContent=z.toFixed(2);
+  const naive=sc.map(v=>s?v/s:NaN);
+  q("#bzSmx").innerHTML=`<b>softmax 없이 점수 ÷ 합으로만 나누면?</b> ${T.map((t,i)=>`${t} <b>${isFinite(naive[i])?(naive[i]*100).toFixed(0)+"%":"계산 불가"}</b>`).join(" · ")}<br><span class="mini">${naive.some(v=>!isFinite(v)||v<0||v>1)?"음수 %나 100%가 넘는 값이 나오거나, 합이 0이라 나눌 수가 없어요. 그래서 먼저 e<sup>x</sup>로 모두 양수로 만들어요.":"이번에는 우연히 괜찮지만, 점수에 음수가 섞이면 바로 깨져요. 위 버튼을 눌러 보세요."} 온도를 올리면 비율이 고르게, 내리면 1등에 몰려요 (샘플링 강의에서 다시 나와요).</span>`;};
+ ins.forEach((inp,i)=>{inp.value=sc[i];inp.addEventListener("input",()=>{sc[i]=+inp.value;draw();});});
+ const pre=[[-0.2,0.2,0.1],[-1,3,0.5],[1,1,1]];
+ root.querySelectorAll("[data-p]").forEach(b=>b.addEventListener("click",()=>{sc=pre[+b.dataset.p].slice();ins.forEach((inp,i)=>inp.value=sc[i]);draw();}));
+ q("#bzT").addEventListener("input",draw);draw();
+};
+
+/* ---------- 5. 어텐션: 도서관 비유 ---------- */
+W.b_library=(root)=>{
+ const B=[["나는","사람 / 주어","말하는 사람 = 나"],["학교","장소 / 건물","배우는 곳, 건물"],["에","조사","~에 (방향, 위치)"]];
+ const sc=[0.3,2.6,0.5],p=softmax(sc);
+ const S=[
+  {c:"'에' 차례예요. '에'는 혼자서는 \"어디에?\"인지 몰라요. 앞 토큰들한테서 정보를 얻어 와야 해요.",d:"도서관에 비유해 볼게요. 토큰 하나하나가 책이고, '에'가 정보를 찾으러 온 사람이에요."},
+  {c:"'에'가 <b class='tq'>질문 쪽지 q</b>를 써요. \"내 앞에 <b>장소</b> 단어 있어?\"",d:"q = x × Wq. 실제로는 숫자 576개라 사람이 읽을 수 없지만, 학습을 거치면 이런 역할을 하게 돼요."},
+  {c:"책마다 <b class='tk'>이름표 k</b>(무슨 정보가 있는지)와 <b class='tv'>내용 v</b>(실제 정보)가 붙어 있어요.",d:"k = x × Wk, v = x × Wv. 같은 x에서 만들지만, 이름표는 '찾기용', 내용은 '가져가기용'으로 역할이 달라요."},
+  {c:"질문 쪽지를 이름표마다 대 보고 <b>얼마나 맞는지 점수</b>를 매겨요. 이게 <b class='tq'>q</b> · <b class='tk'>k</b> 내적이에요.",d:"\"장소 단어?\"와 \"장소 / 건물\"은 같은 방향 → 큰 점수 2.6. 나머지는 작아요."},
+  {c:"점수를 <b>softmax</b>로 '몇 %씩 가져갈지'로 바꿔요.",d:"음수가 없고 합이 100%가 되게 만드는 단계예요. 점수 차이가 2쯤 나면 비율은 7배쯤 차이 나요."},
+  {c:"그 비율대로 <b class='tv'>내용 v</b>를 복사해서 <b>섞어요</b>. 학교 내용이 82%나 들어왔어요.",d:"결과 = 8%×v(나는) + 82%×v(학교) + 10%×v(에)."},
+  {c:"이제 '에'의 벡터는 <b>\"학교라는 장소에\"</b>라는 뜻을 품게 됐어요. 그래서 다음 단어로 '갔다'를 고를 수 있어요.",d:"이 결과는 원래 x에 <b>더해져요</b>(잔차 연결). 원래 뜻은 그대로 두고, 가져온 정보를 덧붙이는 거예요."},
+  {c:"규칙 두 가지: ① <b>미래 책은 못 봐요</b>(causal mask). ② 점수는 <b>√(숫자 개수)</b>로 나눠요.",d:"① 문장을 왼쪽부터 쓰니까 뒤 단어를 미리 보면 반칙이에요. ② 숫자가 64개면 내적이 너무 커져서 softmax가 한 곳에 100% 몰려요. 그래서 √64 = 8로 나눠서 적당히 줄여요."}];
+ root.innerHTML=`<div class="an bz">${ctrl}
+  <div class="bz-q" data-s="1"><span class="bz-tag tq">q</span>'에'의 질문 쪽지: <b>"내 앞에 장소 단어 있어?"</b></div>
+  <div class="bz-books">${B.map((b,i)=>`<div class="bz-book" data-b="${i}"><div class="bz-bt">📕 ${b[0]}</div>
+   <div class="bz-kv" data-s="2"><span class="bz-tag tk">k</span>이름표: ${b[1]}</div>
+   <div class="bz-kv" data-s="2"><span class="bz-tag tv">v</span>내용: ${b[2]}</div>
+   <div class="bz-sc" data-s="3">점수 <b>${f1(sc[i])}</b></div>
+   <div class="bz-p" data-s="4"><span class="pbar"><span style="width:${(p[i]*100).toFixed(0)}%"></span></span><b>${pct(p[i])}</b></div></div>`).join("")}
+   <div class="bz-book future" data-s="7"><div class="bz-bt">📕 갔다</div><div class="bz-kv">🚫 아직 안 쓴 미래 단어<br>못 봐요</div></div></div>
+  <div class="bz-res" data-s="5"><b>섞은 결과</b> = ${B.map((b,i)=>`<span>${pct(p[i])} × <span class="tv">${b[0]}의 내용</span></span>`).join(" + ")}</div>
+  <div class="bz-res big" data-s="6">'에' → <b>"학교라는 장소에"</b> &nbsp;→ 다음 단어 예측: <b>갔다</b></div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,s=>{cap(s);reveal(root,s);root.querySelectorAll(".bz-book[data-b]").forEach((b,i)=>b.classList.toggle("win",s>=3&&i===1));},3400);
+};
+
+/* ---------- 6. 멀티헤드와 GQA ---------- */
+W.b_heads=(root)=>{
+ const T=["철수는","어제","학교에","갔다"];
+ const H=[["누가?",[.74,.06,.10,.10],"주어를 찾는 헤드"],["언제?",[.05,.81,.06,.08],"시간을 찾는 헤드"],["어디로?",[.05,.05,.82,.08],"장소를 찾는 헤드"]];
+ const G={MHA:[9,9,"헤드마다 자기 k, v를 가져요."],GQA:[9,3,"q 헤드 3개가 k, v 하나를 같이 써요. SmolLM2, Llama 3가 이 방식이에요."],MQA:[9,1,"모든 q 헤드가 k, v 하나를 같이 써요. 가장 아끼지만 품질이 조금 떨어질 수 있어요."]};
+ let h=0,g="GQA";
+ root.innerHTML=`<div class="an bz"><div class="bz-sub">① 헤드마다 다른 질문을 해요 ('갔다'가 앞 단어들을 보는 비율)</div>
+  <div class="seg" id="bzH">${H.map((x,i)=>`<button type="button" data-h="${i}">헤드 ${i+1} · ${x[0]}</button>`).join("")}</div>
+  <div class="bz-hrow" id="bzHr"></div><p class="mini" id="bzHn"></p>
+  <div class="bz-sub">② 헤드 결과를 이어 붙인 뒤 Wo로 한 번 더 섞어요 → '갔다'는 누가·언제·어디를 한 번에 알게 돼요.</div>
+  <div class="bz-sub">③ k, v를 몇 벌 둘까? (KV 캐시 크기가 달라져요)</div>
+  <div class="seg" id="bzG">${Object.keys(G).map(k=>`<button type="button" data-g="${k}">${k}</button>`).join("")}</div>
+  <div class="bz-gqa" id="bzGq"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{
+  root.querySelectorAll("#bzH button").forEach(b=>b.classList.toggle("on",+b.dataset.h===h));
+  root.querySelectorAll("#bzG button").forEach(b=>b.classList.toggle("on",b.dataset.g===g));
+  q("#bzHr").innerHTML=T.map((t,i)=>`<div class="bz-hc" style="--w:${H[h][1][i]}"><b>${t}</b><span>${pct(H[h][1][i])}</span></div>`).join("");
+  q("#bzHn").textContent=`${H[h][2]}예요. 헤드마다 Wq, Wk, Wv가 따로 있어서 서로 다른 관계를 봐요. SmolLM2는 헤드 9개, 헤드당 숫자 64개(9 × 64 = 576)예요.`;
+  const [nq,nk,txt]=G[g],per=nq/nk;
+  q("#bzGq").innerHTML=`<div class="bz-gl"><span class="lb">q 헤드</span>${Array.from({length:nq},(_,i)=>`<i class="qh" style="--g:${Math.floor(i/per)}">q${i+1}</i>`).join("")}</div>
+   <div class="bz-gl"><span class="lb">k, v 헤드</span>${Array.from({length:nk},(_,i)=>`<i class="kh" style="flex:${per}">kv${i+1}</i>`).join("")}</div>
+   <p>${txt} KV 캐시 크기: <b>${nk}/9</b> ${nk===9?"(기준)":`→ ${(9/nk).toFixed(0)}배 절약`}</p>`;};
+ root.querySelectorAll("#bzH button").forEach(b=>b.addEventListener("click",()=>{h=+b.dataset.h;draw();}));
+ root.querySelectorAll("#bzG button").forEach(b=>b.addEventListener("click",()=>{g=b.dataset.g;draw();}));
+ draw();
+};
+
+/* ---------- 7. RoPE ---------- */
+W.b_rope=(root)=>{
+ const TH=[0.9,0.3,0.08],NM=["빠른 바늘 (초침)","중간 바늘 (분침)","느린 바늘 (시침)"],AQ=20*Math.PI/180,AK=70*Math.PI/180;
+ let m=6,n=2,on=true;
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-row bz-sl"><label><span>지금 토큰 <b class="tq">q</b>의 위치 m = <b id="bzM"></b></span><input type="range" id="bzMi" min="0" max="30" step="1" aria-label="q 위치"></label>
+   <label><span>앞 토큰 <b class="tk">k</b>의 위치 n = <b id="bzN"></b></span><input type="range" id="bzNi" min="0" max="30" step="1" aria-label="k 위치"></label></div>
+  <div class="bz-row"><button type="button" class="btn" id="bzShift">둘 다 3칸 뒤로 밀기</button><button type="button" class="btn ghost" id="bzOff">RoPE 끄기</button></div>
+  <div class="bz-dials" id="bzDials"></div>
+  <div class="bz-out" id="bzRo"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const dial=(i)=>{const t=on?TH[i]:0,aq=AQ+m*t,ak=AK+n*t,R=44;
+  let d=(aq-ak)*180/Math.PI;d=((d%360)+540)%360-180;
+  const P=a=>`${(R*Math.cos(a)).toFixed(1)} ${(-R*Math.sin(a)).toFixed(1)}`;
+  return {c:Math.cos(aq-ak),svg:`<div class="bz-dial"><svg viewBox="-55 -55 110 110" role="img" aria-label="${NM[i]}"><circle r="${R+4}" class="bz-face"/>
+   <line x1="0" y1="0" x2="${P(ak).split(" ")[0]}" y2="${P(ak).split(" ")[1]}" class="bz-hk"/><line x1="0" y1="0" x2="${P(aq).split(" ")[0]}" y2="${P(aq).split(" ")[1]}" class="bz-hq"/><circle r="3" class="bz-hub"/></svg>
+   <div class="bz-dn">${NM[i]}<br>칸당 ${(TH[i]*180/Math.PI).toFixed(0)}° 회전 · 사이각 ${Math.abs(d).toFixed(0)}°<br>점수 기여 <b>${f2(Math.cos(aq-ak))}</b></div></div>`};};
+ const draw=()=>{q("#bzM").textContent=m;q("#bzN").textContent=n;q("#bzMi").value=m;q("#bzNi").value=n;
+  q("#bzOff").textContent=on?"RoPE 끄기":"RoPE 켜기";
+  const D=[0,1,2].map(dial);q("#bzDials").innerHTML=D.map(x=>x.svg).join("");
+  const tot=D.reduce((a,x)=>a+x.c,0);
+  q("#bzRo").innerHTML=`거리 m − n = <b>${m-n}</b> &nbsp;·&nbsp; q·k 점수 합계 = <b class="bz-big">${f2(tot)}</b><br><span class="mini">${on?"<b>위치를 같이 옮기면(거리가 같으면) 점수가 똑같아요.</b> 두 바늘이 같은 각도만큼 같이 돌아서 사이각이 안 변하거든요. 그래서 모델은 '몇 번째 자리인지'가 아니라 <b>'얼마나 떨어져 있는지'</b>를 알게 돼요.":"RoPE를 끄면 위치를 아무리 바꿔도 점수가 똑같아요. 모델이 '나는 학교에'와 '학교에 나는'을 구분하지 못해요."}</span>`;};
+ q("#bzMi").addEventListener("input",e=>{m=+e.target.value;draw();});
+ q("#bzNi").addEventListener("input",e=>{n=+e.target.value;draw();});
+ q("#bzShift").addEventListener("click",()=>{if(Math.max(m,n)+3>30){const d=Math.min(m,n);m-=d;n-=d;}m+=3;n+=3;draw();});
+ q("#bzOff").addEventListener("click",()=>{on=!on;draw();});
+ draw();
+};
+
+/* ---------- 8. RMSNorm ---------- */
+W.b_norm=(root)=>{
+ const base=[2,-1,0.5,3,-2,1],G=[1,0.5,1.5,1,1.2,0.8];let k=1,useG=false;
+ root.innerHTML=`<div class="an bz">
+  <label class="bz-temp">입력 크기 배율 ×<b id="bzKv">1</b><input type="range" id="bzK" min="-2" max="2" step="0.05" value="0" aria-label="배율"></label>
+  <div class="bz-row"><label class="bz-ck"><input type="checkbox" id="bzG"> 학습된 γ(감마) 곱하기</label></div>
+  <div class="bz-nm"><div><div class="bz-lbl">입력 x</div><div id="bzIn" class="bz-bars"></div></div>
+   <div class="bz-nmop">÷ RMS<br><b id="bzR"></b></div>
+   <div><div class="bz-lbl">출력</div><div id="bzOut" class="bz-bars"></div></div></div>
+  <div class="bz-out" id="bzNo"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const bars=(v,mx)=>v.map(x=>`<div class="bz-b"><span class="bz-bl">${f2(x)}</span><span class="bz-bt2"><span class="${x<0?"ng":""}" style="width:${Math.min(50,Math.abs(x)/mx*50)}%;${x<0?"right:50%":"left:50%"}"></span></span></div>`).join("");
+ const draw=()=>{const x=base.map(v=>v*k),rms=Math.sqrt(x.reduce((a,v)=>a+v*v,0)/x.length),y=x.map((v,i)=>v/rms*(useG?G[i]:1));
+  q("#bzKv").textContent=k<1?k.toFixed(2):k.toFixed(1);q("#bzIn").innerHTML=bars(x,Math.max(6,...x.map(Math.abs)));q("#bzOut").innerHTML=bars(y,2.5);q("#bzR").textContent=f2(rms);
+  q("#bzNo").innerHTML=`RMS = √(제곱의 평균) = √((${x.map(v=>f1(v)+"²").join(" + ")}) ÷ 6) = <b>${f2(rms)}</b><br><span class="mini">배율 슬라이더를 움직여 보세요. 입력이 아무리 커지거나 작아져도 <b>출력은 똑같아요</b>. 숫자들 사이의 <b>비율(모양)</b>만 남고 크기는 일정하게 맞춰져요. ${useG?"γ는 칸마다 '이 칸은 키우고 저 칸은 줄여라'를 학습한 숫자예요.":""}</span>`;};
+ q("#bzK").addEventListener("input",e=>{k=Math.pow(10,+e.target.value);draw();});
+ q("#bzG").addEventListener("change",e=>{useG=e.target.checked;draw();});
+ draw();
+};
+
+/* ---------- 9. 잔차 연결과 블록 ---------- */
+W.b_block=(root)=>{
+ const P=[["x","입력 (메모장)"],["n1","RMSNorm"],["at","어텐션"],["p1","＋ 더하기"],["n2","RMSNorm"],["ml","MLP"],["p2","＋ 더하기"],["nx","다음 블록으로"]];
+ const S=[
+  {a:0,c:"블록에 들어오는 '에'의 벡터 x를 <b>메모장</b>이라고 생각해요. 지금은 '에'라는 글자 뜻만 적혀 있어요.",d:"이 메모장 벡터를 <b>residual stream</b>(잔차 흐름)이라고 불러요.",memo:[0]},
+  {a:1,c:"메모장을 <b>복사</b>해서 RMSNorm으로 크기를 맞춰요. 원본 메모장은 그대로 둬요.",d:"정규화는 복사본에만 해요. 원본은 옆 길(지름길)로 그대로 내려가요.",memo:[0]},
+  {a:2,c:"복사본으로 <b>어텐션</b>을 해요. 앞 토큰들에서 '학교(장소)' 정보를 가져와요.",d:"어텐션의 결과는 '메모장에 덧붙일 내용'이에요.",memo:[0]},
+  {a:3,c:"가져온 내용을 원본 메모장에 <b>더해요</b>. 지우지 않고 덧붙이는 거예요.",d:"x ← x + 어텐션(RMSNorm(x)). 이게 <b>잔차 연결</b>이에요.",memo:[0,1]},
+  {a:4,c:"다시 복사해서 RMSNorm.",d:"",memo:[0,1]},
+  {a:5,c:"복사본으로 <b>MLP</b>를 해요. 모은 정보를 혼자 곱씹어서 '장소로 이동하는 문장이구나' 같은 판단을 만들어요.",d:"MLP는 다른 토큰을 보지 않아요. 토큰마다 따로 계산해요.",memo:[0,1]},
+  {a:6,c:"MLP 결과도 메모장에 <b>더해요</b>.",d:"x ← x + MLP(RMSNorm(x)).",memo:[0,1,2]},
+  {a:7,c:"이 메모장이 다음 블록의 입력이 돼요. 블록 30개가 차례로 메모를 덧붙여요.",d:"<b>왜 더할까?</b> ① 앞에서 알아낸 걸 잃어버리지 않아요. ② 학습할 때 신호가 지름길로 바로 전달돼서, 층이 아주 깊어도 학습이 돼요. 더하지 않고 바꿔치기만 하면 30층쯤 가면 처음 정보가 거의 사라져요.",memo:[0,1,2]}];
+ const MEMO=["'에' (조사, 위치/방향)","+ 앞의 '학교' = 장소 정보 (어텐션)","+ '어딘가로 가는 문장' 판단 (MLP)"];
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="bz-blk">
+  <div class="bz-pipe">${P.map(p=>`<div class="bz-node ${p[0]}" data-n="${p[0]}">${p[1]}</div>`).join("")}<div class="bz-skip"><span>지름길</span></div></div>
+  <div class="bz-memo"><div class="bz-lbl">📝 메모장 (x)</div><ul id="bzMemo"></ul></div></div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,s=>{cap(s);root.querySelectorAll(".bz-node").forEach((e,i)=>{e.classList.toggle("now",i===S[s].a);e.classList.toggle("past",i<S[s].a);});
+  root.querySelector("#bzMemo").innerHTML=S[s].memo.map(i=>`<li class="${i===S[s].memo[S[s].memo.length-1]&&s>0&&(S[s].a===3||S[s].a===6)?"new":""}">${MEMO[i]}</li>`).join("");},3000);
+};
+
+/* ---------- 10. 활성화 함수 ---------- */
+W.b_act=(root)=>{
+ let x=-1;const relu=v=>Math.max(0,v),silu=v=>v/(1+Math.exp(-v));
+ const PX=v=>150+v*30,PY=v=>110-v*30,path=f=>{let d="";for(let v=-4.5;v<=3.4;v+=0.1)d+=(d?"L":"M")+PX(v).toFixed(1)+" "+PY(f(v)).toFixed(1);return d;};
+ root.innerHTML=`<div class="an bz">
+  <svg viewBox="0 0 300 170" class="bz-act" role="img" aria-label="ReLU와 SiLU 곡선">
+   <line class="bz-axis" x1="10" y1="110" x2="290" y2="110"/><line class="bz-axis" x1="150" y1="5" x2="150" y2="165"/>
+   <path d="${path(v=>v)}" class="bz-lin"/><path d="${path(relu)}" class="bz-relu"/><path d="${path(silu)}" class="bz-silu"/>
+   <line class="bz-cur" y1="5" y2="165"/><circle class="bz-dr" r="4"/><circle class="bz-ds" r="4"/></svg>
+  <div class="bz-leg"><span><i class="l"></i>그대로 (선형)</span><span><i class="r"></i>ReLU: 음수면 0</span><span><i class="s"></i>SiLU: 부드럽게 끄기 (SmolLM2, Llama가 씀)</span></div>
+  <label class="bz-temp">입력 값 <b id="bzAv"></b><input type="range" id="bzA" min="-4" max="4" step="0.1" aria-label="입력 값"></label>
+  <div class="bz-out" id="bzAo"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{q("#bzA").value=x;q("#bzAv").textContent=f1(x);q(".bz-cur").setAttribute("x1",PX(x));q(".bz-cur").setAttribute("x2",PX(x));
+  q(".bz-dr").setAttribute("cx",PX(x));q(".bz-dr").setAttribute("cy",PY(relu(x)));q(".bz-ds").setAttribute("cx",PX(x));q(".bz-ds").setAttribute("cy",PY(silu(x)));
+  q("#bzAo").innerHTML=`ReLU(${f1(x)}) = <b>${f2(relu(x))}</b> · SiLU(${f1(x)}) = <b>${f2(silu(x))}</b><br><span class="mini">큰 양수는 거의 그대로 통과, 음수는 0 근처로 꺼져요. 이 '켜고 끄기'가 MLP의 칸 하나하나를 <b>스위치</b>로 만들어요. 이게 없으면 층을 아무리 쌓아도 곱셈 한 번과 똑같아져요.</span>`;};
+ q("#bzA").addEventListener("input",e=>{x=+e.target.value;draw();});draw();
+};
+
+/* ================= 강의 데이터 ================= */
+L["p0-1"]={
+ lead:"모델은 글자를 못 읽어요. 그래서 문장을 <b>토큰</b>이라는 조각으로 자르고, 조각마다 <b>번호</b>를 붙이고, 번호마다 <b>숫자 묶음(벡터)</b>을 꺼내 와요. 이 벡터가 모델 안에서 굴러다니는 모든 계산의 출발점이에요.",
+ sections:[
+  {h:"1. 토큰: 문장을 조각으로",p:["토크나이저가 문장을 자주 나오는 조각 단위로 잘라요. 영어는 단어 하나가 토큰 하나인 경우가 많고, 한국어는 '학교', '에'처럼 더 잘게 잘려요.","SmolLM2는 49,152개의 조각을 알고 있어요. 이 목록을 <b>어휘(vocabulary)</b>라고 해요. 조각마다 0~49,151 사이의 번호가 있어요."]},
+  {h:"2. 번호만으로는 왜 안 될까",p:["번호 4521(학교)과 4522는 번호가 붙어 있지만 뜻은 전혀 상관없을 수 있어요. 번호는 그냥 이름표라서 <b>계산에 쓸 수 있는 뜻</b>이 없어요."]},
+  {h:"3. 임베딩: 번호 → 벡터",p:["그래서 번호마다 숫자 576개짜리 벡터를 하나씩 정해 둔 큰 표를 둬요. 이게 <b>임베딩 표</b>(49,152줄 × 576칸)예요. 번호가 들어오면 그 줄을 꺼내 오기만 하면 돼요.","이 표의 숫자도 학습으로 정해져요. 학습이 끝나면 <b>뜻이 비슷한 토큰은 벡터도 비슷해져요</b>. 아래 지도에서 '학교'를 누르면 '병원', '회사'가 가까이 있는 게 보여요.","이제부터 '토큰의 벡터 x'라고 하면 이 숫자 576개를 말해요. 레이어를 지날 때마다 이 x가 조금씩 고쳐져요."]}
+ ],
+ widget:"b_embed",widgetTitle:"토큰과 의미 지도",widgetCap:"단어를 누르면 가장 가까운 단어 두 개가 선으로 이어져요. 실제 576차원을 2차원으로 줄여 그린 예시예요.",
+ summary:["문장 → 토큰(조각) → 번호 → 벡터 순서로 바뀐다","임베딩 표 = 번호마다 벡터 하나씩 적힌 큰 표 (학습으로 정해짐)","비슷한 뜻 = 비슷한 벡터","토큰의 벡터 x가 모든 계산의 시작점"],
+ quiz:[
+  {q:"임베딩 표가 하는 일은?",o:["문장을 토큰으로 자른다","토큰 번호를 숫자 벡터로 바꾼다","다음 토큰을 고른다","벡터의 크기를 맞춘다"],a:1,e:"토큰 번호에 해당하는 줄(숫자 576개)을 꺼내 오는 표예요."},
+  {q:"잘 학습된 모델에서 '학교'와 '병원'의 벡터는?",o:["번호가 가까우면 가깝다","뜻이 비슷해서 가까운 편이다","항상 정반대다","완전히 똑같다"],a:1,e:"둘 다 장소·건물이라 비슷한 쪽을 가리키게 학습돼요. 번호가 가까운 건 상관없어요."}
+ ]};
+
+L["p0-2"]={
+ lead:"어텐션의 'q와 k를 곱한다'는 <b>내적</b>이에요. 내적은 두 벡터가 <b>얼마나 같은 방향을 보는지</b>를 숫자 하나로 알려 줘요. 이것 하나만 알면 어텐션 점수가 왜 그렇게 계산되는지 이해돼요.",
+ sections:[
+  {h:"1. 벡터는 화살표",p:["숫자 2개짜리 벡터 (3, 1)은 오른쪽으로 3, 위로 1 가는 화살표예요. 숫자가 576개면 576차원 공간의 화살표인데, 그림으로 못 그릴 뿐 똑같아요.","화살표의 <b>방향</b>이 '무슨 뜻인지', <b>길이</b>가 '얼마나 강한지'라고 생각하면 돼요."]},
+  {h:"2. 내적 계산법",p:["같은 자리 숫자끼리 곱해서 모두 더해요. a = (3, 1), b = (2, 3)이면 a · b = 3×2 + 1×3 = <b>9</b>.","숫자가 576개여도 똑같아요. 곱셈 576번, 덧셈 575번. 그래서 GPU가 아주 빨리 해요."]},
+  {h:"3. 내적이 뜻하는 것",p:["<b>같은 방향</b> → 큰 양수. <b>직각</b> → 0. <b>반대 방향</b> → 음수. 그리고 화살표가 길수록 값이 더 커져요.","그래서 내적은 <b>'얼마나 잘 맞나' 점수</b>로 쓰기 딱 좋아요. 어텐션에서 '내가 찾는 것(q)'과 '그 토큰이 가진 것(k)'이 같은 방향이면 점수가 높게 나와요."]}
+ ],
+ widget:"b_dot",widgetTitle:"두 화살표의 내적",widgetCap:"화살표 끝을 끌어서 방향을 바꿔 보세요. 같은 방향이면 커지고, 직각이면 0, 반대면 음수예요.",
+ summary:["벡터 = 화살표 (방향 = 뜻, 길이 = 세기)","내적 = 같은 자리끼리 곱해서 모두 더하기","같은 방향 → 큰 양수, 직각 → 0, 반대 → 음수","어텐션 점수 = q · k = '얼마나 잘 맞나'"],
+ quiz:[
+  {q:"(2, 0) · (0, 5)의 값은?",o:["10","7","0","−10"],a:2,e:"2×0 + 0×5 = 0. 두 화살표가 직각이라서 0이에요."},
+  {q:"q · k 가 큰 음수라면?",o:["아주 잘 맞는다","q와 k가 반대 방향이라 안 맞는다","계산 오류다","길이가 0이다"],a:1,e:"반대 방향이면 음수가 나와요. softmax를 거치면 아주 작은 비율이 돼요."}
+ ]};
+
+L["p0-3"]={
+ lead:"'x에 Wq를 곱해서 q를 만든다'의 '곱하기'는 <b>행렬곱</b>이에요. 행렬곱은 사실 <b>내적을 여러 번 한 것</b>이에요. LLM 계산의 90% 이상이 이거라서, GPU 최적화도 대부분 이걸 빠르게 하는 이야기예요.",
+ sections:[
+  {h:"1. 가중치 = 학습된 숫자 표",p:["Wq, Wk, Wv, MLP의 표들은 모두 숫자가 적힌 큰 표예요. 학습할 때 정해지고, 추론할 때는 <b>읽기만</b> 해요. 모델 파일(safetensors)에 들어 있는 게 바로 이 표들이에요.","SmolLM2-135M이라는 이름의 135M은 이 표들에 든 숫자가 모두 1억 3,500만 개라는 뜻이에요."]},
+  {h:"2. 행렬곱 = 세로줄마다 내적",p:["x(숫자 3개) × W(3줄 × 4칸)를 하면, W의 세로줄 4개 각각과 x의 내적을 구해서 숫자 4개를 얻어요.","W의 세로줄 하나를 <b>'질문 하나'</b>라고 보면 돼요. 결과 칸 하나는 'x가 그 질문에 얼마나 해당하나' 점수예요. 576개 칸이면 576개의 서로 다른 질문을 동시에 던지는 셈이에요."]},
+  {h:"3. 선형 층(Linear)",p:["x × W 하나를 <b>선형 층</b>이라고 불러요. 생김새가 단순해서, 아무리 여러 개를 이어 붙여도 결국 하나의 표로 합쳐져요. 그래서 중간중간 <b>비선형</b> 함수(softmax, SiLU)가 들어가야 복잡한 걸 배울 수 있어요. 이건 MLP 강의에서 다시 봐요."]}
+ ],
+ widget:"b_matmul",widgetTitle:"행렬곱 한 칸씩 계산하기",widgetCap:"다음 ▶을 누를 때마다 결과 한 칸이 어떻게 나오는지 보여 줘요.",
+ summary:["가중치 = 학습으로 정해진 숫자 표, 추론 중엔 안 바뀜","행렬곱 = x와 W의 세로줄마다 내적","q, k, v, MLP, LM head 모두 행렬곱","선형 층만 쌓으면 하나로 합쳐짐 → 비선형이 필요"],
+ quiz:[
+  {q:"x가 숫자 576개, Wq가 576 × 576이면 q는 숫자 몇 개?",o:["1개","576개","576 × 576개","1152개"],a:1,e:"세로줄이 576개라 내적도 576번 → 숫자 576개가 나와요."},
+  {q:"모델 파일(safetensors)에 들어 있는 것은?",o:["q, k, v 값","KV 캐시","가중치 표 (Wq, Wk, MLP 등)","사용자 질문"],a:2,e:"q, k, v는 실행할 때마다 계산해요. 파일에는 고정된 가중치 표만 있어요."}
+ ]};
+
+L["p0-4"]={
+ lead:"점수를 <b>'몇 %씩'</b>으로 바꾸는 함수가 softmax예요. 어텐션에서도, 마지막에 다음 토큰을 고를 때도 써요.",
+ sections:[
+  {h:"1. 점수를 그대로 못 쓰는 이유",p:["q · k 점수는 −0.2, 0.2, 0.1처럼 <b>음수</b>가 섞이고, 합이 아무 값이나 될 수 있어요. 'v를 −20%만큼 가져온다'는 말이 안 되고, 합이 들쭉날쭉하면 결과 벡터 크기도 들쭉날쭉해져요.","우리가 원하는 건 <b>모두 0 이상이고 합이 100%</b>인 비율이에요."]},
+  {h:"2. softmax 두 단계",p:["① 점수마다 e<sup>점수</sup>를 해요. e는 약 2.718이에요. 결과는 <b>항상 양수</b>예요. e<sup>−0.2</sup> = 0.82, e<sup>0.2</sup> = 1.22, e<sup>0.1</sup> = 1.11.","② 그 값들의 합(3.15)으로 나눠요 → 26%, 39%, 35%. 합이 정확히 100%가 돼요."]},
+  {h:"3. 덤: 차이를 키워 줘요",p:["점수가 1 높으면 비율이 약 2.7배, 2 높으면 약 7.4배가 돼요. 그래서 잘 맞는 쪽이 확실히 이겨요. 그래도 꼴찌가 0%가 되진 않아서 조금씩은 섞여요.","점수를 어떤 수(온도)로 나눈 뒤 softmax를 하면, 온도가 크면 고르게, 작으면 1등에 몰려요. 다음 토큰을 뽑을 때 쓰는 temperature가 바로 이거예요."]}
+ ],
+ widget:"b_softmax",widgetTitle:"softmax 직접 돌려 보기",widgetCap:"점수 슬라이더와 온도를 움직여 보세요. 비율은 항상 합이 100%예요.",
+ summary:["softmax = 점수 → 0 이상, 합 100%인 비율","① e^점수로 모두 양수로 ② 합으로 나누기","점수 차이를 키워서 1등이 확실히 이김","온도로 나누면 고르게/뾰족하게 조절 가능"],
+ quiz:[
+  {q:"점수가 [1, 1, 1]이면 softmax 결과는?",o:["[100%, 0, 0]","[33%, 33%, 33%]","[1, 1, 1]","계산 불가"],a:1,e:"점수가 모두 같으면 e^점수도 같아서 똑같이 나눠 가져요."},
+  {q:"softmax에서 e^점수를 먼저 하는 가장 큰 이유는?",o:["계산을 빠르게 하려고","음수를 없애서 비율로 만들 수 있게","점수를 작게 만들려고","토큰 순서를 알려 주려고"],a:1,e:"e^x는 항상 양수라서, 합으로 나누면 깔끔한 비율이 돼요."}
+ ]};
+
+L["p0-5"]={
+ lead:"이제 재료가 다 모였어요. <b>어텐션 = 내적으로 점수 매기기 → softmax로 비율 만들기 → 그 비율대로 v 섞기</b>. 도서관 비유로 한 장면씩 봐요.",
+ sections:[
+  {h:"1. 왜 하나: 토큰은 혼자서는 뜻을 몰라요",p:["'에'의 처음 벡터는 사전에 적힌 '에'의 뜻뿐이에요. \"학교<b>에</b>\"인지 \"집<b>에</b>\"인지 몰라요. 다음 단어를 맞히려면 <b>앞 토큰들의 정보를 가져와야</b> 해요. 어텐션이 그 일을 해요."]},
+  {h:"2. q, k, v: 같은 x에서 만든 세 가지 역할",p:["<b class='tq'>q (질문)</b> = x × Wq: 내가 찾는 것.<br><b class='tk'>k (이름표)</b> = x × Wk: 내가 가진 정보의 종류.<br><b class='tv'>v (내용)</b> = x × Wv: 실제로 넘겨줄 정보.","왜 셋으로 나눌까요? '무엇을 찾나', '무엇으로 찾히나', '찾히면 무엇을 주나'는 서로 다른 일이라서 각자 다른 표로 만드는 게 더 잘 배워져요."]},
+  {h:"3. 세 단계",p:["① <b>q · k</b>: 내 질문과 각 토큰 이름표의 내적 → 얼마나 맞나 점수.","② <b>softmax</b>: 점수 → 몇 %씩 가져올지.","③ <b>비율 × v 더하기</b>: 실제 내용을 가져와 섞음. 이 결과를 원래 x에 더해요.","왜 1등 하나만 가져오지 않을까요? 필요한 정보가 여러 토큰에 흩어져 있을 때가 많고, 비율이 매끄러워야 학습할 때 '조금 더, 조금 덜'을 조절할 수 있어서예요."]},
+  {h:"4. 규칙 두 가지",p:["<b>causal mask</b>: 자기보다 뒤 토큰은 못 봐요. 점수를 −∞로 만들어서 softmax 후 0%가 되게 해요.","<b>√d로 나누기</b>: 숫자가 d개면 내적이 d에 비례해 커져서 softmax가 한쪽에 100% 쏠려요. 그래서 점수를 √d로 나눠요. SmolLM2는 헤드당 d = 64라서 8로 나눠요."]}
+ ],
+ extra:[{widget:"qkvinside",title:"실제 숫자로 다시 보기",cap:"같은 과정을 숫자 4개짜리 벡터로 계산한 그림이에요. 도서관 비유와 하나씩 짝지어 보세요."}],
+ widget:"b_library",widgetTitle:"어텐션 = 도서관에서 정보 찾기",widgetCap:"다음 ▶을 눌러 '에'가 앞 토큰에서 정보를 가져오는 과정을 따라가 보세요.",
+ summary:["목적: 앞 토큰의 정보를 가져와 내 벡터에 덧붙이기","q = 질문, k = 이름표, v = 내용 (모두 x × 가중치)","q·k 점수 → softmax 비율 → 비율 × v 합","미래는 못 보고(mask), 점수는 √d로 나눈다"],
+ quiz:[
+  {q:"어텐션에서 실제로 '정보'를 가져오는 벡터는?",o:["q","k","v","x"],a:2,e:"q와 k는 비율을 정하는 데만 쓰여요. 실제로 섞여 들어오는 건 v예요."},
+  {q:"'에'가 '학교'에 82%를 줬다는 것의 의미는?",o:["'학교'를 82% 지운다","'학교'의 v를 82% 비율로 섞어 온다","'학교'가 82번째 토큰이다","'학교'의 q가 82다"],a:1,e:"비율 × v를 더하니까, 결과의 82%가 학교의 내용에서 왔어요."},
+  {q:"점수를 √d로 나누는 이유는?",o:["계산을 빨리 하려고","숫자가 많을수록 점수가 너무 커져 softmax가 한쪽에 쏠리는 걸 막으려고","미래 토큰을 가리려고","음수를 없애려고"],a:1,e:"d가 크면 내적도 커져요. 나눠 주면 softmax가 적당히 퍼진 비율을 내요."}
+ ]};
+
+L["p0-6"]={
+ lead:"어텐션을 한 번만 하면 '한 가지 질문'밖에 못 해요. 그래서 여러 개를 <b>동시에</b> 해요. 이게 <b>멀티헤드</b>예요. 그리고 KV 캐시를 아끼려고 k, v는 몇 개만 두는 게 <b>GQA</b>예요.",
+ sections:[
+  {h:"1. 멀티헤드: 질문을 여러 개",p:["'갔다'는 \"누가?\", \"언제?\", \"어디로?\"를 동시에 알고 싶어요. 그래서 576개 숫자를 64개씩 9묶음으로 나누고, 묶음마다 따로 어텐션을 해요. 이 묶음 하나가 <b>헤드</b>예요.","헤드마다 비율이 달라요. 9개 결과를 이어 붙이고 Wo라는 표로 한 번 더 섞어서 최종 결과를 만들어요."]},
+  {h:"2. GQA: k, v는 나눠 쓰기",p:["KV 캐시는 헤드 수만큼 k, v를 저장해요. 헤드가 많을수록 메모리가 커져요.","<b>GQA</b>(Grouped-Query Attention)는 q 헤드 여러 개가 k, v 헤드 하나를 같이 써요. SmolLM2는 q 9개, kv 3개라서 KV 캐시가 1/3이에요. 품질은 거의 그대로예요.","이게 추론 엔진에서 중요한 이유: KV 캐시가 작아지면 같은 GPU에 더 많은 요청을 동시에 올릴 수 있어요."]}
+ ],
+ widget:"b_heads",widgetTitle:"헤드마다 다른 질문, 그리고 GQA",widgetCap:"헤드 버튼을 바꾸며 '갔다'가 어디를 보는지 비교하고, 아래에서 MHA, GQA, MQA를 바꿔 보세요.",
+ summary:["헤드 = 576개를 나눈 작은 어텐션 하나","헤드마다 다른 관계(누가, 언제, 어디)를 본다","결과를 이어 붙이고 Wo로 섞는다","GQA: q 헤드 여럿이 kv 헤드 하나를 공유 → KV 캐시 절약"],
+ quiz:[
+  {q:"q 헤드 32개, kv 헤드 8개인 모델의 KV 캐시는 kv 헤드도 32개인 경우의 몇 배?",o:["4배","1배","1/4","1/32"],a:2,e:"KV 캐시는 kv 헤드 수에 비례해요. 8/32 = 1/4."},
+  {q:"멀티헤드를 쓰는 이유는?",o:["메모리를 아끼려고","여러 종류의 관계를 동시에 보려고","토큰 순서를 알려 주려고","숫자 크기를 맞추려고"],a:1,e:"헤드마다 다른 Wq, Wk, Wv가 있어서 서로 다른 관계를 배워요."}
+ ]};
+
+L["p0-7"]={
+ lead:"어텐션에는 큰 약점이 있어요. <b>순서를 몰라요.</b> '나는 학교에'와 '학교에 나는'의 점수가 똑같아요. <b>RoPE</b>는 q와 k를 위치만큼 <b>돌려서</b> 순서 정보를 넣는 방법이에요.",
+ sections:[
+  {h:"1. 왜 순서를 모를까",p:["어텐션 점수는 q · k예요. q와 k는 토큰의 뜻만으로 만들어져서, 그 토큰이 몇 번째 자리에 있는지는 어디에도 들어 있지 않아요."]},
+  {h:"2. RoPE: 위치만큼 돌리기",p:["RoPE(Rotary Position Embedding)는 벡터를 숫자 2개씩 짝지어서 시계 바늘처럼 봐요. 위치가 m이면 그 바늘을 <b>m × θ</b>만큼 돌려요. q와 k 둘 다 돌려요. v는 안 돌려요.","내적은 두 바늘 사이 <b>각도</b>에 따라 정해지죠. q를 m칸, k를 n칸만큼 돌리면 사이 각도가 (m − n)만큼 변해요. 그래서 점수가 <b>둘 사이 거리</b>에 따라 달라져요.","핵심: 두 토큰을 같이 3칸 뒤로 밀어도 거리가 같으면 점수는 똑같아요. 모델은 '몇 번째냐'보다 <b>'얼마나 떨어져 있냐'</b>를 배워요."]},
+  {h:"3. 바늘이 여러 개인 이유",p:["576개 숫자는 288쌍이고, 쌍마다 도는 속도 θ가 달라요. 빠른 바늘은 가까운 거리를 세밀하게, 느린 바늘은 먼 거리를 구분해요. 시계에 초침·분침·시침이 다 있는 것과 같아요.","긴 문맥 확장(예: 4K → 128K)은 대부분 이 바늘 속도를 조절하는 기술이에요(YaRN, NTK 등)."]},
+  {h:"4. 추론 엔진 관점",p:["RoPE는 k를 캐시에 넣기 <b>전에</b> 적용해요. 그래서 캐시의 k는 이미 위치가 박힌 상태예요. 엔진은 토큰마다 정확한 위치 번호를 넘겨줘야 해요. 이게 틀리면 출력이 엉망이 돼요."]}
+ ],
+ widget:"b_rope",widgetTitle:"위치만큼 돌아가는 시계 바늘",widgetCap:"두 위치 슬라이더를 움직여 보고, '둘 다 3칸 뒤로 밀기'를 눌러 점수가 그대로인지 확인해 보세요.",
+ summary:["어텐션만으로는 토큰 순서를 모른다","RoPE: q, k를 위치 × θ만큼 회전 (v는 안 돌림)","점수가 두 토큰 사이 '거리'에 따라 달라진다","쌍마다 회전 속도가 달라 가까운/먼 거리를 모두 구분","캐시의 k에는 이미 RoPE가 적용돼 있다"],
+ quiz:[
+  {q:"RoPE를 적용하는 벡터는?",o:["q와 k","v만","x만","q, k, v 전부"],a:0,e:"점수(q·k)에 위치를 반영하려는 거라 q와 k만 돌려요."},
+  {q:"q 위치 10, k 위치 7일 때와, q 위치 20, k 위치 17일 때 점수는? (같은 토큰이라면)",o:["같다","두 번째가 두 배","첫 번째가 더 크다","알 수 없다"],a:0,e:"거리가 둘 다 3이라 사이 각도가 같아요. RoPE의 핵심 성질이에요."}
+ ]};
+
+L["p0-8"]={
+ lead:"레이어를 30번 지나면 벡터의 숫자가 점점 커지거나 작아질 수 있어요. 그러면 계산이 불안정해져요. <b>RMSNorm</b>은 매번 벡터의 <b>크기를 1 근처로 맞춰 주는</b> 장치예요.",
+ sections:[
+  {h:"1. 왜 필요할까",p:["어텐션과 MLP 결과가 계속 더해지니까 벡터 크기가 층마다 달라져요. 어떤 층은 숫자 100짜리를, 어떤 층은 0.01짜리를 받으면 가중치가 둘 다 잘 다루기 어려워요.","그래서 어텐션과 MLP에 들어가기 <b>직전</b>마다 크기를 맞춰요."]},
+  {h:"2. 계산법",p:["① RMS = √(숫자들의 제곱의 평균). '평균적인 크기'예요.","② 각 숫자를 RMS로 나눠요. 그러면 비율(모양)은 그대로이고 크기만 1 근처가 돼요.","③ 칸마다 학습된 숫자 γ(감마)를 곱해요. '이 칸은 조금 키우고, 저 칸은 줄여라'를 모델이 배운 거예요."]},
+  {h:"3. LayerNorm과의 차이",p:["옛날 모델(GPT-2)은 LayerNorm을 썼어요. 평균을 빼고 나서 크기를 맞춰요. RMSNorm은 평균 빼기를 생략해서 더 단순하고 빨라요. 성능은 거의 같아서 요즘 모델은 대부분 RMSNorm을 써요.","추론 엔진에서는 RMSNorm을 앞뒤 계산과 하나의 GPU 커널로 합치는(fusion) 최적화를 자주 해요. 4단계에서 직접 해 봐요."]}
+ ],
+ widget:"b_norm",widgetTitle:"크기만 맞추고 모양은 그대로",widgetCap:"배율 슬라이더로 입력을 아주 크게, 아주 작게 바꿔 보세요. 출력 막대는 그대로예요.",
+ summary:["RMSNorm = 벡터 크기를 1 근처로 맞추기","RMS = √(제곱의 평균), 각 숫자를 RMS로 나눔","숫자 사이 비율(모양)은 유지","γ로 칸마다 학습된 배율을 곱함","어텐션, MLP 직전마다 들어감"],
+ quiz:[
+  {q:"입력 벡터를 모두 10배 하면 RMSNorm 출력은?",o:["10배","1/10","거의 그대로","0이 된다"],a:2,e:"RMS도 10배가 되니까 나누면 원래와 같아요."},
+  {q:"RMSNorm이 LayerNorm보다 생략한 것은?",o:["제곱","평균 빼기","γ 곱하기","나누기"],a:1,e:"LayerNorm은 평균을 먼저 빼요. RMSNorm은 그 단계를 빼서 더 단순해요."}
+ ]};
+
+L["p0-9"]={
+ lead:"블록 하나는 'RMSNorm → 어텐션 → 더하기 → RMSNorm → MLP → 더하기'예요. 여기서 <b>더하기</b>가 <b>잔차 연결</b>이에요. 메모장에 덧붙여 쓰는 것처럼 정보를 지우지 않고 쌓아 가요.",
+ sections:[
+  {h:"1. 잔차 연결: 덧붙이기",p:["x ← x + 어텐션(RMSNorm(x)), 그다음 x ← x + MLP(RMSNorm(x)).","원본 x는 지름길로 그대로 내려가고, 어텐션과 MLP는 '덧붙일 내용'만 만들어요. 그래서 이 x를 <b>residual stream</b>(잔차 흐름)이라고 불러요. 모든 층이 같은 메모장을 돌려 가며 메모를 추가하는 셈이에요."]},
+  {h:"2. 왜 더할까",p:["① 앞에서 알아낸 걸 잃지 않아요. ② 학습할 때 '틀렸다'는 신호가 지름길을 타고 맨 아래층까지 바로 전달돼요. 이게 없으면 층이 깊을수록 학습이 거의 안 돼요. 수십~수백 층 모델이 가능한 이유예요."]},
+  {h:"3. 블록 전체 그림",p:["SmolLM2는 이 블록을 30번 쌓아요. 블록마다 가중치(Wq, Wk, Wv, Wo, MLP 표, γ)가 따로 있어요.","블록은 반드시 1층 → 2층 → … 순서대로 계산해요. 위층의 입력이 아래층의 출력이니까요. 대신 한 층 안에서는 여러 토큰, 여러 요청을 동시에 계산할 수 있어요."]}
+ ],
+ widget:"b_block",widgetTitle:"블록 하나를 지나가는 메모장",widgetCap:"다음 ▶을 누르며 메모장(x)에 무엇이 덧붙여지는지 보세요.",
+ summary:["블록 = Norm → 어텐션 → 더하기 → Norm → MLP → 더하기","잔차 연결 = 원본을 두고 결과를 덧붙임","x(residual stream)는 층을 지나며 메모가 쌓이는 메모장","깊은 모델이 학습 가능한 이유","층은 순서대로, 층 안에서는 병렬로"],
+ quiz:[
+  {q:"잔차 연결을 식으로 쓰면?",o:["x ← 어텐션(x)","x ← x + 어텐션(RMSNorm(x))","x ← x × 어텐션(x)","x ← RMSNorm(x)"],a:1,e:"원래 x에 어텐션 결과를 더해요. 정규화는 어텐션에 넣는 복사본에만 해요."},
+  {q:"잔차 연결이 없으면 생기는 문제는?",o:["KV 캐시가 커진다","깊은 층에서 정보와 학습 신호가 사라지기 쉽다","토큰 순서를 모른다","softmax를 못 한다"],a:1,e:"덧붙이지 않고 바꿔치기만 하면 깊이 갈수록 처음 정보와 학습 신호가 약해져요."}
+ ]};
+
+L["p0-10"]={
+ lead:"어텐션이 '다른 토큰에게서 정보를 모으는' 단계라면, <b>MLP</b>는 모은 정보를 <b>토큰 혼자서 곱씹는</b> 단계예요. 모델 가중치의 절반 이상이 여기에 있고, 지식의 상당 부분이 여기에 저장된다고 봐요.",
+ sections:[
+  {h:"1. 구조: 넓히기 → 켜고 끄기 → 줄이기",p:["576개 숫자를 1,536개로 <b>넓히고</b>(행렬곱), 활성화 함수로 칸마다 <b>켜고 끄고</b>, 다시 576개로 <b>줄여요</b>(행렬곱).","넓힌 1,536칸 하나하나가 '이런 패턴이면 켜지는 스위치'라고 볼 수 있어요. 예를 들어 '장소 + 이동' 패턴이면 켜지는 칸이요."]},
+  {h:"2. 활성화 함수: 왜 꼭 필요할까",p:["행렬곱만 두 번 하면 표 두 개를 미리 곱해 둔 표 하나랑 똑같아요. 아무리 쌓아도 '곱셈 한 번'이에요.","중간에 <b>휘어진 함수</b>(비선형)를 넣어야 '이 조건이면 켜고 아니면 끈다' 같은 판단을 배울 수 있어요. ReLU는 음수를 0으로, SiLU는 음수를 부드럽게 0 근처로 만들어요."]},
+  {h:"3. SwiGLU: 문지기가 하나 더",p:["요즘 모델(SmolLM2, Llama, Qwen)은 넓히는 표가 2개예요. <b>gate</b>와 <b>up</b>. gate에 SiLU를 걸어서 '얼마나 열지'를 정하고, up 값에 곱해요. 그래서 MLP에 표가 3개(gate, up, down)예요.","MLP는 다른 토큰을 전혀 안 봐요. 토큰마다 따로라서 KV 캐시도 필요 없어요."]}
+ ],
+ extra:[{widget:"mlpflow",title:"MLP 안에서 일어나는 일",cap:"넓히기 → 켜기/끄기 → 줄이기 → 더하기 순서로 따라가 보세요."}],
+ widget:"b_act",widgetTitle:"활성화 함수: 켜고 끄는 스위치",widgetCap:"입력 값을 움직여 보세요. 양수는 통과, 음수는 꺼져요.",
+ summary:["MLP = 넓히기 → 활성화 → 줄이기 (토큰마다 따로)","활성화 함수가 없으면 행렬곱 한 번과 같아짐","SwiGLU: gate(SiLU) × up → down, 표 3개","모델 파라미터의 절반 이상이 MLP"],
+ quiz:[
+  {q:"MLP가 어텐션과 다른 점은?",o:["다른 토큰을 보지 않고 토큰마다 따로 계산한다","KV 캐시를 쓴다","softmax를 쓴다","위치 정보를 넣는다"],a:0,e:"어텐션은 토큰 사이에 정보를 옮기고, MLP는 토큰 하나 안에서만 계산해요."},
+  {q:"활성화 함수를 빼면?",o:["더 똑똑해진다","여러 층이 행렬곱 한 번과 같아진다","KV 캐시가 사라진다","출력이 항상 0이다"],a:1,e:"선형끼리는 합쳐지니까 비선형이 있어야 깊이에 의미가 생겨요."}
+ ]};
+
+L["p0-11"]={
+ lead:"30층을 다 지나면 마지막 토큰의 벡터로 <b>다음 토큰 점수</b>를 매겨요. 그리고 이 점수가 틀린 만큼 가중치를 고치는 게 <b>학습</b>이에요. 여기까지 오면 모델 전체가 한 바퀴 이어져요.",
+ sections:[
+  {h:"1. logits: 49,152개 후보의 점수",p:["마지막 RMSNorm을 하고, <b>LM head</b>(576 × 49,152 표)를 곱해요. 그러면 어휘의 모든 토큰마다 점수가 하나씩 나와요. 이게 <b>logits</b>예요.","LM head의 세로줄 하나 = 토큰 하나. 즉 '마지막 벡터와 각 토큰 벡터의 내적'이에요. 내적이 크면 다음 토큰일 가능성이 커요. SmolLM2는 임베딩 표를 LM head로 그대로 다시 써요."]},
+  {h:"2. 확률과 고르기",p:["logits에 softmax를 하면 확률이 돼요. 1등을 고르면 greedy, 확률대로 뽑으면 sampling이에요. temperature, top-k, top-p는 1단계 샘플링 강의에서 자세히 봐요.","고른 토큰을 문장 뒤에 붙이고, 다시 모델에 넣어요. 이걸 반복하면 문장이 만들어져요."]},
+  {h:"3. 학습: 틀린 만큼 고치기",p:["학습할 때는 정답(실제 다음 토큰)을 알아요. 정답 토큰의 확률이 낮으면 <b>loss</b>(벌점)가 커요. loss = −log(정답 확률).","<b>역전파</b>로 '각 가중치를 어느 쪽으로 얼마나 바꾸면 loss가 줄까'를 계산하고, 아주 조금씩 고쳐요. 이걸 수조 개 토큰에 대해 반복하면 Wq, Wk, Wv, MLP 표가 지금 같은 역할을 하게 돼요.","추론(inference)은 이 과정이 <b>끝난 뒤</b> 고정된 가중치로 계산만 하는 거예요. 우리가 만들 추론 엔진은 이 '계산만'을 최대한 빨리 하는 프로그램이에요."]}
+ ],
+ widget:"training",widgetTitle:"가중치는 어떻게 만들어지나",widgetCap:"무작위 숫자에서 시작해 정답 확률이 올라가도록 조금씩 고쳐지는 과정을 봐요.",
+ summary:["마지막 벡터 × LM head = 모든 토큰의 점수(logits)","softmax → 확률 → greedy 또는 sampling","loss = −log(정답 확률), 역전파로 가중치 수정","추론 = 학습이 끝난 고정 가중치로 계산만 하기"],
+ quiz:[
+  {q:"logits의 개수는?",o:["576개","레이어 수만큼","어휘 크기(49,152)만큼","토큰 수만큼"],a:2,e:"어휘의 모든 토큰마다 점수 하나씩이에요."},
+  {q:"정답 토큰의 확률이 100%면 loss는?",o:["0","1","무한대","−1"],a:0,e:"−log(1) = 0. 완벽하게 맞히면 벌점이 없어요."},
+  {q:"추론할 때 가중치는?",o:["매 토큰마다 조금씩 바뀐다","고정되어 읽기만 한다","사용자마다 다시 학습한다","KV 캐시에 저장된다"],a:1,e:"추론은 학습이 끝난 가중치로 계산만 해요. 바뀌는 건 KV 캐시뿐이에요."}
+ ]};
+
+})(window.LESSONS,window.WIDGETS);
+
+</script>
+<script>
 const E={mac:["mac","맥"],free:["free","무료 GPU"],paid:["paid","유료 GPU"],big:["big","H100+"],web:["","웹"]};
 const PHASES=[
+{id:"p0",depth:"L8 · 기초",title:"기초 다지기: 모델 안의 부품 하나씩",
+ intro:"수학을 몰라도 괜찮아요. 토큰, 벡터, 내적, softmax, 어텐션, RoPE, RMSNorm, 잔차 연결, MLP, logits를 하나씩 그림으로 만져 보며 익혀요. 각 강의는 10분 안팎이에요.",
+ goal:"\"q·k로 점수 → softmax로 비율 → v를 섞는다\", \"RoPE는 위치만큼 돌린다\", \"RMSNorm은 크기를 맞춘다\"를 내 말로 설명할 수 있으면 1단계로 가요.",
+ items:[
+ {id:"p0-1",t:"토큰과 임베딩: 글자가 숫자가 되기까지",env:["web"],why:"모델 안의 모든 계산은 토큰 벡터에서 시작해요. 이게 뭔지 알아야 나머지가 이해돼요.",do:"강의를 읽고 의미 지도에서 단어를 눌러 보세요.",res:[["Jay Alammar, The Illustrated Word2vec","https://jalammar.github.io/illustrated-word2vec/"]]},
+ {id:"p0-2",t:"벡터와 내적: '얼마나 같은 방향인가'",env:["web"],why:"어텐션 점수 q·k가 바로 내적이에요.",do:"화살표를 끌어서 내적이 양수, 0, 음수가 되는 경우를 직접 만들어 보세요.",res:[["3Blue1Brown, Dot products (영상)","https://www.youtube.com/watch?v=LyGKycYT2v0"]]},
+ {id:"p0-3",t:"행렬곱과 가중치: 내적을 여러 번",env:["web"],why:"LLM 계산의 대부분이 행렬곱이고, GPU 최적화도 대부분 행렬곱 이야기예요.",do:"행렬곱을 한 칸씩 따라가 보세요.",res:[["3Blue1Brown, Matrix multiplication (영상)","https://www.youtube.com/watch?v=XkY2DOUCWMU"]]},
+ {id:"p0-4",t:"softmax: 점수를 비율로",env:["web"],why:"어텐션과 다음 토큰 고르기 모두 softmax를 써요.",do:"점수와 온도를 바꿔 보며 비율이 어떻게 변하는지 보세요.",res:[["3Blue1Brown, Transformers (영상, softmax 부분)","https://www.youtube.com/watch?v=wjZofJX0v4M"]]},
+ {id:"p0-5",t:"어텐션: q, k, v로 정보 가져오기",env:["web"],why:"LLM의 심장이에요. KV 캐시, FlashAttention, PagedAttention이 모두 이걸 빠르게 하려는 기술이에요.",do:"도서관 비유 애니메이션과 숫자 예시를 짝지어 따라가 보세요.",res:[["3Blue1Brown, Attention in transformers (영상)","https://www.youtube.com/watch?v=eMlx5fFNoYc"],["Jay Alammar, The Illustrated Transformer","https://jalammar.github.io/illustrated-transformer/"]]},
+ {id:"p0-6",t:"멀티헤드와 GQA",env:["web"],why:"헤드 수와 kv 헤드 수가 KV 캐시 크기를 정해요.",do:"헤드별 비율을 비교하고 MHA, GQA, MQA를 바꿔 보세요.",res:[["GQA 논문","https://arxiv.org/abs/2305.13245"]]},
+ {id:"p0-7",t:"RoPE: 위치만큼 돌리기",env:["web"],why:"어텐션은 순서를 몰라요. RoPE가 순서를 알려 줘요. 엔진이 위치 번호를 틀리면 출력이 망가져요.",do:"위치 슬라이더를 움직이고 '둘 다 밀기'로 점수가 그대로인지 확인해요.",res:[["EleutherAI, Rotary Embeddings","https://blog.eleuther.ai/rotary-embeddings/"]]},
+ {id:"p0-8",t:"RMSNorm: 크기 맞추기",env:["web"],why:"층마다 들어가는 정규화예요. 커널 퓨전의 단골 대상이에요.",do:"입력 배율을 바꿔도 출력이 그대로인지 확인해 보세요.",res:[["RMSNorm 논문","https://arxiv.org/abs/1910.07467"]]},
+ {id:"p0-9",t:"잔차 연결과 블록 조립",env:["web"],why:"블록 구조를 알아야 레이어가 왜 순서대로 돌아가는지, 무엇을 합칠 수 있는지 보여요.",do:"메모장 애니메이션을 따라가 보세요.",res:[["Anthropic, A Mathematical Framework for Transformer Circuits","https://transformer-circuits.pub/2021/framework/index.html"]]},
+ {id:"p0-10",t:"MLP와 활성화 함수",env:["web"],why:"파라미터의 절반 이상이 MLP예요. 메모리 읽기량 대부분이 여기서 나와요.",do:"활성화 함수 그래프를 움직이고 MLP 애니메이션을 보세요.",res:[["3Blue1Brown, How might LLMs store facts (영상)","https://www.youtube.com/watch?v=9-Jl0dxWQs8"]]},
+ {id:"p0-11",t:"logits, 다음 토큰, 그리고 학습",env:["web"],why:"추론은 학습이 끝난 가중치로 계산만 하는 것. 그 경계를 정확히 알아야 해요.",do:"학습 애니메이션으로 가중치가 만들어지는 과정을 보세요.",res:[["Karpathy, Let's build GPT (영상)","https://www.youtube.com/watch?v=kCc8FmEb1nY"]]}
+ ]},
 {id:"p1",depth:"L7 · 개념",title:"큰 그림: LLM 추론은 어떻게 돌아가나",
  intro:"코드를 짜기 전에 추론이 왜 느린지, 무엇이 병목인지 감을 잡는 단계예요. 이후 모든 최적화가 여기서 나오는 질문 하나에 대한 답이에요. 지금 이 순간 GPU는 메모리를 기다리나, 연산을 기다리나?",
  goal:"작은 모델로 KV 캐시가 있을 때와 없을 때 생성 속도 차이를 직접 측정하고, 그 차이를 roofline으로 설명할 수 있으면 다음 단계로 가요.",
@@ -1304,7 +1868,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 function renderRoad(){
   $("#phases").innerHTML=PHASES.map((p,pi)=>`
   <section class="phase" id="${p.id}">
-    <div class="phase-head"><span class="depth">${esc(p.depth)}</span><h2>${pi+1}단계 · ${esc(p.title)}</h2><span class="pct" data-pct="${p.id}"></span></div>
+    <div class="phase-head"><span class="depth">${esc(p.depth)}</span><h2>${pi}단계 · ${esc(p.title)}</h2><span class="pct" data-pct="${p.id}"></span></div>
     <p class="phase-intro">${esc(p.intro)}</p>
     <p class="goal"><b>졸업 조건</b> ${esc(p.goal)}</p>
     ${p.items.map(it=>`
@@ -1320,7 +1884,7 @@ function renderRoad(){
       </div>
     </details>`).join("")}
   </section>`).join("");
-  $("#gauge").innerHTML=PHASES.map((p,pi)=>`<li><a href="#roadmap" data-jump="${p.id}" id="g-${p.id}"><span class="d">${esc(p.depth)}</span>${pi+1}. ${esc(p.title)}</a></li>`).join("");
+  $("#gauge").innerHTML=PHASES.map((p,pi)=>`<li><a href="#roadmap" data-jump="${p.id}" id="g-${p.id}"><span class="d">${esc(p.depth)}</span>${pi}. ${esc(p.title)}</a></li>`).join("");
   document.querySelectorAll(".ck").forEach(ck=>{
     ck.addEventListener("click",e=>e.stopPropagation());
     ck.addEventListener("change",()=>{const id=ck.id.slice(3);if(ck.checked)done[id]=Date.now();else delete done[id];applyDone();save();});
@@ -1480,7 +2044,7 @@ function renderLesson(id){
   const prev=withL[li-1],next=withL[li+1];
   const labCmd=L.lab?`cd ~/workspace/inference-deepdive/labs && ./start.sh`:"";
   root.innerHTML=`
-   <div class="crumb"><a href="#roadmap">로드맵</a><span>›</span><span>${pi+1}단계 · ${esc(p.title)}</span><span>›</span><span>${idx+1} / ${p.items.length}</span></div>
+   <div class="crumb"><a href="#roadmap">로드맵</a><span>›</span><span>${pi}단계 · ${esc(p.title)}</span><span>›</span><span>${idx+1} / ${p.items.length}</span></div>
    <h1>${esc(it.t)}</h1>
    <p class="lead">${L.lead}</p>
    ${L.sections.map(s=>`<section class="lsec"><h2>${esc(s.h)}</h2>${s.p.map(x=>`<p>${x}</p>`).join("")}</section>`).join("")}
