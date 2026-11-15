@@ -798,7 +798,7 @@ L["p1-1"]={
   {q:"SmolLM2-135M은 Q 헤드 9개, KV 헤드 3개예요. KV 헤드도 9개인 모델과 비교하면 KV 캐시 크기는?",o:["같아요","1/3이에요","3배예요","1/9이에요"],a:1,e:"KV 캐시는 KV 헤드 수에 비례해요. 9개 대신 3개만 저장하니까 1/3이에요."},
   {q:"다음 토큰을 고를 때 쓰는 logits는 어느 위치의 것인가요?",o:["첫 번째 토큰","모든 위치의 평균","마지막 토큰","무작위 위치"],a:2,e:"마지막 위치는 앞의 모든 토큰을 본 상태라서, 그 위치의 출력이 다음 토큰 예측이에요."}
  ],
- lab:{file:"01_transformer_from_scratch.ipynb",desc:"코드가 낯설면 0단계 12번(00번 실습)을 먼저 하세요. HuggingFace에서 SmolLM2-135M 가중치를 받아, RMSNorm, RoPE, 어텐션, MLP를 직접 짜서 조립해요. 마지막에 내 모델과 HuggingFace 모델의 출력이 같은지 자동으로 채점해요."}
+ lab:{file:"01_transformer_from_scratch.ipynb",desc:"model, tok, W 같은 코드가 낯설면 0단계 12번(00번 실습)을 먼저 하세요. HuggingFace에서 SmolLM2-135M 가중치를 받아, RMSNorm, RoPE, 어텐션, MLP를 직접 짜서 조립해요. 마지막에 내 모델과 HuggingFace 모델의 출력이 같은지 자동으로 채점해요."}
 };
 
 L["p1-2"]={
@@ -1712,6 +1712,9 @@ W.b_act=(root)=>{
 /* ---------- 12. 실습 도구: 모양 놀이터 ---------- */
 W.b_shape=(root)=>{
  const O=[
+  ["model.model.layers[0].self_attn.q_proj.weight","HF 모델","[576, 576]","HF 모델 안 블록 0의 Wq 텐서. [출력, 입력] 모양이에요."],
+  ['W["layers"][0]["wk"]',"extract_weights(model)","[192, 576]","common.py가 같은 텐서에 짧은 이름을 붙인 것. 값은 HF 것과 완전히 같아요."],
+  ["model(ids[None]).logits","ids: [T]","[1, T, 49152]","HF 모델은 문장 묶음을 받아서 [1, T]로 넣어요. 결과는 문장 × 위치 × 어휘 점수."],
   ["x[0]","x: [5, 576]","[576]","0번 줄 하나만 꺼내요. 차원이 하나 줄어요."],
   ["x[-2:]","x: [5, 576]","[2, 576]","뒤에서 2줄. 슬라이스(:)를 쓰면 차원이 안 줄어요."],
   ["x[..., :32]","x: [5, 9, 64]","[5, 9, 32]","'...' = 앞 차원은 전부. 마지막 차원의 앞 32칸만."],
@@ -1905,8 +1908,9 @@ L["p0-11"]={
  ]};
 
 L["p0-12"]={
- lead:"1단계 실습 코드를 보면 <code>tok</code>, <code>x[..., :half]</code>, <code>x @ w.T</code>, <code>.view</code>, <code>einsum</code> 같은 낯선 글자가 가득해요. 이건 수학이 아니라 <b>파이썬과 PyTorch의 도구 이름</b>일 뿐이에요. 이 강의와 <b>00번 실습</b>에서 실습에 나오는 도구를 전부 한 번씩 써 봐요.",
+ lead:"1단계 실습 코드의 <code>model</code>, <code>tok</code>, <code>W</code>, <code>cfg</code>, <code>run_check</code>, <code>x @ w.T</code>, <code>einsum</code>는 세 라이브러리에서 와요. <b>PyTorch</b>(텐서 계산), <b>HuggingFace transformers</b>(모델과 토크나이저), 그리고 이 코스 전용 <b>common.py</b>(가중치 정리와 채점). 각각이 무엇을 주는지 지도를 그리고, <b>00번 실습</b>에서 직접 써 봐요.",
  sections:[
+  {h:"0. 라이브러리 지도",p:["<b>transformers</b>: <code>AutoModelForCausalLM.from_pretrained</code>로 모델을, <code>AutoTokenizer</code>로 토크나이저(<code>tok</code>)를 내려받아요. <code>model</code>은 부품 트리라서 <code>model.model.layers[0].self_attn.q_proj.weight</code>처럼 점으로 따라 들어가 가중치를 꺼내요. <code>model(ids[None]).logits</code>로 실행해요.","<b>common.py</b>: <code>load_model</code>(위 두 개를 한 번에), <code>model_cfg</code>(레이어 수, 헤드 수 같은 설정 딕셔너리 <code>cfg</code>), <code>extract_weights</code>(가중치 텐서를 <code>W[\"layers\"][i][\"wq\"]</code> 같은 짧은 이름으로), <code>run_check</code>·<code>check_close</code>(채점).","<b>PyTorch</b>: 그 가중치 텐서로 직접 계산하는 모든 도구. 아래 1~4가 PyTorch 이야기예요."]},
   {h:"1. 텐서와 모양(shape)",p:["PyTorch의 기본 단위는 <b>텐서</b>, 숫자를 여러 차원으로 담은 상자예요. [5, 576]은 '토큰 5개, 각 576칸'이에요.","실습 에러의 대부분은 <b>모양이 안 맞아서</b> 나요. 막히면 무조건 <code>print(x.shape)</code>부터 해요. 아래 놀이터에서 코드마다 모양이 어떻게 바뀌는지 눌러 보세요."]},
   {h:"2. 실습에 나오는 도구 지도",p:["<b>꺼내기·자르기</b>: <code>x[0]</code>, <code>x[-2:]</code>, <code>x[:, 1]</code>, <code>x[..., :half]</code>, <code>x[:, None, :]</code>","<b>계산</b>: <code>+ - * /</code>(같은 자리끼리), <code>x.pow(2)</code>, <code>.mean(dim=-1, keepdim=True)</code>, <code>torch.rsqrt</code>, <code>x @ w.T</code>(행렬곱)","<b>모양 바꾸기</b>: <code>.view</code>, <code>.reshape</code>, <code>torch.cat</code>, <code>.repeat_interleave</code>","<b>어텐션용</b>: <code>torch.einsum</code>, <code>torch.arange</code>, <code>.masked_fill</code>, <code>float(\"-inf\")</code>, <code>.softmax(dim=-1)</code>","<b>기타</b>: <code>F.silu</code>, <code>.argmax()</code>, <code>.to(device)</code>, <code>torch.no_grad()</code>, 토크나이저 <code>tok</code>"]},
   {h:"3. 가중치는 왜 .T를 붙여 곱하나",p:["HuggingFace 가중치는 [출력, 입력] 모양으로 저장돼요. Wk는 [192, 576]. 토큰 x는 [T, 576]이니까 뒤집어서([576, 192]) 곱해야 576끼리 맞물려요. 그래서 실습 코드가 전부 <code>x @ w.T</code>예요.","<code>.T</code>를 빼먹으면 <code>mat1 and mat2 shapes cannot be multiplied</code> 에러가 나요."]},
@@ -1915,11 +1919,12 @@ L["p0-12"]={
  widget:"b_shape",widgetTitle:"모양 놀이터",widgetCap:"코드를 눌러 보세요. 입력 모양이 어떤 결과 모양이 되는지, 왜 그런지 보여 줘요.",
  summary:["텐서 = 숫자 상자, 모양(shape)이 제일 중요","막히면 print(x.shape)부터","가중치는 [출력, 입력]이라 x @ w.T로 곱함","view/reshape는 순서는 그대로 모양만 바꿈","einsum은 같은 글자끼리 짝, 결과에 없는 글자는 더해서 없앰"],
  quiz:[
+  {q:"W[\"layers\"][0][\"wq\"]는 HF 모델의 어느 것과 같은 텐서인가요?",o:["model.lm_head.weight","model.model.layers[0].self_attn.q_proj.weight","model.model.embed_tokens.weight","tok.input_ids"],a:1,e:"extract_weights가 HF의 긴 이름에 짧은 이름을 붙였을 뿐, 같은 텐서예요."},
   {q:"x가 [5, 576], w가 [192, 576]일 때 x @ w.T의 모양은?",o:["[5, 576]","[5, 192]","[192, 5]","에러"],a:1,e:"w.T는 [576, 192]. 576끼리 맞물려 사라지고 [5, 192]예요."},
   {q:"x [5, 576]에 x.mean(dim=-1, keepdim=True)를 하면?",o:["[5]","[5, 1]","[1, 576]","[576]"],a:1,e:"마지막 차원을 평균으로 줄이고 keepdim이라 크기 1로 남아요."},
   {q:"'mat1 and mat2 shapes cannot be multiplied' 에러가 나면 먼저 의심할 것은?",o:["인터넷 연결","행렬곱에서 .T를 빼먹었는지","파이썬 버전","GPU 고장"],a:1,e:"가중치를 뒤집지 않고 곱하면 크기가 안 맞물려요."}
  ],
- lab:{file:"00_python_pytorch_basics.ipynb",desc:"텐서 만들기부터 자르기, 행렬곱, view, repeat_interleave, einsum, masked_fill, 토크나이저까지 1단계 실습에 나오는 도구를 예시로 보고, 작은 연습 문제 12개를 자동 채점으로 풀어요. 30분~1시간이면 끝나요."}
+ lab:{file:"00_python_pytorch_basics.ipynb",desc:"HF 모델 트리에서 가중치 꺼내기, 토크나이저와 model(...) 실행, common.py의 W와 cfg, 그리고 자르기·행렬곱·view·repeat_interleave·einsum·masked_fill까지. 1단계 실습에 나오는 도구를 예시로 보고 연습 문제 15개를 자동 채점으로 풀어요. 30분~1시간이면 끝나요."}
 };
 
 })(window.LESSONS,window.WIDGETS);
@@ -2995,7 +3000,7 @@ const PHASES=[
  {id:"p0-9",t:"잔차 연결과 블록 조립",env:["web"],why:"블록 구조를 알아야 레이어가 왜 순서대로 돌아가는지, 무엇을 합칠 수 있는지 보여요.",do:"메모장 애니메이션을 따라가 보세요.",res:[["Anthropic, A Mathematical Framework for Transformer Circuits","https://transformer-circuits.pub/2021/framework/index.html"]]},
  {id:"p0-10",t:"MLP와 활성화 함수",env:["web"],why:"파라미터의 절반 이상이 MLP예요. 메모리 읽기량 대부분이 여기서 나와요.",do:"활성화 함수 그래프를 움직이고 MLP 애니메이션을 보세요.",res:[["3Blue1Brown, How might LLMs store facts (영상)","https://www.youtube.com/watch?v=9-Jl0dxWQs8"]]},
  {id:"p0-11",t:"logits, 다음 토큰, 그리고 학습",env:["web"],why:"추론은 학습이 끝난 가중치로 계산만 하는 것. 그 경계를 정확히 알아야 해요.",do:"학습 애니메이션으로 가중치가 만들어지는 과정을 보세요.",res:[["Karpathy, Let's build GPT (영상)","https://www.youtube.com/watch?v=kCc8FmEb1nY"]]},
- {id:"p0-12",t:"실습 준비: 파이썬과 PyTorch 도구",env:["mac"],why:"실습 코드의 tok, x[..., :half], x @ w.T, view, einsum 같은 도구를 모르면 문제를 읽을 수조차 없어요. 1단계 실습 전에 꼭 하세요.",do:"강의의 모양 놀이터를 눌러 보고, 00번 실습 노트북의 연습 문제 12개를 풀어요.",res:[["PyTorch 공식 튜토리얼: Tensors","https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html"],["einsum 설명 (Tim Rocktäschel)","https://rockt.github.io/2018/04/30/einsum"]]},
+ {id:"p0-12",t:"실습 준비: PyTorch·HuggingFace·common.py 지도",env:["mac"],why:"실습 코드의 model, tok, W, cfg, x @ w.T, einsum이 어느 라이브러리의 무엇인지 모르면 문제를 읽을 수조차 없어요. 1단계 실습 전에 꼭 하세요.",do:"강의의 라이브러리 지도와 모양 놀이터를 보고, 00번 실습 노트북의 연습 문제 15개를 풀어요.",res:[["PyTorch 공식 튜토리얼: Tensors","https://pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html"],["einsum 설명 (Tim Rocktäschel)","https://rockt.github.io/2018/04/30/einsum"],["HuggingFace Transformers 빠른 시작","https://huggingface.co/docs/transformers/quicktour"]]},
  ]},
 {id:"p1",depth:"L7 · 개념",title:"큰 그림: LLM 추론은 어떻게 돌아가나",
  intro:"코드를 짜기 전에 추론이 왜 느린지, 무엇이 병목인지 감을 잡는 단계예요. 이후 모든 최적화가 여기서 나오는 질문 하나에 대한 답이에요. 지금 이 순간 GPU는 메모리를 기다리나, 연산을 기다리나?",

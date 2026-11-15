@@ -2,8 +2,21 @@
 import torch
 
 
-def squares(xs):
-    return [x * x for x in xs]
+def hf_k_weight(model, i):
+    return model.model.layers[i].self_attn.k_proj.weight
+
+
+def hf_next_token(model, ids):
+    with torch.no_grad():
+        return model(ids[None]).logits[0, -1].argmax()
+
+
+def get_wk(W, i):
+    return W["layers"][i]["wk"]
+
+
+def kv_dim(cfg):
+    return cfg["nkv"] * cfg["hd"]
 
 
 def make_grid():
