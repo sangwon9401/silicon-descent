@@ -1,0 +1,1528 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Silicon Descent</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&family=Chakra+Petch:wght@600;700&display=swap">
+<style>
+/* Layout: a "descent" from serving layer down to silicon — left depth gauge (phases), right content column. */
+:root{
+  --bg:#f3f5f4; --surface:#ffffff; --sunk:#e8ecea; --line:#d3d9d6;
+  --fg:#16201c; --fg2:#47544e; --muted:#76837d;
+  --accent:#b4531f;      /* copper interconnect */
+  --accent-soft:#f6e3d6;
+  --die:#1f4d45;         /* die-shot teal */
+  --die-soft:#dcebe7;
+  --ok:#2c7a4b; --ok-soft:#dcefe3;
+  --f-display:"Chakra Petch","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1513; --surface:#161e1b; --sunk:#1c2622; --line:#2b3833;
+  --fg:#e6ece9; --fg2:#b2beb8; --muted:#83918a;
+  --accent:#e58a52; --accent-soft:#3a2518;
+  --die:#7fc2b4; --die-soft:#1b302b;
+  --ok:#6cc792; --ok-soft:#173022; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1513; --surface:#161e1b; --sunk:#1c2622; --line:#2b3833;
+  --fg:#e6ece9; --fg2:#b2beb8; --muted:#83918a;
+  --accent:#e58a52; --accent-soft:#3a2518;
+  --die:#7fc2b4; --die-soft:#1b302b;
+  --ok:#6cc792; --ok-soft:#173022; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:.02em;display:flex;align-items:center;gap:10px}
+.brand .chip{width:22px;height:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.brand .chip i{background:var(--die);border-radius:1px}
+.brand .chip i:nth-child(5){background:var(--accent)}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs a{font-size:14px;text-decoration:none;color:var(--fg2);padding:6px 12px;border-radius:6px}
+nav.tabs a[aria-current="page"]{background:var(--die-soft);color:var(--die);font-weight:700}
+
+/* hero */
+.hero{padding-block:40px 28px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px;align-items:end}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--f-display);font-size:clamp(30px,5vw,48px);line-height:1.1;margin:8px 0 14px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--die)}
+.hero p{color:var(--fg2);max-width:62ch;margin:0}
+.progress-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.progress-card .big{font-family:var(--f-display);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.progress-card .sub{color:var(--muted);font-size:13px}
+.bar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden;margin:12px 0 10px}
+.bar>span{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
+.next{font-size:13px;color:var(--fg2);border-top:1px dashed var(--line);padding-top:10px;margin-top:6px}
+.next b{color:var(--fg)}
+.sync{font-family:var(--f-mono);font-size:11px;color:var(--muted);margin-top:6px}
+
+/* roadmap layout */
+.road{display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px;padding-bottom:64px}
+.gauge{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);align-self:start}
+.gauge ol{list-style:none;margin:0;padding:0;border-left:2px solid var(--line)}
+.gauge li a{display:block;padding:8px 0 8px 16px;margin-left:-2px;border-left:2px solid transparent;text-decoration:none;color:var(--fg2);font-size:13px;line-height:1.35}
+.gauge li a .d{display:block;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.gauge li a.done{border-left-color:var(--ok)}
+.gauge li a.cur{border-left-color:var(--accent);color:var(--fg);font-weight:700}
+.gauge .legend{margin-top:18px;font-size:12px;color:var(--muted);display:grid;gap:6px}
+
+.phase{margin-bottom:48px;scroll-margin-top:90px}
+.phase-head{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;border-bottom:2px solid var(--fg);padding-bottom:10px;margin-bottom:6px}
+.phase-head .depth{font-family:var(--f-mono);font-size:12px;color:var(--accent);min-width:70px}
+.phase-head h2{font-family:var(--f-display);font-size:24px;margin:0;flex:1;min-width:0;text-wrap:balance}
+.phase-head .pct{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.phase-intro{color:var(--fg2);margin:10px 0 14px;max-width:70ch}
+.goal{background:var(--die-soft);color:var(--fg);border-radius:8px;padding:10px 14px;font-size:14px;margin:0 0 14px}
+.goal b{color:var(--die)}
+
+.item{border-bottom:1px solid var(--line)}
+.item summary{list-style:none;display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;cursor:pointer}
+.item summary::-webkit-details-marker{display:none}
+.ck{appearance:none;width:20px;height:20px;border:2px solid var(--muted);border-radius:4px;margin:0;cursor:pointer;display:grid;place-items:center;background:var(--surface)}
+.ck:checked{background:var(--ok);border-color:var(--ok)}
+.ck:checked::after{content:"";width:6px;height:11px;border:solid var(--surface);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.item .t{font-weight:500;min-width:0}
+.item.is-done .t{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.envs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.env{font-family:var(--f-mono);font-size:10.5px;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--fg2);white-space:nowrap}
+.env.mac{border-color:var(--die);color:var(--die)}
+.env.free{border-color:var(--ok);color:var(--ok)}
+.env.paid{border-color:var(--accent);color:var(--accent)}
+.env.big{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.body{padding:0 0 18px 40px;display:grid;gap:10px}
+.body p{margin:0;max-width:70ch;color:var(--fg2)}
+.body .why b,.body .do b{color:var(--fg)}
+.do{background:var(--sunk);border-radius:6px;padding:10px 12px}
+.res{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+.res li{font-size:14px}
+.res li::before{content:"↗ ";color:var(--muted);font-family:var(--f-mono)}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:300px minmax(0,1fr);gap:28px;padding-block:8px 64px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:14px;align-self:start}
+.panel label{display:grid;gap:4px;font-size:13px;color:var(--fg2)}
+.panel select,.panel input[type=number]{font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%}
+.panel input[type=range]{width:100%;accent-color:var(--accent)}
+.rv{font-family:var(--f-mono);color:var(--fg);font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font-family:var(--f-display);font-size:24px;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .v small{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:400}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:999px;margin-top:4px}
+.pill.mem{background:var(--die-soft);color:var(--die)}
+.pill.cmp{background:var(--accent-soft);color:var(--accent)}
+.pill.oom{background:var(--accent);color:var(--surface)}
+.membar{height:14px;border-radius:4px;background:var(--sunk);display:flex;overflow:hidden;gap:2px;margin:6px 0}
+.membar span{height:100%}
+.chart-box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;position:relative}
+.chart-box h3{margin:0 0 2px;font-size:15px}
+.chart-box .cap{font-size:13px;color:var(--muted);margin:0 0 8px}
+.chart-scroll{overflow-x:auto}
+#tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-family:var(--f-mono);font-size:12px;padding:6px 8px;border-radius:6px;white-space:nowrap}
+.formula{font-family:var(--f-mono);font-size:12.5px;color:var(--fg2);background:var(--sunk);border-radius:8px;padding:12px 14px;margin-top:16px;overflow-x:auto;white-space:pre;line-height:1.7}
+.note{font-size:13px;color:var(--muted);margin-top:10px;max-width:75ch}
+
+/* glossary */
+.gl-top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 18px}
+.gl-top input{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);flex:1;min-width:0;max-width:420px}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding-bottom:64px}
+.term{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px}
+.term h4{margin:0;font-family:var(--f-mono);font-size:14px;color:var(--die)}
+.term .ko{font-size:12px;color:var(--muted)}
+.term p{margin:6px 0 0;font-size:14px;color:var(--fg2)}
+.term .lv{float:right;font-family:var(--f-mono);font-size:10.5px;color:var(--accent)}
+
+
+/* lesson */
+.lesson{max-width:860px;padding-block:28px 72px}
+.crumb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.crumb a{color:var(--fg2)}
+.lesson h1{font-size:clamp(26px,4.2vw,38px);margin:10px 0 14px}
+.lead{font-size:17px;color:var(--fg);max-width:68ch;margin:0 0 28px;line-height:1.75}
+.lsec{margin:0 0 26px}
+.lsec h2{font-family:var(--f-body);font-size:19px;margin:0 0 8px}
+.lsec p{margin:0 0 10px;max-width:68ch;color:var(--fg2);line-height:1.8}
+.lsec p b,.lead b{color:var(--fg)}
+.wbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;margin:8px 0 30px}
+.wbox>h3{margin:0;font-size:16px}
+.wbox>.cap{margin:2px 0 14px;color:var(--muted);font-size:13px}
+.sumbox{background:var(--die-soft);border-radius:10px;padding:16px 18px;margin:0 0 30px}
+.sumbox h3{margin:0 0 8px;font-size:15px;color:var(--die)}
+.sumbox ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.quiz{display:grid;gap:16px;margin:0 0 30px}
+.quiz h3,.labbox h3{margin:0;font-size:17px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.qz .qq{font-weight:500;margin:0 0 10px}
+.qz .opts{display:grid;gap:6px}
+.qz button.op{font:inherit;text-align:left;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer}
+.qz button.op:hover{border-color:var(--fg2)}
+.qz button.op.right{border-color:var(--ok);background:var(--ok-soft)}
+.qz button.op.wrong{border-color:var(--accent);background:var(--accent-soft)}
+.qz .exp{margin:10px 0 0;font-size:14px;color:var(--fg2)}
+.labbox{border:2px solid var(--die);border-radius:12px;padding:18px;margin:0 0 30px;display:grid;gap:10px}
+.labbox p{margin:0;color:var(--fg2);max-width:68ch}
+.cmd{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+.cmd code{flex:1;min-width:0;display:block;padding:10px 12px;font-size:13px;background:var(--sunk);border-radius:8px;white-space:pre-wrap}
+.lnav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
+.btn{font:inherit;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--die);background:var(--die);color:var(--surface);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.ghost{background:transparent;color:var(--die)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.done{background:var(--ok);border-color:var(--ok)}
+.golesson{justify-self:start}
+.soon{font-size:13px;color:var(--muted)}
+.res-h{font-size:12px;color:var(--muted);margin-top:4px}
+.mini{font-size:13px;color:var(--muted);margin:8px 0 0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;padding:6px 12px;background:var(--surface);color:var(--fg2);border:0;border-right:1px solid var(--line);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--die);color:var(--surface)}
+.kv-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.kv-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px}
+.kv-stats>div{background:var(--sunk);border-radius:8px;padding:8px 10px;display:grid}
+.kv-stats>div span{font-size:12px;color:var(--muted)}
+.kv-stats>div b{font-family:var(--f-display);font-size:20px;font-variant-numeric:tabular-nums}
+.kv-stats .mini,.kv-stats .kv-legend{grid-column:1/-1}
+.kv-stats>div.kv-legend{display:flex;background:none;padding:0}
+/* transformer widget */
+.tw{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:18px}
+.tw-stack{display:grid;gap:4px;align-content:start}
+.tw-b{font:inherit;font-size:13.5px;text-align:left;padding:7px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.tw-b.sub{margin-left:18px;border-left:3px solid var(--die)}
+.tw-b.grp{font-weight:700;background:var(--die-soft)}
+.tw-b.on{border-color:var(--accent);background:var(--accent-soft);color:var(--fg)}
+.tw-info{display:grid;gap:12px;align-content:start;min-width:0}
+.tw-t{display:grid;gap:4px;font-size:13px;color:var(--fg2)}
+.tw-t input{accent-color:var(--accent)}
+.tw-card{background:var(--sunk);border-radius:8px;padding:12px 14px;min-width:0}
+.tw-card h4{margin:0 0 6px;font-size:15px}
+.tw-card p{margin:0 0 8px;font-size:14px;color:var(--fg2)}
+.tw-card .kv{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:13px;margin:4px 0}
+.tw-card .kv span{color:var(--muted);min-width:90px}
+.stackbar{display:flex;height:12px;border-radius:4px;overflow:hidden;gap:2px;margin:6px 0}
+.stackbar.big{height:18px}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--fg2)}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.tw-pie .k{font-size:12px;color:var(--muted)}
+/* kv widget */
+.kv-grid{display:grid;gap:6px;overflow-x:auto;padding-bottom:4px}
+.kv-row{display:flex;gap:4px;align-items:center;opacity:.55}
+.kv-row.cur{opacity:1}
+.kv-l{font-family:var(--f-mono);font-size:11px;color:var(--muted);min-width:68px}
+.kv-t{font-size:13px;padding:3px 8px;border-radius:5px;white-space:nowrap;border:1px solid var(--line)}
+.kv-t.c{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.kv-t.m{background:var(--die-soft);border-color:var(--die-soft);color:var(--die)}
+.kv-t.nxt{border-style:dashed;color:var(--fg2)}
+.kv-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--fg2)}
+.kv-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+.kv-legend i.c{background:var(--accent)} .kv-legend i.m{background:var(--die-soft);border:1px solid var(--die)} .kv-legend i.n{border:1px dashed var(--fg2)}
+.rf-s{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--fg2);flex:1;min-width:200px}
+.rf-s input{flex:1;accent-color:var(--accent)}
+/* sampling */
+.sp-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}
+.sp-ctl label{display:grid;gap:2px;font-size:13px;color:var(--fg2)}
+.sp-ctl input{accent-color:var(--accent)}
+.sp-bars{display:grid;gap:5px;margin-bottom:12px}
+.sp-row,.sp-head{display:grid;grid-template-columns:70px 40px minmax(0,1fr) 54px;gap:8px;align-items:center;font-size:13px}
+.sp-head{order:-1;font-size:11px;color:var(--muted)}
+.sp-z{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.sp-track{position:relative;height:14px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.sp-track>span:first-child{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:3px;z-index:1;transition:width .2s}
+.sp-ghost{position:absolute;inset:0 auto 0 0;background:var(--line)}
+.sp-v{font-family:var(--f-mono);font-size:12px;text-align:right}
+.sp-row.cut .sp-n,.sp-row.cut .sp-v{color:var(--muted)}
+.sp-chips{display:flex;flex-wrap:wrap;gap:4px}
+.sp-chips span{font-size:12.5px;padding:2px 8px;border-radius:999px;background:var(--sunk)}
+/* gpu map */
+.gm{display:grid;gap:12px}
+.gm-mem{display:grid;gap:6px;justify-items:center}
+.gm-lv{font:inherit;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:10px 12px;border-radius:6px;border:1px solid var(--line);background:var(--die-soft);color:var(--fg);cursor:pointer;min-width:200px;max-width:100%}
+.gm-lv span{font-size:12px;color:var(--fg2);font-family:var(--f-mono)}
+.gm-lv.on{border-color:var(--accent);background:var(--accent-soft)}
+.gm-sm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px}
+.gm-sm .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+.gm-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px}
+.gm-grid span{aspect-ratio:1;background:var(--die);border-radius:1px;opacity:.75}
+.gm-grid span.hot{background:var(--accent);opacity:1}
+.gm-q{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.gm-part{display:grid;gap:3px;padding:6px;border:1px dashed var(--line);border-radius:6px}
+.gm-part button,.gm-smem{font:inherit;font-size:11.5px;padding:4px 6px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);cursor:pointer;text-align:left}
+.gm-part button[data-p="tc"]{background:var(--accent-soft)}
+.gm-smem{margin-top:6px;width:100%;background:var(--die-soft)}
+.gm-part button.on,.gm-smem.on{border-color:var(--accent);outline:1px solid var(--accent)}
+.gm-thr{display:grid;gap:6px}
+.gm-box{font:inherit;display:flex;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer;text-align:left}
+.gm-box span{font-size:12px;color:var(--muted)}
+.gm-box.on{border-color:var(--accent);background:var(--accent-soft)}
+.pa{display:grid;gap:12px}
+.pa .formula{margin-top:0}
+.pa-q{background:var(--sunk);border-radius:8px;padding:12px 14px;display:grid;gap:8px}
+.pa-q label{font-size:14px}
+.pa-row{display:flex;gap:8px;flex-wrap:wrap}
+.pa-row input{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);flex:1;min-width:0;max-width:220px}
+@media (max-width:700px){.tw,.gm-sm{grid-template-columns:1fr}.tw-b.sub{margin-left:10px}}
+
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-block:28px 20px}
+  .road{grid-template-columns:1fr}
+  .gauge{display:none}
+  .calc{grid-template-columns:1fr}
+  .body{padding-left:0}
+  .item summary{grid-template-columns:28px minmax(0,1fr)}
+  .envs{grid-column:2;justify-content:flex-start}
+}
+/* QKV animations */
+.an-ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.an-cnt{font-family:var(--f-mono);font-size:12px;color:var(--muted);margin-left:auto}
+.an-cap{background:var(--sunk);border-radius:10px;padding:12px 14px;margin-bottom:14px;min-height:96px}
+.an-c{margin:0;font-size:16px;line-height:1.6;color:var(--fg)}
+.an-d{margin:6px 0 0;font-size:13.5px;color:var(--fg2);line-height:1.7}
+.an-ph{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.06em;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.an-ph.pf{background:var(--accent-soft);color:var(--accent)} .an-ph.dc{background:var(--die-soft);color:var(--die)} .an-ph.sm{background:var(--fg);color:var(--surface)}
+.an{--q:var(--accent);--k:var(--die);--v:#6b4fa0;--v-soft:#ebe4f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .an{--v:#b49be0;--v-soft:#2a2238}}
+:root[data-theme="dark"] .an{--v:#b49be0;--v-soft:#2a2238}
+.an .tq{color:var(--q)} .an .tk{color:var(--k)} .an .tv{color:var(--v)}
+/* inside one layer */
+.qi-stage{display:grid;gap:16px}
+.qs{opacity:0;transition:opacity .45s,transform .45s;transform:translateY(4px)}
+.qs.on{opacity:1;transform:none}
+.qs.hl{animation:anPulse 1.1s ease-out}
+@keyframes anPulse{0%{filter:brightness(1.25)}100%{filter:none}}
+.qi-tbl{display:grid;gap:6px;overflow-x:auto}
+.qi-h,.qi-r{display:grid;grid-template-columns:52px auto 22px auto auto auto;gap:10px;align-items:center;justify-content:start}
+.qi-h span{font-family:var(--f-mono);font-size:12px;font-weight:700;text-align:center;color:var(--muted)}
+.qi-r{padding:4px 6px;border-radius:8px;transition:background .3s}
+.qi-r.focus{background:var(--accent-soft)}
+.qi-r .tok{font-weight:700;font-size:14px}
+.qi-r .ar{color:var(--muted);text-align:center}
+.vec{display:inline-flex;gap:2px;border-radius:6px;padding:2px;border:1.5px solid transparent;transition:border-color .3s,box-shadow .3s}
+.vec i{font-style:normal;font-family:var(--f-mono);font-size:11px;width:34px;text-align:center;padding:4px 0;border-radius:3px;background:color-mix(in srgb,var(--c) var(--a),transparent);color:var(--fg)}
+.vec.vx{--c:var(--fg2)} .vec.vq{--c:var(--q)} .vec.vk{--c:var(--k)} .vec.vv{--c:var(--v)} .vec.vo{--c:var(--v)}
+.vec i.ng{background:color-mix(in srgb,var(--c) calc(var(--a) * .45),var(--sunk));outline:1px dashed color-mix(in srgb,var(--c) 50%,transparent);outline-offset:-1px}
+.vec.lit{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent)}
+.qi-att,.qi-mask{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto}
+.qi-att h4,.qi-mask h4{margin:0 0 8px;font-size:14px}
+.qi-a{display:grid;grid-template-columns:minmax(190px,auto) minmax(150px,1fr) auto;gap:12px;align-items:center;padding:4px 0;font-size:13.5px}
+.qi-f{font-family:var(--f-mono);font-size:12.5px}
+.qi-p{display:flex;gap:8px;align-items:center}
+.pbar{flex:1;height:10px;background:var(--sunk);border-radius:5px;overflow:hidden;min-width:80px}
+.pbar span{display:block;height:100%;background:var(--q);border-radius:5px}
+.qi-o{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px}
+.qi-up{font-size:12px;color:var(--accent);font-weight:700}
+.qi-mask table{border-collapse:collapse;font-size:13px}
+.qi-mask th,.qi-mask td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+.qi-mask thead th{font-size:12px;color:var(--muted);font-weight:500}
+.qi-mask td{font-family:var(--f-mono);background:var(--accent-soft)}
+.qi-mask td.msk{background:repeating-linear-gradient(45deg,var(--sunk) 0 6px,var(--surface) 6px 12px);color:var(--muted);font-family:var(--f-body);font-size:12px}
+/* layer flow */
+.an svg text{font-family:var(--f-body)}
+.an .lbl{font-size:12px;fill:var(--muted)}
+.qf .emb rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5;transition:all .4s}
+.qf .emb text{font-size:14px;font-weight:700;fill:var(--fg)}
+.qf .emb.new rect{stroke:var(--accent);stroke-width:2.5;fill:var(--accent-soft)}
+.qf .cell{fill:var(--surface);stroke:var(--line);stroke-width:1;transition:all .4s}
+.qf .cell.cur{stroke:var(--fg2);stroke-width:2}
+.chp rect{transition:fill .5s,stroke .5s,opacity .5s;stroke-width:1.5}
+.chp text{font-family:var(--f-mono)!important;font-size:13px;font-weight:700;transition:fill .5s}
+.chp.off rect{fill:none;stroke:var(--line);stroke-dasharray:3 3;opacity:.6} .chp.off text{fill:var(--line)}
+.chp.q.new rect{fill:var(--q);stroke:var(--q)} .chp.k.new rect{fill:var(--k);stroke:var(--k)} .chp.v.new rect{fill:var(--v);stroke:var(--v)}
+.chp.new text{fill:var(--surface)}
+.chp.k.cache rect{fill:var(--die-soft);stroke:var(--k)} .chp.k.cache text{fill:var(--k)}
+.chp.v.cache rect{fill:var(--v-soft);stroke:var(--v)} .chp.v.cache text{fill:var(--v)}
+.chp.gone rect{fill:none;stroke:var(--muted);stroke-dasharray:3 3;opacity:.55} .chp.gone text{fill:var(--muted);opacity:.5}
+.chp.pop{animation:anPop .7s ease-out;transform-box:fill-box;transform-origin:center}
+.chp.drop{animation:anDrop .8s ease-out;transform-box:fill-box;transform-origin:center}
+@keyframes anPop{0%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes anDrop{0%{opacity:1;transform:translateY(0)}40%{opacity:.4;transform:translateY(6px)}100%{opacity:1;transform:none}}
+.an .arc{fill:none;stroke:var(--q);stroke-width:1.5;opacity:.35;stroke-dasharray:200;stroke-dashoffset:200;animation:anDraw .9s ease-out forwards}
+.an .arc.strong{stroke-width:2.5;opacity:1}
+.an .arcdot{fill:var(--q);opacity:.35} .an .arcdot.strong{opacity:1}
+@keyframes anDraw{to{stroke-dashoffset:0}}
+.an .up{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:60;stroke-dashoffset:60;animation:anDraw .7s ease-out forwards}
+.an .uph{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;animation:anFade .3s .5s forwards}
+@keyframes anFade{to{opacity:1}}
+.an .nxt rect{fill:var(--accent);opacity:0;animation:anFade .4s .4s forwards} .an .nxt text{fill:var(--surface);font-weight:700;font-size:15px;opacity:0;animation:anFade .4s .5s forwards}
+.qf .kv-legend{margin-top:12px}
+.kv-legend i.lq{background:var(--q)} .kv-legend i.lk{background:var(--k)} .kv-legend i.lv{background:var(--v)}
+.kv-legend i.lc{background:var(--die-soft);border:1px solid var(--k)} .kv-legend i.lg{border:1px dashed var(--muted)}
+.an-intro{max-width:68ch;color:var(--fg2);margin:0 0 20px}
+.an-ph[hidden]{display:none}
+.an .tokb rect{fill:var(--surface);stroke:var(--fg2);stroke-width:1.5}.an .tokb text{font-weight:700;font-size:14px;fill:var(--fg)}
+.an .tokb.new rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+/* mlp */
+.ml-stage{display:grid;gap:8px}
+.ml-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.ml-l{min-width:150px;font-size:13px;font-weight:700;color:var(--fg)}
+.ml-l small{display:block;font-weight:400;color:var(--muted);font-family:var(--f-mono);font-size:11px}
+.ml-stage .vec i{width:30px;font-size:10.5px}
+.ml-stage.show-dim .vec i.dim{opacity:.22}
+.silu{width:200px;height:120px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.silu .ax{stroke:var(--line)} .silu .cv{fill:none;stroke:var(--q);stroke-width:2} .silu .pt{fill:var(--q);stroke:var(--surface);stroke-width:1}
+.silu text{font-size:9px;fill:var(--muted)}
+.ml-par{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:6px;margin-top:6px}
+.ml-par>div{display:flex;gap:10px;align-items:center;font-size:14px}
+.ml-par>div b{min-width:40px}
+.ml-box{border:1.5px solid var(--die);color:var(--die);border-radius:6px;padding:2px 12px;font-weight:700;font-size:13px}
+/* training */
+.tr-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;align-items:start}
+@media (max-width:640px){.tr-stage{grid-template-columns:1fr}}
+.tr-w svg{width:100%;max-width:320px;display:block}
+.tr-w rect{transition:fill .8s}
+.tr-w rect.chg{stroke:var(--fg);stroke-width:1.5}
+.tr-file{margin-top:10px;display:inline-block;border:2px solid var(--die);border-radius:8px;padding:8px 14px;font-family:var(--f-mono);font-size:13px;color:var(--die);font-weight:600}
+.tr-q{font-size:17px;font-weight:700;margin:0 0 10px}
+.tr-bars{display:grid;gap:8px}
+.tr-b{display:grid;grid-template-columns:70px 1fr 44px;gap:10px;align-items:center;font-size:14px}
+.tr-b .pbar span{transition:width .8s;background:var(--muted)} .tr-b.ans .pbar span{background:var(--q)} .tr-b.ans>span:first-child{font-weight:700}
+.tr-loss{font-family:var(--f-mono);font-size:14px;margin:12px 0 0;color:var(--fg2)}
+/* moe */
+.mo .bigm rect{fill:var(--die-soft);stroke:var(--die);stroke-width:2}.mo .bigm text{fill:var(--die);font-weight:700;font-size:15px}
+.mo .e rect{fill:var(--die-soft);stroke:var(--die);stroke-width:1.5;transition:all .4s}.mo .e text{fill:var(--die);font-size:12px;font-weight:600}
+.mo .e.on rect{fill:var(--die);stroke:var(--die)}.mo .e.on text{fill:var(--surface)}
+.mo .e.off{opacity:.3}
+.mo .rb{fill:var(--line);transition:all .4s}.mo .rb.on{fill:var(--q)}
+.mo .rv{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.an .up.dn{stroke:var(--fg2)}
+.an .up{fill:none}
+.mo .arc,.mo .up{stroke-dasharray:800;stroke-dashoffset:800}
+/* attention variants */
+.av-ana{background:var(--accent-soft);border-radius:8px;padding:10px 14px;margin:0 0 12px;font-size:14.5px;color:var(--fg)}
+.av .cl{transition:all .4s;stroke-width:1.2}
+.av .cl.st{fill:var(--die-soft);stroke:var(--k)} .av .cl.rd{fill:var(--q);stroke:var(--q)} .av .cl.sk{fill:none;stroke:var(--line);stroke-dasharray:3 3}
+.av .cl.cmp{stroke-width:2} .av .cl.dimc{opacity:.45}
+.av .rl{stroke:var(--q);stroke-width:1.2;opacity:.6;stroke-dasharray:400;stroke-dashoffset:400;animation:anDraw 1s ease-out forwards}
+.av .rl.dim{opacity:.3}
+.av .mg{stroke:var(--k);stroke-width:1;opacity:.5;fill:none}
+.av .mc{fill:var(--v)} .av .mc.chg{stroke:var(--fg);stroke-width:1.5}
+.av .ly rect{fill:var(--surface);stroke:var(--line)} .av .ly text{font-size:11px;fill:var(--muted);font-weight:600}
+.av .ly.att rect{stroke:var(--q)} .av .ly.att text{fill:var(--q)}
+.av .ly.cur rect{fill:var(--fg);stroke:var(--fg)} .av .ly.cur text{fill:var(--surface)}
+.av .idx rect{fill:var(--accent-soft);stroke:var(--q);stroke-width:1.5}.av .idx text{font-size:13px;font-weight:700;fill:var(--q)}
+.av .sc{font-family:var(--f-mono);font-size:11px;fill:var(--fg2)}
+.av .ib{fill:var(--q);opacity:.8}
+.an .big{font-family:var(--f-display);font-size:28px;font-weight:700;fill:var(--fg)}
+.an svg .tq{fill:var(--q)}
+.av-tbl{margin-top:16px;overflow-x:auto}
+.av-tbl table{border-collapse:collapse;font-size:13.5px;width:100%;min-width:480px}
+.av-tbl th,.av-tbl td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left}
+.av-tbl thead th{font-size:12px;color:var(--muted);font-weight:500}
+.anav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
+.anav a{font-size:13px;text-decoration:none;color:var(--die);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px}
+@media (prefers-reduced-motion:reduce){.an *{animation:none!important}.an .arc,.an .up,.an .rl{stroke-dashoffset:0}.an .uph,.an .nxt rect,.an .nxt text{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="top"><div class="wrap">
+  <div class="brand"><span class="chip" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Silicon Descent</div>
+  <nav class="tabs" aria-label="섹션">
+    <a href="#roadmap" data-view="roadmap">로드맵</a>
+    <a href="#anim" data-view="anim">애니메이션</a>
+    <a href="#calc" data-view="calc">추론 계산기</a>
+    <a href="#glossary" data-view="glossary">용어집</a>
+  </nav>
+</div></header>
+
+<main>
+<!-- ========== ROADMAP ========== -->
+<section id="view-roadmap" class="view">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">API 서버 → 스케줄러 → 커널 → SASS</div>
+      <h1>인퍼런스 서버에서 시작해 <em>실리콘</em>까지 내려가기</h1>
+      <p>vLLM과 SGLang이 하는 일을 직접 만들어 보고, Triton과 CUDA 커널을 거쳐 Hopper와 Blackwell 하드웨어까지 파고드는 7단계 코스예요. 위에서 아래로 내려갈수록 GPU에 가까워져요. 항목을 열고 <b>강의 보기</b>를 누르면 한국어 설명, 직접 만져 보는 그림, 퀴즈, 맥에서 돌리는 실습 노트북이 나와요.</p>
+    </div>
+    <div class="progress-card" aria-live="polite">
+      <div class="sub">전체 진도</div>
+      <div class="big" id="ovPct">0%</div>
+      <div class="bar"><span id="ovBar" style="width:0%"></span></div>
+      <div class="sub" id="ovCount">0 / 0 항목</div>
+      <div class="next" id="nextUp"></div>
+      <div class="sync" id="syncState">진도 저장 연결 중…</div>
+    </div>
+  </div>
+  <div class="wrap road">
+    <aside class="gauge" aria-label="단계 목록">
+      <ol id="gauge"></ol>
+      <div class="legend">
+        <span><span class="env mac">맥</span> 맥미니 CPU/MPS로 충분</span>
+        <span><span class="env free">무료 GPU</span> Colab·Kaggle T4</span>
+        <span><span class="env paid">유료 GPU</span> L4·A100 몇 시간</span>
+        <span><span class="env big">H100+</span> 대여 필요 (RunPod 등)</span>
+        <span><span class="env">웹</span> 브라우저만 있으면 됨</span>
+      </div>
+    </aside>
+    <div id="phases"></div>
+  </div>
+</section>
+
+<!-- ========== LESSON ========== -->
+<section id="view-lesson" class="view" hidden><div class="wrap lesson" id="lessonRoot"></div></section>
+
+<!-- ========== CALCULATOR ========== -->
+<section id="view-anim" class="view" hidden><div class="wrap lesson">
+  <div class="eyebrow">그림으로 보는 LLM 내부</div>
+  <h1>토큰 하나가 모델을 지나가는 길</h1>
+  <p class="an-intro">순서대로 보면 이야기가 이어져요. ①② 어텐션과 레이어, ③ MLP, ④ 그 가중치들이 어디서 왔는지, ⑤⑥ 최신 모델들이 이 구조를 어떻게 바꿨는지. 각 장면에서 <b>다음 ▶</b>을 한 번씩 눌러 가며 보세요.</p>
+  <nav class="anav" aria-label="장면 바로가기"><a href="#anim" data-jump="animInside">1. 레이어 하나 안에서 q, k, v</a><a href="#anim" data-jump="animFlow">2. 레이어 여러 층에서 prefill과 decode</a><a href="#anim" data-jump="animMlp">3. MLP 안에서 일어나는 일</a><a href="#anim" data-jump="animTrain">4. 가중치는 어떻게 만들어지나</a><a href="#anim" data-jump="animMoe">5. MoE: 전문가 중 몇 개만 골라 쓰기</a><a href="#anim" data-jump="animVar">6. 최신 모델의 어텐션 비교</a></nav>
+  <div class="wbox" id="box-animInside"><h3>장면 1 · 레이어 하나 안에서 q, k, v</h3><p class="cap">토큰 3개, 숫자 4개짜리 벡터로 줄인 예시예요.</p><div id="animInside"></div></div><div class="wbox" id="box-animFlow"><h3>장면 2 · 레이어 여러 층에서 prefill과 decode</h3><p class="cap">"나는 학교에" → "갔다" → "." 를 만드는 과정이에요. 레이어는 3개만 그렸어요.</p><div id="animFlow"></div></div><div class="wbox" id="box-animMlp"><h3>장면 3 · MLP 안에서 일어나는 일</h3><p class="cap">어텐션 다음에 오는 MLP가 무엇을 하는지 한 단계씩 봐요.</p><div id="animMlp"></div></div><div class="wbox" id="box-animTrain"><h3>장면 4 · 가중치는 어떻게 만들어지나 (학습)</h3><p class="cap">Wq, Wk, Wv, MLP 표 같은 가중치가 어디서 왔는지 봐요.</p><div id="animTrain"></div></div><div class="wbox" id="box-animMoe"><h3>장면 5 · MoE: 전문가 중 몇 개만 골라 쓰기</h3><p class="cap">DeepSeek, GLM, 큰 Qwen 모델이 MLP를 바꾼 방식이에요.</p><div id="animMoe"></div></div><div class="wbox" id="box-animVar"><h3>장면 6 · 최신 모델의 어텐션 비교</h3><p class="cap">기본 / Qwen3.8 / DeepSeek V4 / GLM-5가 KV 캐시 문제를 푸는 방식을 비유로 봐요. 버튼으로 모델을 바꿔 보세요.</p><div id="animVar"></div></div>
+  <div class="lnav"><a class="btn ghost" href="#lesson-p1-1">강의: Transformer 구조 →</a><a class="btn ghost" href="#lesson-p1-2">강의: Prefill, Decode, KV 캐시 →</a></div>
+</div></section>
+<section id="view-calc" class="view" hidden>
+  <div class="wrap hero" style="grid-template-columns:1fr">
+    <div>
+      <div class="eyebrow">Roofline · 1단계 실습용</div>
+      <h1>디코드는 왜 <em>메모리</em>에 묶이나</h1>
+      <p>디코드 한 스텝마다 GPU는 모델 가중치 전체와 KV 캐시를 HBM에서 한 번씩 읽어요. 배치가 작으면 연산기는 놀고 메모리 대역폭이 속도를 정해요. 배치를 키우면 같은 가중치 읽기로 더 많은 토큰을 뽑지만, KV 캐시가 메모리를 채우면서 한계에 부딪혀요. 값을 바꿔 가며 확인해 보세요.</p>
+    </div>
+  </div>
+  <div class="wrap calc">
+    <div class="panel">
+      <label for="cGpu">GPU<select id="cGpu"></select></label>
+      <label for="cModel">모델<select id="cModel"></select></label>
+      <label for="cWd">가중치 정밀도
+        <select id="cWd"><option value="2">BF16 / FP16 (2바이트)</option><option value="1">FP8 / INT8 (1바이트)</option><option value="0.5">INT4 (0.5바이트)</option></select></label>
+      <label for="cKd">KV 캐시 정밀도
+        <select id="cKd"><option value="2">FP16 (2바이트)</option><option value="1">FP8 (1바이트)</option></select></label>
+      <label for="cBatch">동시 요청 수 (배치) <span class="rv" id="vBatch"></span>
+        <input type="range" id="cBatch" min="0" max="10" step="1" value="3"></label>
+      <label for="cCtx">요청당 컨텍스트 길이 (토큰) <span class="rv" id="vCtx"></span>
+        <input type="range" id="cCtx" min="7" max="17" step="1" value="11"></label>
+    </div>
+    <div style="min-width:0">
+      <div class="stats" id="stats"></div>
+      <div class="chart-box">
+        <h3>배치 크기에 따른 전체 디코드 처리량 (이론 상한)</h3>
+        <p class="cap">가로축 배치(로그), 세로축 초당 토큰. 점선 구간은 GPU 메모리를 넘어서 실제로는 못 돌려요.</p>
+        <div class="chart-scroll"><svg id="chart" viewBox="0 0 640 280" width="100%" style="min-width:420px;display:block" role="img" aria-label="배치 크기별 처리량 차트"></svg></div>
+        <div id="tip" hidden></div>
+      </div>
+      <div class="formula" id="formula"></div>
+      <p class="note">GPU 스펙은 공개된 dense FP16/BF16 텐서 성능과 메모리 대역폭의 대략값이고, 맥미니 수치는 특히 거칠어요. 실제 엔진은 커널 효율, 어텐션 연산, 스케줄링 오버헤드 때문에 보통 이 상한의 50~80% 정도가 나와요. 내 엔진을 만든 뒤 측정값을 이 상한과 비교해 보는 게 이 계산기의 진짜 용도예요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GLOSSARY ========== -->
+<section id="view-glossary" class="view" hidden>
+  <div class="wrap hero" style="grid-template-columns:1fr">
+    <div>
+      <div class="eyebrow">용어집</div>
+      <h1>자주 나오는 말, <em>한 줄</em>로</h1>
+      <p>논문이나 코드에서 막히는 단어를 찾아보세요. 오른쪽 위 숫자는 처음 등장하는 단계예요.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="gl-top"><input id="glq" type="search" placeholder="검색: warp, KV, TMA, 병합…" aria-label="용어 검색"><span class="sub" id="glCount" style="color:var(--muted);font-size:13px"></span></div>
+    <div class="gl" id="gl"></div>
+  </div>
+</section>
+</main>
+
+<script>
+/* 한국어 강의 데이터 + 인터랙티브 위젯. index.html이 window.LESSONS, window.WIDGETS를 읽어요. */
+(function(){
+const L={};
+
+L["p1-1"]={
+ lead:"LLM은 결국 <b>지금까지 나온 토큰을 보고 다음 토큰의 점수를 매기는 함수</b>예요. 문장을 만들 때는 이 함수를 계속 반복해서 불러요. 이 강의에서는 그 함수 안을 위에서 아래로 한 칸씩 열어 봐요. 예시 모델은 맥에서도 가볍게 돌아가는 SmolLM2-135M이에요.",
+ sections:[
+  {h:"1. 글자를 숫자로: 토큰",p:["모델은 글자를 직접 읽지 못해요. 토크나이저가 문장을 조각(토큰)으로 자르고, 조각마다 번호(ID)를 붙여요. SmolLM2는 49,152개의 조각을 알고 있어요.","예를 들어 <code>The capital of France</code>는 대략 <code>[504, 3575, 282, 4649]</code> 같은 숫자 4개가 돼요. 이 숫자 줄이 모델의 입력이에요."]},
+  {h:"2. 번호를 벡터로: 임베딩",p:["번호 하나만으로는 의미를 담을 수 없어서, 번호마다 숫자 576개짜리 벡터를 표에서 꺼내 와요. 이 표가 임베딩이고, 크기는 49,152 × 576이에요. 토큰 T개가 들어오면 [T, 576] 모양의 행렬이 돼요."]},
+  {h:"3. 디코더 블록을 30번 반복",p:["모델의 몸통은 똑같은 구조의 블록 30개를 쌓은 거예요. 블록 하나는 두 부분으로 되어 있어요.","<b>어텐션</b>은 다른 토큰들을 둘러보며 필요한 정보를 가져오는 부분이에요. <b>MLP</b>는 가져온 정보를 토큰 혼자서 곱씹는 부분이에요.","각 부분 앞에는 <b>RMSNorm</b>이 있어서 숫자 크기를 고르게 맞춰 주고, 뒤에서는 입력을 출력에 그대로 더해요(<b>잔차 연결</b>). 덕분에 30층을 지나도 정보가 사라지지 않아요."]},
+  {h:"4. 어텐션을 쉽게",p:["토큰마다 세 가지 벡터를 만들어요. <b>Q(질문)</b>는 내가 찾는 것, <b>K(라벨)</b>는 내가 가진 정보의 이름표, <b>V(내용)</b>는 실제 정보예요.","내 Q와 다른 토큰들의 K를 곱해서 점수를 내고, softmax로 비율을 만든 다음, 그 비율대로 V를 섞어요. 이때 <b>미래 토큰은 못 보게 가려요</b>(causal mask). 문장을 왼쪽부터 쓰는 모델이니까요.","SmolLM2는 Q 헤드가 9개인데 K, V 헤드는 3개뿐이에요. Q 헤드 3개가 K, V 하나를 같이 쓰는 이 방식을 <b>GQA</b>라고 해요. 나중에 배울 KV 캐시가 1/3로 줄어드는 효과가 있어요.","토큰 순서 정보는 <b>RoPE</b>로 넣어요. 위치마다 Q와 K를 조금씩 회전시켜서, 두 토큰이 얼마나 떨어져 있는지가 점수에 반영되게 해요."]},
+  {h:"5. 마지막: 다음 토큰 점수",p:["30층을 지난 결과를 한 번 더 정규화하고, <b>LM head</b>로 49,152개 토큰 각각의 점수(logits)를 만들어요. 다음 토큰은 <b>마지막 위치</b>의 점수로 정해요. SmolLM2는 LM head가 임베딩 표를 그대로 재사용해요."]},
+  {h:"인퍼런스 관점에서 기억할 것",p:["이 과정의 거의 모든 계산이 <b>행렬곱</b>이에요. 그래서 GPU 최적화는 결국 행렬곱과 어텐션을 얼마나 빨리 하느냐의 싸움이에요. 아래 그림에서 블록을 눌러 보면 파라미터 대부분이 MLP와 임베딩에 있다는 것도 보여요."]}
+ ],
+ extra:[{widget:"qkvinside",title:"레이어 하나 안에서 q, k, v",cap:"다음 ▶을 눌러 가며 보세요. x에서 q, k, v가 생기고, 점수 → 비율 → v 섞기 순서로 진행돼요."},{widget:"mlpflow",title:"MLP 안에서 일어나는 일",cap:"어텐션 다음의 MLP가 넓히기 → 켜기/끄기 → 줄이기 → 더하기 순서로 무엇을 하는지 봐요."},{widget:"training",title:"가중치는 어떻게 만들어지나",cap:"Wq, Wk, Wv, MLP 표가 학습으로 만들어지는 과정을 봐요."}],
+ widget:"transformer",
+ widgetTitle:"SmolLM2-135M 안을 열어 보기",
+ widgetCap:"블록을 누르면 하는 일, 텐서 모양, 파라미터 수가 나와요. 슬라이더로 입력 토큰 수 T를 바꿔 보세요.",
+ summary:["LLM = 토큰을 보고 다음 토큰 점수를 매기는 함수를 반복 호출","블록 = RMSNorm → 어텐션 → 더하기 → RMSNorm → MLP → 더하기","어텐션은 Q·K 점수로 V를 섞고, 미래는 가린다","GQA는 K, V 헤드를 줄여 메모리를 아낀다","계산 대부분은 행렬곱"],
+ quiz:[
+  {q:"디코더 블록에서 다른 토큰의 정보를 가져오는 부분은 어디인가요?",o:["MLP","어텐션","RMSNorm","LM head"],a:1,e:"어텐션이 Q와 K로 점수를 매겨 다른 토큰의 V를 섞어 와요. MLP는 토큰마다 따로 계산해요."},
+  {q:"SmolLM2-135M은 Q 헤드 9개, KV 헤드 3개예요. KV 헤드도 9개인 모델과 비교하면 KV 캐시 크기는?",o:["같아요","1/3이에요","3배예요","1/9이에요"],a:1,e:"KV 캐시는 KV 헤드 수에 비례해요. 9개 대신 3개만 저장하니까 1/3이에요."},
+  {q:"다음 토큰을 고를 때 쓰는 logits는 어느 위치의 것인가요?",o:["첫 번째 토큰","모든 위치의 평균","마지막 토큰","무작위 위치"],a:2,e:"마지막 위치는 앞의 모든 토큰을 본 상태라서, 그 위치의 출력이 다음 토큰 예측이에요."}
+ ],
+ lab:{file:"01_transformer_from_scratch.ipynb",desc:"HuggingFace에서 SmolLM2-135M 가중치를 받아, RMSNorm, RoPE, 어텐션, MLP를 직접 짜서 조립해요. 마지막에 내 모델과 HuggingFace 모델의 출력이 같은지 자동으로 채점해요."}
+};
+
+L["p1-2"]={
+ lead:"문장을 만들 때 모델은 토큰을 <b>하나씩</b> 뽑아요. 그런데 그냥 하면 매번 앞 문장 전체를 처음부터 다시 계산해요. KV 캐시는 이 낭비를 없애는 장치이고, 이 장치 때문에 추론이 <b>prefill</b>과 <b>decode</b>라는 성격이 전혀 다른 두 단계로 나뉘어요.",
+ sections:[
+  {h:"1. 문장은 이렇게 만들어져요",p:["프롬프트를 넣으면 모델이 다음 토큰 하나를 고르고, 그 토큰을 뒤에 붙여서 다시 넣고, 또 하나를 고르고… 를 반복해요. 100토큰짜리 답을 쓰려면 모델을 100번 불러요."]},
+  {h:"2. 낭비를 찾아보면",p:["어텐션은 이전 토큰들의 K와 V가 필요해요. 그런데 앞 토큰의 K, V는 <b>뒤에 토큰이 붙어도 바뀌지 않아요</b>. 미래를 못 보게 가렸기 때문에, 앞 토큰은 뒤 토큰의 영향을 받지 않거든요.","그러니까 한 번 계산한 K, V를 저장해 두고, 새 토큰의 K, V만 계산해서 뒤에 붙이면 돼요. 이게 <b>KV 캐시</b>예요. 아래 그림에서 캐시를 켜고 끄며 계산량을 비교해 보세요."]},
+  {h:"3. 그래서 두 단계로 나뉘어요",p:["<b>Prefill</b>: 프롬프트 토큰 전부를 한 번에 계산해서 KV 캐시를 채워요. 토큰이 많으니 행렬곱이 크고, GPU 연산기가 바빠요.","<b>Decode</b>: 그다음부터는 토큰을 하나씩 계산해요. 토큰 하나에 드는 연산은 적은데, 매 스텝 <b>모델 가중치 전체와 KV 캐시를 메모리에서 읽어야</b> 해요. 그래서 연산기는 놀고 메모리를 기다리는 시간이 길어요.","서빙 지표로 보면, 사용자가 첫 글자를 보기까지의 시간(<b>TTFT</b>)은 주로 prefill이, 글자가 써지는 속도(<b>TPOT</b>)는 decode 한 스텝이 정해요."]},
+  {h:"4. 대가: 메모리",p:["KV 캐시는 공짜가 아니에요. 토큰 하나당 크기는 <code>2 × 레이어 수 × KV 헤드 수 × head_dim × 바이트</code>예요. 앞의 2는 K와 V 두 개라서예요.","Llama-3.1-8B를 FP16으로 쓰면 2 × 32 × 8 × 128 × 2 = 131,072바이트, 토큰당 <b>128KB</b>예요. 4,096토큰짜리 대화 하나에 512MB, 이런 대화 30개면 15GB예요. 모델 가중치(16GB)만큼 커져요.","그래서 같은 GPU에 요청을 몇 개나 올릴 수 있느냐는 KV 캐시를 얼마나 알뜰하게 쓰느냐에 달려 있어요. 2단계의 PagedAttention이 바로 이 문제를 푸는 기술이에요."]}
+ ],
+ extra:[{widget:"qkvflow",title:"레이어 여러 층에서 prefill과 decode",cap:"다음 ▶을 눌러 가며 보세요. 어떤 칸이 새로 계산되고, k, v는 쌓이고, q는 버려지는지 볼 수 있어요."}],
+ widget:"kvcache",
+ widgetTitle:"KV 캐시가 있을 때와 없을 때",
+ widgetCap:"'다음 스텝'을 눌러 한 토큰씩 생성해 보세요. 색칠된 칸이 그 스텝에서 새로 계산한 토큰이에요.",
+ summary:["앞 토큰의 K, V는 바뀌지 않으니 저장해서 재사용 = KV 캐시","Prefill: 프롬프트를 한 번에, 연산이 많아 compute-bound","Decode: 토큰 하나씩, 가중치를 매번 읽어 memory-bound","KV 캐시 = 2 × 레이어 × KV헤드 × head_dim × 바이트 (토큰당)","TTFT는 prefill, TPOT는 decode가 정한다"],
+ quiz:[
+  {q:"KV 캐시를 쓸 수 있는 이유는 무엇인가요?",o:["앞 토큰의 K, V는 뒤에 토큰이 붙어도 바뀌지 않아서","GPU 메모리가 충분히 커서","양자화를 했기 때문에","softmax의 성질 때문에"],a:0,e:"causal mask 때문에 앞 토큰은 뒤 토큰을 보지 않아요. 그래서 앞 토큰의 K, V는 한 번 계산하면 끝까지 그대로예요."},
+  {q:"decode가 보통 메모리에 묶이는(memory-bound) 이유는?",o:["토큰당 연산이 너무 많아서","토큰당 연산은 적은데 가중치 전체를 매 스텝 메모리에서 읽어서","토크나이저가 느려서","네트워크가 느려서"],a:1,e:"토큰 하나를 위해 수 GB의 가중치를 읽어야 해요. 읽는 시간이 계산 시간보다 훨씬 길어요."},
+  {q:"Llama-3.1-8B(FP16)의 KV 캐시는 토큰당 128KB예요. 2,048토큰 요청 10개의 KV 캐시는 모두 얼마인가요?",o:["약 2.5GB","약 256MB","약 25GB","약 1.3GB"],a:0,e:"128KB × 2,048 = 256MB, 이게 10개면 약 2.5GB예요."}
+ ],
+ lab:{file:"02_kv_cache.ipynb",desc:"1번 실습에서 만든 모델에 KV 캐시를 붙이고, 캐시가 있을 때와 없을 때 토큰당 시간을 맥에서 직접 재서 그래프로 그려요. 두 방식의 출력이 똑같은지도 채점해요."}
+};
+
+L["p1-3"]={
+ lead:"GPU가 느린 이유는 둘 중 하나예요. <b>계산할 게 너무 많거나(compute-bound)</b>, <b>계산할 재료를 가져오는 게 느리거나(memory-bound)</b>. 이 강의는 지금 어느 쪽인지 숫자 하나로 판단하는 법을 알려 줘요. 앞으로 배울 최적화는 전부 이 판단에서 출발해요.",
+ sections:[
+  {h:"1. 주방으로 생각해 보기",p:["GPU를 주방이라고 해 볼게요. <b>요리사(연산 유닛)</b>는 엄청나게 빠른데, 재료는 멀리 있는 <b>창고(HBM 메모리)</b>에 있고 <b>운반 통로(메모리 대역폭)</b>는 상대적으로 좁아요.","H100은 1초에 약 989조 번 계산(FP16)할 수 있지만, 창고에서 가져올 수 있는 재료는 1초에 3.35TB예요. 나누면 <b>재료 1바이트를 가져올 때마다 약 295번은 계산해야</b> 요리사가 쉬지 않아요. 그보다 적게 계산하면 요리사는 재료를 기다리며 놀아요."]},
+  {h:"2. 연산 강도: 판단 기준이 되는 숫자",p:["어떤 작업이 <b>옮긴 바이트당 몇 번 계산하는지</b>를 연산 강도(arithmetic intensity)라고 해요. 이 값이 GPU의 꺾임점(H100은 약 295)보다 낮으면 memory-bound, 높으면 compute-bound예요."]},
+  {h:"3. 예시로 감 잡기",p:["<b>벡터 덧셈</b> c = a + b: 원소 하나에 덧셈 1번, 그런데 읽기 2개와 쓰기 1개로 6바이트(FP16)를 옮겨요. 강도 약 0.17이에요. 극단적인 메모리 병목이에요.","<b>디코드 (배치 1)</b>: 가중치 행렬 하나에 파라미터가 N개면 2N바이트를 읽고, 토큰 하나에 2N번 계산해요. 강도 약 1이에요. 역시 메모리 병목이에요.","<b>디코드 (배치 b)</b>: 같은 가중치를 한 번 읽어서 토큰 b개를 계산하면 강도가 약 b로 올라가요. <b>배칭이 디코드 성능의 핵심인 이유</b>예요.","<b>Prefill 2,048토큰</b>: 강도가 수천이에요. 연산 병목이에요."]},
+  {h:"4. Roofline 그래프 읽기",p:["아래 그래프의 가로축이 연산 강도, 세로축이 낼 수 있는 최대 성능이에요. 왼쪽 비탈은 메모리가 막고 있는 구간, 오른쪽 평평한 지붕은 연산기가 꽉 찬 구간이에요. 둘이 만나는 곳이 꺾임점이에요."]},
+  {h:"앞으로 배울 것과의 연결",p:["Continuous batching은 배치를 키워 점을 오른쪽으로 옮기고, 양자화는 읽는 바이트를 줄여 같은 효과를 내고, 커널 퓨전은 메모리 왕복 자체를 없애요. 모두 이 그래프 위에서 점을 옮기는 일이에요. 상단의 '추론 계산기' 탭에서 실제 모델로도 확인해 보세요."]}
+ ],
+ widget:"roofline",
+ widgetTitle:"Roofline: 내 연산은 어디에 있나",
+ widgetCap:"GPU를 바꾸고 디코드 배치 슬라이더를 움직여 보세요. 점이 비탈에 있으면 메모리 병목, 지붕에 닿으면 연산 병목이에요.",
+ summary:["연산 강도 = 계산 횟수 ÷ 옮긴 바이트","꺾임점 = GPU 연산 성능 ÷ 메모리 대역폭 (H100 약 295, T4 약 200)","강도가 꺾임점보다 낮으면 memory-bound","디코드 강도 ≈ 배치 크기, 그래서 배칭이 중요","배칭, 양자화, 퓨전은 모두 점을 옮기는 일"],
+ quiz:[
+  {q:"T4는 FP16 약 65 TFLOPS, 메모리 대역폭 320GB/s예요. 꺾임점은 대략 바이트당 몇 FLOP일까요?",o:["약 20","약 200","약 2","약 2,000"],a:1,e:"65 × 10¹² ÷ 320 × 10⁹ ≈ 203이에요."},
+  {q:"배치 1 디코드에서 가중치를 FP16에서 INT4로 바꾸면 이론상 속도는 어떻게 될까요? (KV 캐시는 무시)",o:["최대 약 4배 빨라져요","그대로예요","느려져요","16배 빨라져요"],a:0,e:"메모리 병목이라 읽는 바이트가 1/4이 되면 시간도 거의 1/4이 돼요. 실제로는 역양자화 비용 때문에 조금 덜 빨라져요."},
+  {q:"다음 중 compute-bound에 가장 가까운 작업은?",o:["배치 1 디코드","벡터 덧셈","2,048토큰 prefill","softmax"],a:2,e:"prefill은 같은 가중치로 수천 토큰을 한 번에 계산해서 연산 강도가 아주 높아요."}
+ ],
+ lab:{file:"03_roofline_on_my_mac.ipynb",desc:"내 맥에서 벡터 덧셈, 행렬-벡터 곱, 행렬곱의 속도를 직접 재고, 배치를 키울수록 처리량이 늘다가 멈추는 roofline 곡선을 내 손으로 그려요."}
+};
+
+L["p1-4"]={
+ lead:"모델이 내놓는 건 다음 토큰의 <b>점수(logits)</b>예요. 이 점수로 실제 토큰을 고르는 과정이 샘플링이에요. 같은 모델이라도 샘플링 설정에 따라 답이 딱딱해지기도 하고 창의적이 되기도 해요.",
+ sections:[
+  {h:"1. 점수를 확률로: softmax",p:["점수를 확률로 바꿀 때는 softmax를 써요. 각 점수에 e를 거듭제곱하고, 전체 합으로 나눠요. 점수 차이가 1이면 확률은 약 2.7배 차이가 나요."]},
+  {h:"2. Greedy: 제일 높은 것만",p:["가장 확률이 높은 토큰을 고르는 방법이에요. 항상 같은 답이 나와서 테스트하기 좋지만, 같은 말을 반복하거나 단조로워지기 쉬워요."]},
+  {h:"3. Temperature: 분포를 뾰족하게 또는 평평하게",p:["점수를 T로 나눈 다음 softmax를 해요. T가 1보다 작으면 1등이 더 강해지고(뾰족), 크면 순위가 고르게 퍼져요(평평). T가 0에 가까우면 greedy와 같아져요."]},
+  {h:"4. Top-k와 Top-p: 이상한 후보 잘라내기",p:["<b>Top-k</b>는 점수 상위 k개만 남기고 나머지는 버려요.","<b>Top-p</b>는 확률이 큰 순서대로 더해서 합이 p를 넘을 때까지만 남겨요. 모델이 확신할 때는 후보가 적게, 헷갈릴 때는 많이 남아서 top-k보다 유연해요.","남은 후보끼리 확률을 다시 합이 1이 되게 맞춘 다음, 그 확률대로 하나를 뽑아요."]},
+  {h:"서빙 관점에서 기억할 것",p:["서버에서는 요청 수십 개가 한 배치로 같이 돌아요. 그런데 요청마다 temperature와 top-p가 달라요. 이걸 요청별로 따로 처리하면 작은 GPU 작업이 수십 번 생겨서 느려지니까, <b>요청별 설정을 벡터로 만들어 한 번에</b> 처리해야 해요. top-p에 필요한 정렬(sort)이 이 과정에서 제일 비싼 부분이에요."]}
+ ],
+ widget:"sampling",
+ widgetTitle:"\"오늘 날씨가 정말 ___\" 다음 토큰 고르기",
+ widgetCap:"슬라이더를 움직이면 확률이 어떻게 바뀌는지 보여요. 회색 막대는 잘려 나간 후보예요. '20번 뽑기'로 실제로 뽑아 보세요.",
+ summary:["logits는 점수, softmax로 확률로 바꾼다","Greedy = 1등만, 결정적이지만 단조롭다","Temperature < 1 뾰족, > 1 평평","Top-k = 상위 k개, Top-p = 누적 확률 p까지","서버에서는 요청별 설정을 벡터로 한 번에 처리"],
+ quiz:[
+  {q:"temperature를 0에 가깝게 낮추면 어떻게 되나요?",o:["greedy와 같아져요","완전히 무작위가 돼요","top-p가 꺼져요","속도가 빨라져요"],a:0,e:"점수를 아주 작은 수로 나누면 1등과 나머지의 차이가 엄청나게 커져서, 1등만 확률을 거의 다 가져가요."},
+  {q:"확률이 [0.5, 0.3, 0.1, 0.1]일 때 top-p = 0.7이면 후보가 몇 개 남나요?",o:["1개","2개","3개","4개"],a:1,e:"0.5까지는 0.7에 못 미치고, 0.3을 더하면 0.8로 0.7을 넘어요. 그래서 2개가 남아요."},
+  {q:"서버에서 샘플링을 배치 단위로 한 번에 처리하는 이유는?",o:["요청마다 따로 하면 작은 GPU 작업이 많아져 GPU가 놀기 때문에","정확도가 올라가서","메모리를 더 많이 쓰려고","토크나이저와 맞추려고"],a:0,e:"GPU는 큰 작업을 한 번에 할 때 효율적이에요. 작은 작업을 여러 번 띄우면 실행 오버헤드가 쌓여요."}
+ ],
+ lab:{file:"04_sampling.ipynb",desc:"요청마다 temperature, top-k, top-p가 다른 배치 샘플러를 직접 짜고, 자동 채점으로 확인한 뒤 SmolLM2로 설정별 문장 차이를 비교해요."}
+};
+
+L["p1-5"]={
+ lead:"앞으로 계속 나올 SM, warp, shared memory, HBM 같은 단어를 <b>머릿속 지도</b>로 만드는 강의예요. 예시는 H100이고, 숫자는 대략값이에요. 정확한 숫자보다 <b>크기와 속도의 차이가 얼마나 나는지</b>를 기억하는 게 중요해요.",
+ sections:[
+  {h:"1. CPU와 GPU의 차이",p:["CPU는 아주 똑똑한 코어 몇 개로 복잡한 일을 빠르게 처리해요. GPU는 단순한 계산기를 수만 개 묶어서, <b>같은 계산을 엄청나게 많은 데이터에 동시에</b> 해요. 행렬곱처럼 같은 연산이 반복되는 일에 딱 맞아요."]},
+  {h:"2. GPU 안의 구조",p:["GPU는 <b>SM(스트리밍 멀티프로세서)</b>이라는 작은 공장 여러 개로 되어 있어요. H100에는 132개가 있어요.","SM 하나 안에는 네 구역이 있고, 구역마다 warp 스케줄러, 일반 계산기(CUDA 코어), 행렬곱 전용 계산기(텐서 코어), 레지스터가 있어요. 네 구역이 함께 쓰는 shared memory도 SM 안에 있어요."]},
+  {h:"3. 스레드의 계층",p:["CUDA나 Triton으로 코드를 쓸 때는 스레드 하나가 할 일을 적어요. 이 스레드들이 묶이는 방식이 있어요.","<b>Warp</b>: 스레드 32개 묶음. 항상 같은 명령을 함께 실행해요. 중간에 if로 갈라지면 양쪽을 차례로 실행해서 느려져요.","<b>블록</b>: warp 여러 개 묶음. 한 SM에서 실행되고, shared memory로 데이터를 나눌 수 있어요.","<b>그리드</b>: 블록 전체. GPU 전체의 SM에 나눠서 실행돼요."]},
+  {h:"4. 메모리 계층: 빠를수록 작다",p:["<b>레지스터</b>: 스레드 전용, 가장 빨라요. SM당 256KB.","<b>Shared memory</b>: 블록 안 스레드들이 같이 써요. SM당 최대 228KB.","<b>L2 캐시</b>: 모든 SM이 같이 써요. 50MB.","<b>HBM</b>: GPU의 메인 메모리. 80GB로 크지만, 위의 것들보다 훨씬 느려요.","커널 최적화의 핵심은 결국 <b>HBM에서 한 번 가져온 데이터를 빠른 메모리에 올려 두고 최대한 여러 번 쓰는 것</b>이에요. 4단계의 행렬곱 최적화와 FlashAttention이 전부 이 원리예요."]}
+ ],
+ widget:"gpumap",
+ widgetTitle:"H100 지도",
+ widgetCap:"탭을 바꿔 가며 메모리 계층, SM 내부, 스레드 계층을 눌러 보세요.",
+ summary:["GPU = SM 여러 개 (H100은 132개)","SM = 4구역 × (warp 스케줄러, CUDA 코어, 텐서 코어, 레지스터) + shared memory","스레드 32개 = warp, warp 여러 개 = 블록, 블록 전체 = 그리드","레지스터 → shared memory → L2 → HBM 순으로 느리고 커진다","최적화 = HBM에서 가져온 데이터를 빠른 메모리에서 재사용"],
+ quiz:[
+  {q:"warp는 스레드 몇 개로 이루어지나요?",o:["16개","32개","64개","128개"],a:1,e:"NVIDIA GPU의 warp는 32개 스레드예요. 이 숫자는 커널을 짤 때 계속 나와요."},
+  {q:"같은 블록의 스레드끼리 데이터를 빠르게 나눠 쓰는 곳은?",o:["HBM","L2 캐시","Shared memory","레지스터"],a:2,e:"Shared memory는 SM 안에 있어서 빠르고, 같은 블록의 스레드들이 함께 쓸 수 있어요. 레지스터는 스레드 전용이에요."},
+  {q:"메모리 계층에서 빠른 메모리일수록 일반적으로?",o:["용량이 커요","용량이 작아요","용량은 상관없어요"],a:1,e:"빠른 메모리는 칩 안에 있어서 비싸고 작아요. 그래서 데이터를 똑똑하게 옮기는 게 중요해요."}
+ ]
+};
+
+L["p1-6"]={
+ lead:"최적화 결과가 좋은지 나쁜지 알려면 <b>이론상 얼마가 나와야 하는지</b>를 먼저 알아야 해요. 이 강의에서는 모델의 파라미터 수, 토큰당 계산량, 메모리 사용량을 손으로 계산하는 법을 배워요. 공식은 몇 개 안 돼요.",
+ sections:[
+  {h:"1. 파라미터 세기",p:["블록 하나의 <b>어텐션</b>은 행렬 4개예요. Q는 hidden × (Q헤드 × head_dim), K와 V는 각각 hidden × (KV헤드 × head_dim), 출력은 (Q헤드 × head_dim) × hidden이에요.","<b>MLP</b>는 요즘 모델이 쓰는 SwiGLU 구조라 행렬 3개예요. 3 × hidden × intermediate.","<b>임베딩</b>은 vocab × hidden이고, LM head가 따로 있으면 한 번 더 더해요.","이걸 레이어 수만큼 곱하고 임베딩을 더하면 전체 파라미터 수가 나와요. 아래 위젯에서 모델별로 확인해 보세요."]},
+  {h:"2. 계산량: 토큰당 약 2 × 파라미터",p:["행렬곱에서 숫자 하나를 곱하고 더하면 2번 계산이에요. 그래서 [1 × a] 벡터에 [a × b] 행렬을 곱하면 2ab번 계산이에요.","모델 전체로 보면 토큰 하나를 계산하는 데 약 <b>2 × 파라미터 수</b>번 계산해요. 8B 모델이면 토큰당 약 16 GFLOP이에요."]},
+  {h:"3. 어텐션 점수 계산은 따로",p:["위 공식에는 Q·K 점수와 V 섞기가 빠져 있어요. 이 부분은 토큰당 약 <code>4 × 레이어 × Q헤드 × head_dim × 컨텍스트 길이</code>번이에요.","Llama-3.1-8B에서 컨텍스트가 8,192토큰이면 4 × 32 × 4,096 × 8,192 ≈ 4.3 GFLOP으로, 16 GFLOP의 약 25%예요. <b>문맥이 길어질수록 무시할 수 없어져요.</b>"]},
+  {h:"4. 손계산으로 속도 상한 구하기",p:["배치 1 디코드는 메모리 병목이니까, 가중치를 한 번 읽는 시간이 곧 토큰 하나 시간이에요.","Llama-3.1-8B(BF16, 약 16GB)를 H100(3.35TB/s)에서 돌리면 16 ÷ 3,350 ≈ 4.8ms, 그러니까 <b>최대 약 209 토큰/초</b>예요. 내 엔진이 100 토큰/초가 나온다면 상한의 절반쯤이라는 걸 바로 알 수 있어요."]}
+ ],
+ widget:"params",
+ widgetTitle:"모델 해부: 파라미터는 어디에 있나",
+ widgetCap:"모델을 바꿔 보고, 아래 빈칸에 직접 계산한 값을 넣어 채점해 보세요.",
+ summary:["어텐션 = Q, K, V, O 행렬 4개 / MLP(SwiGLU) = 행렬 3개","토큰당 계산량 ≈ 2 × 파라미터","어텐션 점수 계산 ≈ 4 × 레이어 × Q헤드 × head_dim × 컨텍스트","배치 1 디코드 상한 ≈ 메모리 대역폭 ÷ 가중치 크기"],
+ quiz:[
+  {q:"파라미터 8B 모델의 토큰당 계산량(어텐션 점수 제외)은 대략?",o:["8 GFLOP","16 GFLOP","32 GFLOP","2 GFLOP"],a:1,e:"토큰당 약 2 × 파라미터이니까 2 × 8B = 16 GFLOP이에요."},
+  {q:"Llama-3.1-8B(BF16, 약 16GB)를 A100(2,039GB/s)에서 배치 1로 디코드하면 이론상 최대 몇 토큰/초?",o:["약 127","약 1,270","약 13","약 500"],a:0,e:"16 ÷ 2,039 ≈ 7.9ms가 토큰 하나 시간이니까, 1초에 약 127토큰이에요."}
+ ]
+};
+
+/* ================= WIDGETS ================= */
+const W={};
+const h=(s)=>s;
+const fmt=n=>n>=1e9?(n/1e9).toFixed(2)+"B":n>=1e6?(n/1e6).toFixed(1)+"M":n>=1e3?(n/1e3).toFixed(1)+"K":String(n);
+
+/* --- transformer explorer --- */
+W.transformer=(root)=>{
+ const C={V:49152,H:576,L:30,nq:9,nkv:3,hd:64,I:1536};
+ const parts=[
+  {k:"tok",n:"토큰 ID",d:"토크나이저가 만든 정수 T개. 아직 계산은 없어요.",s:T=>`[${T}]  (정수)`,p:0},
+  {k:"emb",n:"임베딩",d:"ID마다 표에서 576칸짜리 벡터 한 줄을 꺼내요. 계산이 아니라 조회예요.",s:T=>`[${T}, 576]`,p:C.V*C.H},
+  {k:"blk",n:"디코더 블록 × 30",d:"아래 여섯 단계를 30번 반복해요. 각 단계를 눌러 보세요.",s:T=>`[${T}, 576] → [${T}, 576]`,p:null,group:true},
+  {k:"n1",n:"RMSNorm",d:"벡터의 크기를 고르게 맞추고, 학습된 가중치 576개를 곱해요.",s:T=>`[${T}, 576]`,p:C.H,sub:true},
+  {k:"att",n:"어텐션 (GQA)",d:"Q = x·Wq로 [T, 9, 64], K와 V는 [T, 3, 64]를 만들고 RoPE를 적용해요. Q헤드 3개가 KV 헤드 하나를 같이 써요. 점수 행렬은 헤드마다 [T, T]이고, 미래는 가려요. 결과를 Wo로 다시 576칸으로 돌려요.",s:T=>`Q [${T}, 9, 64]  K,V [${T}, 3, 64]  점수 [9, ${T}, ${T}]`,p:C.H*C.nq*C.hd+2*C.H*C.nkv*C.hd+C.nq*C.hd*C.H,sub:true},
+  {k:"r1",n:"+ 잔차",d:"어텐션 결과를 입력에 더해요. 파라미터 없음.",s:T=>`[${T}, 576]`,p:0,sub:true},
+  {k:"n2",n:"RMSNorm",d:"MLP 앞에서 한 번 더 정규화해요.",s:T=>`[${T}, 576]`,p:C.H,sub:true},
+  {k:"mlp",n:"MLP (SwiGLU)",d:"gate와 up으로 576칸을 1,536칸으로 넓히고, SiLU(gate) × up을 한 뒤 down으로 다시 576칸으로 줄여요. 토큰끼리 섞지 않고 각자 계산해요.",s:T=>`[${T}, 576] → [${T}, 1536] → [${T}, 576]`,p:3*C.H*C.I,sub:true},
+  {k:"r2",n:"+ 잔차",d:"MLP 결과를 더해요.",s:T=>`[${T}, 576]`,p:0,sub:true},
+  {k:"fn",n:"최종 RMSNorm",d:"30층을 지난 뒤 마지막 정규화.",s:T=>`[${T}, 576]`,p:C.H},
+  {k:"head",n:"LM head",d:"576칸을 49,152개 토큰 점수로 바꿔요. SmolLM2는 임베딩 표를 그대로 재사용해서 추가 파라미터가 없어요.",s:T=>`[${T}, 49152]`,p:0},
+  {k:"out",n:"다음 토큰",d:"마지막 위치의 49,152개 점수에서 샘플링으로 하나를 골라요 (4번 강의).",s:T=>`[1]`,p:0}
+ ];
+ const perLayer=parts.filter(p=>p.sub).reduce((a,p)=>a+p.p,0);
+ const total=C.V*C.H+perLayer*C.L+C.H;
+ root.innerHTML=`<div class="tw"><div class="tw-stack"></div><div class="tw-info"><label class="tw-t">입력 토큰 수 T = <b id="twT">8</b><input type="range" min="1" max="64" value="8" id="twTr" aria-label="입력 토큰 수"></label><div class="tw-card"></div>
+ <div class="tw-pie"><div class="k">파라미터 분포 (전체 ${fmt(total)})</div><div class="stackbar">
+ <span style="flex:${C.V*C.H};background:var(--die)" title="임베딩"></span><span style="flex:${(parts[4].p)*C.L};background:var(--accent)" title="어텐션"></span><span style="flex:${parts[7].p*C.L};background:var(--fg2)" title="MLP"></span></div>
+ <div class="lg"><span><i style="background:var(--die)"></i>임베딩 ${fmt(C.V*C.H)}</span><span><i style="background:var(--accent)"></i>어텐션 ${fmt(parts[4].p*C.L)}</span><span><i style="background:var(--fg2)"></i>MLP ${fmt(parts[7].p*C.L)}</span></div></div></div></div>`;
+ const st=root.querySelector(".tw-stack"),card=root.querySelector(".tw-card");let sel="att";
+ st.innerHTML=parts.map(p=>`<button type="button" class="tw-b${p.sub?" sub":""}${p.group?" grp":""}" data-k="${p.k}">${p.n}</button>`).join("");
+ const draw=()=>{const T=+root.querySelector("#twTr").value;root.querySelector("#twT").textContent=T;
+  const p=parts.find(x=>x.k===sel);
+  st.querySelectorAll(".tw-b").forEach(b=>b.classList.toggle("on",b.dataset.k===sel));
+  const pp=p.group?perLayer*C.L:p.sub?p.p:p.p;
+  card.innerHTML=`<h4>${p.n}</h4><p>${p.d}</p><div class="kv"><span>텐서 모양</span><code>${p.s(T)}</code></div><div class="kv"><span>파라미터</span><code>${p.group?fmt(perLayer)+" × 30 = "+fmt(perLayer*C.L):p.sub?fmt(p.p)+" (블록 하나, ×30)":fmt(pp)}</code></div>`+
+   (p.k==="att"?`<div class="kv"><span>점수 행렬 크기</span><code>9 × ${T} × ${T} = ${(9*T*T).toLocaleString()}칸</code></div><p class="mini">T가 두 배가 되면 점수 행렬은 네 배가 돼요. 긴 문맥이 비싼 이유예요.</p>`:"");};
+ st.addEventListener("click",e=>{const b=e.target.closest(".tw-b");if(b){sel=b.dataset.k;draw();}});
+ root.querySelector("#twTr").addEventListener("input",draw);draw();
+};
+
+/* --- KV cache stepper --- */
+W.kvcache=(root)=>{
+ const prompt=["나는","오늘","아침에"],gen=["커피를","마시고","바로","출근","했다"];
+ let step=0,cache=true,timer=null;
+ root.innerHTML=`<div class="kvw"><div class="kv-ctrl"><div class="seg" role="group" aria-label="KV 캐시"><button type="button" data-c="1" class="on">KV 캐시 켜기</button><button type="button" data-c="0">끄기</button></div>
+ <button type="button" class="btn" id="kvNext">다음 스텝 →</button><button type="button" class="btn ghost" id="kvPlay">자동 재생</button><button type="button" class="btn ghost" id="kvReset">처음으로</button></div>
+ <div class="kv-grid" id="kvGrid"></div><div class="kv-stats" id="kvStats"></div></div>`;
+ const grid=root.querySelector("#kvGrid"),stats=root.querySelector("#kvStats");
+ const draw=()=>{
+  const all=[...prompt,...gen];let rows="",tot=0,totNo=0;
+  for(let s=0;s<=step;s++){const len=prompt.length+s;const ncomp=cache?(s===0?prompt.length:1):len;
+   const lbl=s===0?"Prefill":`Decode ${s}`;
+   rows+=`<div class="kv-row${s===step?" cur":""}"><span class="kv-l">${lbl}</span>`+all.slice(0,len).map((t,i)=>{
+     const computed=i>=len-ncomp;const cls=computed?"c":"m";return `<span class="kv-t ${cls}">${t}</span>`;}).join("")+
+     (s<gen.length?`<span class="kv-t nxt">→ ${gen[s]}</span>`:"")+`</div>`;}
+  for(let s=0;s<=step;s++){const len=prompt.length+s;tot+=cache?(s===0?prompt.length:1):len;totNo+=len;}
+  grid.innerHTML=rows;
+  const len=prompt.length+step,ncur=cache?(step===0?prompt.length:1):len;
+  stats.innerHTML=`<div><span>이번 스텝에서 계산한 토큰</span><b>${ncur}개</b></div><div><span>지금까지 누적 계산</span><b>${tot}개</b></div><div><span>캐시에 저장된 K, V</span><b>${cache?len:0}개 토큰분</b></div>`+
+   `<p class="mini">${cache?`캐시가 없었다면 지금까지 ${totNo}개를 계산했을 거예요. 문장이 길어질수록 차이는 제곱으로 벌어져요.`:"캐시가 없으니 매 스텝 앞 토큰 전부를 다시 계산해요. 대신 K, V를 저장할 메모리는 필요 없어요."}</p>`+
+   `<div class="kv-legend"><span><i class="c"></i>이번 스텝에 새로 계산</span><span><i class="m"></i>캐시에서 꺼내 씀</span><span><i class="n"></i>이번 스텝이 고른 다음 토큰</span></div>`;
+  root.querySelector("#kvNext").disabled=step>=gen.length;
+ };
+ root.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{cache=b.dataset.c==="1";root.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));draw();}));
+ root.querySelector("#kvNext").addEventListener("click",()=>{if(step<gen.length){step++;draw();}});
+ root.querySelector("#kvReset").addEventListener("click",()=>{step=0;clearInterval(timer);timer=null;root.querySelector("#kvPlay").textContent="자동 재생";draw();});
+ root.querySelector("#kvPlay").addEventListener("click",e=>{if(timer){clearInterval(timer);timer=null;e.target.textContent="자동 재생";return;}
+  if(step>=gen.length)step=0;e.target.textContent="멈춤";draw();timer=setInterval(()=>{if(step>=gen.length){clearInterval(timer);timer=null;e.target.textContent="자동 재생";return;}step++;draw();},1100);});
+ draw();
+};
+
+/* --- roofline --- */
+W.roofline=(root)=>{
+ const G={T4:{tf:65,bw:320},L4:{tf:121,bw:300},A100:{tf:312,bw:2039},H100:{tf:989,bw:3350}};
+ let g="H100";
+ root.innerHTML=`<div class="rf"><div class="kv-ctrl"><div class="seg" role="group" aria-label="GPU 선택">${Object.keys(G).map(k=>`<button type="button" data-g="${k}"${k===g?' class="on"':""}>${k}</button>`).join("")}</div>
+ <label class="rf-s">디코드 배치 <b id="rfB">1</b><input type="range" id="rfR" min="0" max="12" value="0" aria-label="디코드 배치"></label></div>
+ <div class="chart-scroll"><svg viewBox="0 0 640 300" width="100%" style="min-width:420px;display:block" id="rfSvg" role="img" aria-label="roofline 그래프"></svg></div><div class="kv-stats" id="rfOut"></div></div>`;
+ const svg=root.querySelector("#rfSvg"),out=root.querySelector("#rfOut");
+ const pl=56,pr=16,pt=16,pb=40,Wd=640,Ht=300,xmin=-1.5,xmax=4,ymin=-1,ymax=3.2;
+ const X=ai=>pl+(Wd-pl-pr)*(Math.log10(ai)-xmin)/(xmax-xmin);
+ const Y=tf=>pt+(Ht-pt-pb)*(1-(Math.log10(tf)-ymin)/(ymax-ymin));
+ const draw=()=>{const s=G[g],b=2**(+root.querySelector("#rfR").value);root.querySelector("#rfB").textContent=b;
+  const ridge=s.tf*1e12/(s.bw*1e9);const perf=ai=>Math.min(s.tf,s.bw*ai/1000);
+  let o="";
+  [-1,0,1,2,3,4].forEach(e=>{if(e<xmin)return;const x=X(10**e);o+=`<line x1="${x}" x2="${x}" y1="${pt}" y2="${Ht-pb}" stroke="var(--line)"/><text x="${x}" y="${Ht-pb+16}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${10**e>=1?(10**e).toLocaleString():10**e}</text>`;});
+  [-1,0,1,2,3].forEach(e=>{const y=Y(10**e);o+=`<line x1="${pl}" x2="${Wd-pr}" y1="${y}" y2="${y}" stroke="var(--line)"/><text x="${pl-8}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${10**e>=1?(10**e).toLocaleString():10**e}</text>`;});
+  o+=`<text x="${(pl+Wd-pr)/2}" y="${Ht-6}" text-anchor="middle" font-size="11" fill="var(--fg2)">연산 강도 (FLOP / 바이트, 로그)</text><text x="12" y="${(pt+Ht-pb)/2}" font-size="11" fill="var(--fg2)" text-anchor="middle" transform="rotate(-90 12 ${(pt+Ht-pb)/2})">TFLOPS (로그)</text>`;
+  const a0=10**xmin,a1=10**xmax;
+  o+=`<path d="M${X(a0)},${Y(perf(a0))} L${X(ridge)},${Y(s.tf)} L${X(a1)},${Y(s.tf)}" fill="none" stroke="var(--die)" stroke-width="2.5"/>`;
+  o+=`<line x1="${X(ridge)}" x2="${X(ridge)}" y1="${Y(s.tf)}" y2="${Ht-pb}" stroke="var(--die)" stroke-dasharray="3 4"/><text x="${X(ridge)+6}" y="${Y(s.tf)+16}" font-size="11" fill="var(--die)">꺾임점 ≈ ${ridge.toFixed(0)}</text>`;
+  o+=`<text x="${X(0.3)}" y="${Y(perf(0.3))-10}" font-size="11" fill="var(--fg2)" transform="rotate(-${Math.atan((Y(perf(0.1))-Y(perf(1)))/(X(1)-X(0.1)))*180/Math.PI} ${X(0.3)} ${Y(perf(0.3))-10})">메모리 한계</text><text x="${Wd-pr-6}" y="${Y(s.tf)-8}" text-anchor="end" font-size="11" fill="var(--fg2)">연산 한계 ${s.tf} TFLOPS</text>`;
+  const pts=[{n:"벡터 덧셈",ai:0.17},{n:"2,048토큰 prefill",ai:2048*0.9}];
+  pts.forEach(p=>{o+=`<circle cx="${X(p.ai)}" cy="${Y(perf(p.ai))}" r="5" fill="var(--fg2)" stroke="var(--surface)" stroke-width="2"/><text x="${X(p.ai)}" y="${Y(perf(p.ai))-10}" text-anchor="middle" font-size="11" fill="var(--fg2)">${p.n}</text>`;});
+  const ai=b;o+=`<circle cx="${X(ai)}" cy="${Y(perf(ai))}" r="8" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/><text x="${X(ai)}" y="${Y(perf(ai))+24}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">디코드 배치 ${b}</text>`;
+  svg.innerHTML=o;const p=perf(ai),u=p/s.tf*100;
+  out.innerHTML=`<div><span>연산 강도</span><b>약 ${ai}</b></div><div><span>낼 수 있는 성능</span><b>${p<10?p.toFixed(2):p.toFixed(0)} TFLOPS</b></div><div><span>연산기 사용률</span><b>${u<1?u.toFixed(1):u.toFixed(0)}%</b></div><p class="mini">${ai<ridge?`아직 메모리 병목이에요. 배치를 약 ${Math.ceil(ridge)}까지 키워야 연산기를 꽉 채울 수 있어요. 하지만 그만큼 KV 캐시 메모리도 필요해요.`:"연산기가 꽉 찼어요. 이제 배치를 더 키워도 전체 처리량은 늘지 않고, 요청 하나하나는 느려지기 시작해요."}</p>`;};
+ root.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{g=b.dataset.g;root.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));draw();}));
+ root.querySelector("#rfR").addEventListener("input",draw);draw();
+};
+
+/* --- sampling --- */
+W.sampling=(root)=>{
+ const C=[["좋다",5.0],["맑다",4.2],["덥다",3.6],["춥다",3.1],["흐리다",2.5],["이상하다",1.8],["미쳤다",1.0],["바나나",-1.0]];
+ root.innerHTML=`<div class="sp"><div class="sp-ctl">
+  <label>Temperature <b id="spTv">1.0</b><input type="range" id="spT" min="0.05" max="2" step="0.05" value="1" aria-label="temperature"></label>
+  <label>Top-k <b id="spKv">8</b><input type="range" id="spK" min="1" max="8" step="1" value="8" aria-label="top-k"></label>
+  <label>Top-p <b id="spPv">1.00</b><input type="range" id="spP" min="0.1" max="1" step="0.05" value="1" aria-label="top-p"></label></div>
+  <div class="sp-bars" id="spBars"></div><div class="kv-ctrl"><button type="button" class="btn" id="spDraw">20번 뽑기</button><button type="button" class="btn ghost" id="spGreedy">Greedy로 설정</button></div><div class="sp-out" id="spOut"></div></div>`;
+ const q=s=>root.querySelector(s);let probs=[];
+ const calc=()=>{const T=+q("#spT").value,k=+q("#spK").value,p=+q("#spP").value;
+  q("#spTv").textContent=T.toFixed(2);q("#spKv").textContent=k;q("#spPv").textContent=p.toFixed(2);
+  const z=C.map(c=>c[1]/T),m=Math.max(...z),e=z.map(v=>Math.exp(v-m)),s=e.reduce((a,b)=>a+b,0);
+  const raw=e.map(v=>v/s);const idx=raw.map((v,i)=>i).sort((a,b)=>raw[b]-raw[a]);
+  const keep=new Set();let cum=0;
+  for(let r=0;r<idx.length;r++){if(r>=k)break;if(cum>=p&&r>0)break;keep.add(idx[r]);cum+=raw[idx[r]];}
+  const ks=[...keep].reduce((a,i)=>a+raw[i],0);probs=raw.map((v,i)=>keep.has(i)?v/ks:0);
+  q("#spBars").innerHTML=C.map((c,i)=>`<div class="sp-row${keep.has(i)?"":" cut"}"><span class="sp-n">${c[0]}</span><span class="sp-z">${c[1].toFixed(1)}</span><span class="sp-track"><span style="width:${(probs[i]*100).toFixed(1)}%"></span><span class="sp-ghost" style="width:${(raw[i]*100).toFixed(1)}%"></span></span><span class="sp-v">${keep.has(i)?(probs[i]*100).toFixed(1)+"%":"잘림"}</span></div>`).join("")+
+  `<div class="sp-head"><span>후보</span><span>logit</span><span>최종 확률 (옅은 막대는 자르기 전)</span><span></span></div>`;};
+ const draw=()=>{const res=[];for(let n=0;n<20;n++){let r=Math.random(),i=0;for(;i<probs.length;i++){r-=probs[i];if(r<=0)break;}res.push(C[Math.min(i,C.length-1)][0]);}
+  const cnt={};res.forEach(t=>cnt[t]=(cnt[t]||0)+1);
+  q("#spOut").innerHTML=`<div class="sp-chips">${res.map(t=>`<span>${t}</span>`).join("")}</div><p class="mini">${Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([t,c])=>`${t} ${c}번`).join(" · ")}</p>`;};
+ ["#spT","#spK","#spP"].forEach(s=>q(s).addEventListener("input",calc));
+ q("#spDraw").addEventListener("click",draw);
+ q("#spGreedy").addEventListener("click",()=>{q("#spK").value=1;calc();draw();});
+ calc();draw();
+};
+
+/* --- GPU map --- */
+W.gpumap=(root)=>{
+ const mem=[
+  {n:"레지스터",sz:"SM당 256KB",sp:"가장 빠름 (약 1사이클)",w:14,d:"스레드 하나가 혼자 쓰는 저장소예요. 계산 중인 값은 여기 있어요. 너무 많이 쓰면 SM에 동시에 올릴 수 있는 warp 수가 줄어요."},
+  {n:"Shared memory / L1",sz:"SM당 최대 228KB",sp:"매우 빠름 (수십 사이클)",w:30,d:"같은 블록의 스레드들이 함께 쓰는 메모리예요. HBM에서 가져온 타일을 여기 올려 두고 여러 번 재사용하는 게 행렬곱 최적화의 핵심이에요."},
+  {n:"L2 캐시",sz:"50MB (GPU 전체)",sp:"빠름 (수백 사이클)",w:55,d:"모든 SM이 같이 쓰는 캐시예요. 직접 제어하기보다는, 블록들이 비슷한 데이터를 비슷한 시기에 읽도록 배치해서 덕을 봐요."},
+  {n:"HBM",sz:"80GB",sp:"3.35TB/s, 느림 (수백 사이클 이상)",w:100,d:"모델 가중치와 KV 캐시가 사는 메인 메모리예요. 크지만 느려서, 디코드 속도는 거의 여기서 얼마나 빨리 읽느냐로 정해져요."}];
+ const thr=[
+  {n:"그리드",d:"커널 한 번 실행에 쓰이는 블록 전체예요. 블록들은 GPU의 132개 SM에 나눠서 실행돼요. 블록끼리는 순서가 보장되지 않아요.",c:"블록 수천 개"},
+  {n:"블록",d:"한 SM 안에서 실행되는 스레드 묶음이에요(최대 1,024 스레드). 같은 블록끼리는 shared memory를 함께 쓰고 서로 기다릴(동기화) 수 있어요.",c:"warp 여러 개"},
+  {n:"Warp",d:"스레드 32개가 한 묶음으로 같은 명령을 동시에 실행해요. 스레드마다 if 결과가 다르면 양쪽을 차례로 실행해서 느려져요(divergence).",c:"스레드 32개"},
+  {n:"스레드",d:"내가 코드에서 직접 적는 단위예요. 자기 번호(threadIdx, blockIdx)를 보고 어떤 데이터를 맡을지 정해요.",c:"레지스터를 가짐"}];
+ root.innerHTML=`<div class="gm"><div class="seg" role="tablist" aria-label="지도 종류"><button type="button" data-t="mem" class="on">메모리 계층</button><button type="button" data-t="sm">SM 내부</button><button type="button" data-t="thr">스레드 계층</button></div><div class="gm-body"></div><div class="tw-card gm-card"></div></div>`;
+ let body=root.querySelector(".gm-body");const card=root.querySelector(".gm-card");
+ const views={
+  mem(){body.innerHTML=`<div class="gm-mem">${mem.map((m,i)=>`<button type="button" class="gm-lv" data-i="${i}" style="width:${m.w}%"><b>${m.n}</b><span>${m.sz}</span></button>`).join("")}</div><p class="mini">위로 갈수록 빠르고 작아요. 막대 폭은 느낌을 위한 것이고 실제 비율과는 달라요.</p>`;
+   const pick=i=>{const m=mem[i];card.innerHTML=`<h4>${m.n}</h4><div class="kv"><span>크기</span><code>${m.sz}</code></div><div class="kv"><span>속도</span><code>${m.sp}</code></div><p>${m.d}</p>`;body.querySelectorAll(".gm-lv").forEach(b=>b.classList.toggle("on",+b.dataset.i===i));};
+   body.addEventListener("click",e=>{const b=e.target.closest(".gm-lv");if(b)pick(+b.dataset.i);});pick(1);},
+  sm(){const cells=Array.from({length:132},(_,i)=>`<span class="${i===0?"hot":""}"></span>`).join("");
+   body.innerHTML=`<div class="gm-sm"><div><div class="k">H100 전체: SM 132개</div><div class="gm-grid">${cells}</div><p class="mini">주황색 SM 하나를 확대하면 오른쪽 그림이에요.</p></div>
+   <div class="gm-in"><div class="k">SM 하나 안</div><div class="gm-q">${[0,1,2,3].map(q=>`<div class="gm-part"><button type="button" data-p="ws">Warp 스케줄러</button><button type="button" data-p="rf">레지스터 64KB</button><button type="button" data-p="cc">CUDA 코어 32개</button><button type="button" data-p="tc">텐서 코어</button></div>`).join("")}</div><button type="button" class="gm-smem" data-p="sm">Shared memory / L1 (256KB, 4구역이 공유)</button></div></div>`;
+   const D={ws:["Warp 스케줄러","매 사이클마다 준비된 warp 하나를 골라 명령을 내려요. 한 warp가 메모리를 기다리는 동안 다른 warp를 실행해서 지연을 숨겨요. 그래서 SM에 warp가 많이 올라가 있을수록(occupancy) 유리할 때가 많아요."],
+    rf:["레지스터 파일","구역마다 64KB, SM 전체 256KB예요. 여기 올라간 warp들의 모든 스레드가 레지스터를 나눠 가져요."],
+    cc:["CUDA 코어","덧셈, 곱셈 같은 일반 계산을 해요. softmax, 정규화, 활성화 함수 같은 연산이 여기서 돌아요."],
+    tc:["텐서 코어","작은 행렬곱을 한 명령으로 처리하는 전용 장치예요. H100 연산 성능(FP16 약 989 TFLOPS)의 대부분이 여기서 나와요. LLM의 행렬곱은 거의 다 텐서 코어로 가요."],
+    sm:["Shared memory / L1","SM 하나의 네 구역이 함께 쓰는 빠른 메모리예요. 이 중 최대 228KB를 shared memory로 쓸 수 있어요. 커널 최적화에서 가장 자주 다루는 자원이에요."]};
+   const pick=k=>{card.innerHTML=`<h4>${D[k][0]}</h4><p>${D[k][1]}</p>`;body.querySelectorAll("[data-p]").forEach(b=>b.classList.toggle("on",b.dataset.p===k));};
+   body.addEventListener("click",e=>{const b=e.target.closest("[data-p]");if(b)pick(b.dataset.p);});pick("tc");},
+  thr(){body.innerHTML=`<div class="gm-thr">${thr.map((t,i)=>`<button type="button" class="gm-box" data-i="${i}" style="margin-left:${i*18}px"><b>${t.n}</b><span>${t.c}</span></button>`).join("")}</div>`;
+   const pick=i=>{card.innerHTML=`<h4>${thr[i].n}</h4><p>${thr[i].d}</p>`;body.querySelectorAll(".gm-box").forEach(b=>b.classList.toggle("on",+b.dataset.i===i));};
+   body.addEventListener("click",e=>{const b=e.target.closest(".gm-box");if(b)pick(+b.dataset.i);});pick(2);}
+ };
+ root.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{root.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));const nb=body.cloneNode(false);body.replaceWith(nb);body=nb;views[b.dataset.t]();}));
+ views.mem();
+};
+
+/* --- params anatomy --- */
+W.params=(root)=>{
+ const M={
+  "SmolLM2-135M":{H:576,L:30,nq:9,nkv:3,hd:64,I:1536,V:49152,tied:true},
+  "Llama-3.1-8B":{H:4096,L:32,nq:32,nkv:8,hd:128,I:14336,V:128256,tied:false},
+  "Llama-3.1-70B":{H:8192,L:80,nq:64,nkv:8,hd:128,I:28672,V:128256,tied:false}};
+ let m="Llama-3.1-8B";
+ root.innerHTML=`<div class="pa"><div class="seg" role="group" aria-label="모델">${Object.keys(M).map(k=>`<button type="button" data-m="${k}"${k===m?' class="on"':""}>${k}</button>`).join("")}</div><div id="paBody"></div>
+ <div class="pa-q"><label for="paIn">연습: 이 모델의 KV 캐시(FP16)는 토큰당 몇 KB일까요?</label><div class="pa-row"><input id="paIn" type="number" inputmode="decimal" placeholder="숫자만 입력 (KB)"><button type="button" class="btn" id="paChk">채점</button></div><div id="paRes" class="mini"></div></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{const c=M[m];const att=c.H*c.nq*c.hd+2*c.H*c.nkv*c.hd+c.nq*c.hd*c.H,mlp=3*c.H*c.I,emb=c.V*c.H*(c.tied?1:2);
+  const total=(att+mlp+2*c.H)*c.L+emb+c.H;
+  q("#paBody").innerHTML=`<div class="stackbar big"><span style="flex:${emb};background:var(--die)"></span><span style="flex:${att*c.L};background:var(--accent)"></span><span style="flex:${mlp*c.L};background:var(--fg2)"></span></div>
+  <div class="lg"><span><i style="background:var(--die)"></i>임베딩${c.tied?"":" + LM head"} ${fmt(emb)} (${(emb/total*100).toFixed(0)}%)</span><span><i style="background:var(--accent)"></i>어텐션 ${fmt(att*c.L)} (${(att*c.L/total*100).toFixed(0)}%)</span><span><i style="background:var(--fg2)"></i>MLP ${fmt(mlp*c.L)} (${(mlp*c.L/total*100).toFixed(0)}%)</span></div>
+  <div class="formula">어텐션/블록 = ${c.H}×(${c.nq}×${c.hd}) + 2×${c.H}×(${c.nkv}×${c.hd}) + (${c.nq}×${c.hd})×${c.H} = ${fmt(att)}
+MLP/블록   = 3 × ${c.H} × ${c.I} = ${fmt(mlp)}
+임베딩     = ${c.V} × ${c.H}${c.tied?"":" × 2 (LM head 별도)"} = ${fmt(emb)}
+전체       = (${fmt(att)} + ${fmt(mlp)}) × ${c.L}층 + ${fmt(emb)} ≈ ${fmt(total)}
+토큰당 계산 ≈ 2 × ${fmt(total)} = ${(2*total/1e9).toFixed(2)} GFLOP
+BF16 가중치 = ${(total*2/1e9).toFixed(2)} GB</div>`;q("#paRes").textContent="";q("#paIn").value="";};
+ q("#paChk").addEventListener("click",()=>{const c=M[m],ans=2*c.L*c.nkv*c.hd*2/1024,v=parseFloat(q("#paIn").value);
+  if(isNaN(v)){q("#paRes").textContent="숫자를 입력해 주세요.";return;}
+  q("#paRes").innerHTML=Math.abs(v-ans)/ans<0.02?`<b style="color:var(--ok)">정답이에요.</b> 2 × ${c.L} × ${c.nkv} × ${c.hd} × 2바이트 = ${ans.toLocaleString()}KB`:`<b style="color:var(--accent)">다시 해 볼까요?</b> 힌트: 2 × 레이어 수 × KV 헤드 수 × head_dim × 2바이트, 그리고 1KB = 1,024바이트예요.`;});
+ root.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{m=b.dataset.m;root.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));draw();}));
+ draw();
+};
+
+window.LESSONS=L;window.WIDGETS=W;
+})();
+
+</script>
+<script>
+/* --- QKV 애니메이션 위젯 두 개: qkvinside(레이어 하나 안), qkvflow(레이어 여러 층 + prefill/decode) --- */
+(function(W){
+const stepper=(root,total,render,ms)=>{
+ let s=0,timer=null;
+ const bar=root.querySelector(".an-ctrl");
+ bar.innerHTML=`<button type="button" class="btn ghost an-prev">◀ 이전</button><button type="button" class="btn an-next">다음 ▶</button><button type="button" class="btn ghost an-play">자동 재생</button><button type="button" class="btn ghost an-reset">처음으로</button><span class="an-cnt"></span>`;
+ const q=c=>bar.querySelector(c);
+ const stop=()=>{if(timer){clearInterval(timer);timer=null;}q(".an-play").textContent="자동 재생";};
+ const go=n=>{s=Math.max(0,Math.min(total-1,n));render(s);q(".an-cnt").textContent=`${s+1} / ${total}`;q(".an-prev").disabled=s===0;q(".an-next").disabled=s===total-1;};
+ q(".an-prev").addEventListener("click",()=>{stop();go(s-1);});
+ q(".an-next").addEventListener("click",()=>{stop();go(s+1);});
+ q(".an-reset").addEventListener("click",()=>{stop();go(0);});
+ q(".an-play").addEventListener("click",()=>{if(timer){stop();return;}if(s>=total-1)go(0);q(".an-play").textContent="멈춤";
+  timer=setInterval(()=>{if(s>=total-1){stop();return;}go(s+1);},ms);});
+ go(0);
+ return stop;
+};
+W._stepper=stepper;
+
+/* ===== 1. 레이어 하나 안에서 ===== */
+W.qkvinside=(root)=>{
+ const T=["나는","학교","에"];
+ const X=[[0.9,-0.3,0.5,0.1],[0.2,0.8,-0.4,0.6],[-0.5,0.4,0.7,-0.2]];
+ const Wq=[[0.6,-0.2,0.3,0.1],[0.1,0.7,-0.3,0.2],[-0.4,0.2,0.8,0.0],[0.3,0.1,0.2,0.5]];
+ const Wk=[[0.5,0.3,-0.1,0.2],[-0.2,0.6,0.4,0.1],[0.3,-0.1,0.7,0.2],[0.1,0.4,0.0,0.6]];
+ const Wv=[[0.7,0.0,0.2,-0.3],[0.1,0.5,-0.2,0.4],[0.0,0.3,0.6,0.1],[-0.2,0.2,0.1,0.8]];
+ const mm=(x,M)=>M[0].map((_,j)=>x.reduce((a,xi,i)=>a+xi*M[i][j],0));
+ const Q=X.map(x=>mm(x,Wq)),K=X.map(x=>mm(x,Wk)),V=X.map(x=>mm(x,Wv));
+ const dot=(a,b)=>a.reduce((s,v,i)=>s+v*b[i],0);
+ const att=Q.map((q,t)=>{const sc=K.slice(0,t+1).map(k=>dot(q,k)/2);const m=Math.max(...sc),e=sc.map(v=>Math.exp(v-m)),z=e.reduce((a,b)=>a+b,0);return {sc,p:e.map(v=>v/z)};});
+ const F=2,A=att[F];
+ const O=V[0].map((_,j)=>A.p.reduce((s,p,i)=>s+p*V[i][j],0));
+ const XN=X[F].map((v,j)=>Math.tanh(v+O[j]));
+ const f=v=>(v>=0?"":"−")+Math.abs(v).toFixed(1);
+ const vec=(v,cls="")=>`<span class="vec ${cls}">${v.map(n=>`<i style="--a:${Math.min(1,Math.abs(n)/1.2)*70+8}%" class="${n<0?"ng":""}">${f(n)}</i>`).join("")}</span>`;
+ const S=[
+  {c:"토큰 3개가 들어왔어요. 토큰마다 숫자 묶음(벡터) <b>x</b>가 하나씩 있어요.",d:"실제 SmolLM2는 한 토큰이 숫자 576개예요. 여기서는 4개로 줄였어요. 숫자는 모두 예시예요."},
+  {c:"같은 x에 서로 다른 가중치 세 개를 곱해서 <b class='tq'>q</b>, <b class='tk'>k</b>, <b class='tv'>v</b>를 만들어요. 토큰마다 세 개씩이에요.",d:"x × Wq = q (내가 찾는 것), x × Wk = k (내 이름표), x × Wv = v (내 내용). Wq, Wk, Wv는 학습으로 정해진 고정된 숫자 표예요."},
+  {c:"이제 '에'의 입장에서 어텐션을 해 볼게요. '에'의 <b class='tq'>q</b>를 각 토큰의 <b class='tk'>k</b>와 곱해서 <b>점수</b>를 내요.",d:"곱한다 = 같은 자리 숫자끼리 곱해서 모두 더하기(내적). 점수가 크면 '이 토큰이 나한테 중요하다'는 뜻이에요."},
+  {c:"점수를 <b>softmax</b>로 비율로 바꿔요. 세 비율을 더하면 100%예요.",d:"큰 점수는 더 크게, 작은 점수는 더 작게 만들어서 합이 1이 되게 하는 함수예요."},
+  {c:"그 비율대로 각 토큰의 <b class='tv'>v</b>를 섞어요. 이게 '에'의 <b>어텐션 결과</b>예요.",d:"비율 × v를 모두 더해요. '에'는 이제 '나는', '학교'의 내용을 조금씩 가져온 벡터를 갖게 됐어요."},
+  {c:"원래 x에 어텐션 결과를 더하고 MLP를 거치면 이 레이어의 출력 <b>x'</b>이 나와요. 이 x'이 <b>다음 레이어의 x</b>가 돼요.",d:"다음 레이어는 이 x'으로 다시 q, k, v를 만들어요. 그래서 레이어마다 q, k, v가 따로 있어요. (MLP 계산은 단순하게 그렸어요.)"},
+  {c:"'나는'과 '학교'도 똑같이 해요. 단, <b>자기보다 뒤에 있는 토큰은 못 봐요.</b>",d:"표의 빈칸이 가려진 미래예요. '나는'은 자기만 봐요. 그래서 '나는'의 결과(그리고 위 레이어의 k, v)는 뒤에 무슨 단어가 와도 절대 안 바뀌어요. 이게 KV 캐시를 쓸 수 있는 이유예요."}
+ ];
+ root.innerHTML=`<div class="an qi"><div class="an-ctrl"></div><div class="an-cap"><p class="an-c"></p><p class="an-d"></p></div>
+ <div class="qi-stage">
+  <div class="qi-tbl"><div class="qi-h"><span></span><span>x</span><span class="qs" data-s="1"></span><span class="qs tq" data-s="1">q</span><span class="qs tk" data-s="1">k</span><span class="qs tv" data-s="1">v</span></div>
+  ${T.map((t,i)=>`<div class="qi-r" data-t="${i}"><span class="tok">${t}</span>${vec(X[i],"vx")}<span class="qs ar" data-s="1">→</span><span class="qs" data-s="1">${vec(Q[i],"vq")}</span><span class="qs" data-s="1">${vec(K[i],"vk")}</span><span class="qs" data-s="1">${vec(V[i],"vv")}</span></div>`).join("")}</div>
+  <div class="qi-att qs" data-s="2"><h4>'에'의 어텐션</h4>
+  ${T.map((t,i)=>`<div class="qi-a"><span class="qi-f"><b class="tq">q</b>(에) · <b class="tk">k</b>(${t}) = <b>${f(A.sc[i])}</b></span>
+   <span class="qi-p qs" data-s="3"><span class="pbar"><span style="width:${(A.p[i]*100).toFixed(0)}%"></span></span><b>${(A.p[i]*100).toFixed(0)}%</b></span>
+   <span class="qi-m qs" data-s="4">× <b class="tv">v</b>(${t})</span></div>`).join("")}
+   <div class="qi-o qs" data-s="4"><span>섞은 결과</span>${vec(O,"vo")}</div>
+   <div class="qi-o qs" data-s="5"><span>x + 결과 → MLP → <b>x'</b></span>${vec(XN,"vx")}<span class="qi-up">↑ 다음 레이어의 입력</span></div></div>
+  <div class="qi-mask qs" data-s="6"><h4>모든 토큰의 어텐션 비율</h4><table><thead><tr><th>보는 쪽 ＼ 보이는 쪽</th>${T.map(t=>`<th>${t}</th>`).join("")}</tr></thead><tbody>
+   ${T.map((t,i)=>`<tr><th>${t}</th>${T.map((_,j)=>j<=i?`<td>${(att[i].p[j]*100).toFixed(0)}%</td>`:`<td class="msk">못 봄</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+ </div></div>`;
+ const cap=root.querySelector(".an-c"),det=root.querySelector(".an-d");
+ stepper(root,S.length,s=>{
+  cap.innerHTML=S[s].c;det.innerHTML=S[s].d;
+  root.querySelectorAll(".qs").forEach(e=>{const n=+e.dataset.s;e.classList.toggle("on",s>=n);e.classList.toggle("hl",s===n);});
+  root.querySelectorAll(".qi-r").forEach(r=>{const t=+r.dataset.t;r.classList.toggle("focus",(s>=2&&s<=5&&t===F));});
+  root.querySelectorAll(".vk").forEach(e=>e.classList.toggle("lit",s===2));
+  root.querySelectorAll(".vv").forEach(e=>e.classList.toggle("lit",s===4));
+  root.querySelectorAll(".vq").forEach((e,i)=>e.classList.toggle("lit",s===2&&i===F));
+ },3200);
+};
+
+/* ===== 2. 레이어 여러 층 + prefill / decode ===== */
+W.qkvflow=(root)=>{
+ const toks=["나는","학교","에","갔다","."],NL=3;
+ const steps=[],dl=[0,0,0,0,0];
+ const snap=o=>steps.push({...o,dl:dl.slice()});
+ const P=[0,1,2];
+ snap({n:3,A:P,L:0,sub:"embed",ph:"Prefill",c:"질문 \"나는 학교에\"가 들어왔어요. 토큰 3개가 각각 벡터로 바뀌어 맨 아래에 놓여요.",d:"<b>Prefill</b>은 질문 토큰 전부를 한꺼번에 처리하는 단계예요. 레이어는 3개만 그렸어요. 실제 SmolLM2는 30개예요."});
+ for(let l=1;l<=NL;l++){
+  snap({n:3,A:P,L:l,sub:"qkv",ph:"Prefill",c:`레이어 ${l}: 토큰 3개가 <b>동시에</b> 각자 <b class='tq'>q</b>, <b class='tk'>k</b>, <b class='tv'>v</b>를 만들어요.`,d:l===1?"입력은 맨 아래 벡터예요. 레이어마다 가중치 Wq, Wk, Wv가 달라서 q, k, v도 레이어마다 따로 생겨요.":`입력은 레이어 ${l-1}의 출력이에요. 그래서 레이어 ${l}의 k, v는 레이어 ${l-1} 계산이 끝나야 만들 수 있어요.`});
+  snap({n:3,A:P,L:l,sub:"attn",ph:"Prefill",c:`레이어 ${l} 어텐션: 각 토큰의 <b class='tq'>q</b>가 자기와 <b>앞</b> 토큰들의 <b class='tk'>k</b>를 보고, 그 비율로 <b class='tv'>v</b>를 섞어요.`,d:"선이 'q가 어느 k를 보는지'예요. '나는'은 자기만, '학교'는 둘, '에'는 셋을 봐요. 여기서 q 3개가 <b>모두 쓰여요</b>. 각 토큰의 결과가 있어야 위 레이어의 k, v를 만들 수 있거든요."});
+  snap({n:3,A:P,L:l,sub:"store",ph:"Prefill",c:`레이어 ${l} 끝: <b class='tk'>k</b>, <b class='tv'>v</b>는 <b>캐시에 저장</b>, <b class='tq'>q</b>는 <b>버려요</b>. 섞은 결과는 MLP를 거쳐 위로 올라가요.`,d:l<NL?"위로 올라가는 화살표는 q가 아니라 '어텐션 + MLP 결과 벡터'예요. q는 이 레이어 안에서 할 일을 끝냈어요.":"이제 3개 레이어 모두에 질문 토큰 3개의 k, v가 저장됐어요."});
+  P.forEach(t=>dl[t]=l);
+ }
+ snap({n:3,A:P,L:NL+1,sub:"top",out:2,nx:"갔다",ph:"Prefill",c:"맨 위를 지난 <b>마지막 토큰 '에'의 결과</b>로 다음 단어를 골라요 → <b>'갔다'</b>",d:"'나는', '학교'의 맨 위 결과는 단어 고르기에 쓰지 않아요. 그 둘은 각 레이어의 k, v를 만들기 위해 계산된 거예요. 여기까지가 prefill이에요."});
+ const dec=(t,nx,fast)=>{
+  const ph=`Decode ${t-2}`;
+  snap({n:t+1,A:[t],L:0,sub:"embed",ph,c:`'${toks[t]}' <b>하나만</b> 새로 넣어요. 앞 토큰들은 다시 넣지 않아요.`,d:"앞 토큰들의 k, v는 이미 모든 레이어의 캐시에 있으니까요. 그림에서 앞 칸에는 k, v만 남아 있고 q는 비어 있어요."});
+  for(let l=1;l<=NL;l++){
+   if(!fast)snap({n:t+1,A:[t],L:l,sub:"qkv",ph,c:`레이어 ${l}: '${toks[t]}' 하나만 <b class='tq'>q</b>, <b class='tk'>k</b>, <b class='tv'>v</b>를 만들어요.`,d:"앞 토큰 칸은 아무것도 계산하지 않아요. 캐시에 있는 k, v를 그대로 둬요."});
+   snap({n:t+1,A:[t],L:l,sub:"attn",ph,c:`레이어 ${l}: '${toks[t]}'의 <b class='tq'>q</b> 하나가 이 레이어 캐시의 <b class='tk'>k</b> ${t+1}개를 모두 보고 <b class='tv'>v</b> ${t+1}개를 섞어요.`,d:fast?"앞에서 본 것과 똑같은 일이 반복돼요. q는 1개, 읽는 k, v는 캐시 전체.":"decode에서 q는 딱 1개예요. 그 q 하나가 캐시 전체를 읽어요. 그래서 문장이 길어질수록 읽을 캐시가 늘어나요."});
+   snap({n:t+1,A:[t],L:l,sub:"store",ph,c:`'${toks[t]}'의 <b class='tk'>k</b>, <b class='tv'>v</b>를 레이어 ${l} 캐시 <b>뒤에 붙이고</b>, <b class='tq'>q</b>는 버려요.`,d:`레이어 ${l}의 캐시가 ${t}칸 → ${t+1}칸으로 늘었어요.`});
+   dl[t]=l;
+  }
+  snap({n:t+1,A:[t],L:NL+1,sub:"top",out:t,nx,ph,c:`맨 위를 지난 '${toks[t]}'의 결과로 다음 단어를 골라요 → <b>'${nx}'</b>`,d:nx==="."?"이 '.'도 다음 스텝에 하나만 들어가서 똑같이 반복돼요.":"이 '"+nx+"'가 다음 decode 스텝의 입력이 돼요."});
+ };
+ dec(3,".",false);dec(4,"(끝)",true);
+ snap({n:5,A:[],L:-1,sub:"sum",ph:"정리",c:"정리: <b>k, v는 레이어마다 토큰 수만큼 쌓이고, q는 하나도 저장되지 않아요.</b>",d:"Prefill은 질문 토큰 전부의 q, k, v를 한꺼번에 계산해요(q도 모두 쓰고 버림). Decode는 매 스텝 새 토큰 1개만 q, k, v를 계산하고, 그 q가 캐시의 k, v 전체를 읽어요."});
+
+ const cx=t=>96+t*106,CW=96,ry=l=>l===0?384:388-l*92,CH=56;
+ const chipX=[8,35,62];
+ root.innerHTML=`<div class="an qf"><div class="an-ctrl"></div><div class="an-cap"><span class="an-ph"></span><p class="an-c"></p><p class="an-d"></p></div>
+ <div class="chart-scroll"><svg viewBox="0 0 640 432" width="100%" style="min-width:560px;display:block" role="img" aria-label="레이어별 q, k, v 흐름 애니메이션"></svg></div>
+ <div class="kv-stats qf-st"></div>
+ <div class="kv-legend"><span><i class="lq"></i>q: 이번에 계산 (쓰고 버림)</span><span><i class="lk"></i>k</span><span><i class="lv"></i>v</span><span><i class="lc"></i>캐시에 저장된 k, v</span><span><i class="lg"></i>버린 q</span></div></div>`;
+ const svg=root.querySelector("svg"),cap=root.querySelector(".an-c"),det=root.querySelector(".an-d"),ph=root.querySelector(".an-ph"),st=root.querySelector(".qf-st");
+ const chip=(x,y,k,state)=>`<g class="chp ${k} ${state}"><rect x="${x}" y="${y}" width="26" height="26" rx="5"/><text x="${x+13}" y="${y+17.5}" text-anchor="middle">${k}</text></g>`;
+ const render=i=>{
+  const s=steps[i];let o="";
+  ph.textContent=s.ph;ph.className="an-ph "+(s.ph==="Prefill"?"pf":s.ph==="정리"?"sm":"dc");
+  cap.innerHTML=s.c;det.innerHTML=s.d;
+  for(let l=1;l<=NL;l++)o+=`<text x="10" y="${ry(l)+33}" class="lbl">레이어 ${l}</text>`;
+  o+=`<text x="10" y="${ry(0)+25}" class="lbl">입력</text><text x="10" y="40" class="lbl">다음 단어</text>`;
+  for(let t=0;t<s.n;t++){
+   const x=cx(t),act=s.A.includes(t);
+   o+=`<g class="emb${act&&s.sub==="embed"?" new":""}"><rect x="${x}" y="${ry(0)}" width="${CW}" height="38" rx="7"/><text x="${x+CW/2}" y="${ry(0)+24}" text-anchor="middle">${toks[t]}</text></g>`;
+   for(let l=1;l<=NL;l++){
+    const y=ry(l);let q="off",kv="off",cell="";
+    if(l<=s.dl[t]){q="gone";kv="cache";}
+    else if(act&&l===s.L){cell=" cur";if(s.sub==="store"){q="gone drop";kv="cache pop";}else{q="new";kv="new";}}
+    o+=`<rect class="cell${cell}" x="${x}" y="${y}" width="${CW}" height="${CH}" rx="8"/>`;
+    o+=chip(x+chipX[0],y+20,"q",q)+chip(x+chipX[1],y+20,"k",kv)+chip(x+chipX[2],y+20,"v",kv);
+   }
+  }
+  if(s.sub==="attn"){
+   const y=ry(s.L)+20;
+   s.A.forEach(t=>{const strong=t===s.A[s.A.length-1];
+    for(let u=0;u<=t;u++){const x1=cx(t)+chipX[0]+13,x2=cx(u)+chipX[1]+13,h=u===t?14:Math.min(30,16+(t-u)*5);
+     o+=`<path class="arc${strong?" strong":""}" d="M${x1},${y} C${x1},${y-h} ${x2},${y-h} ${x2},${y}"/>`;
+     o+=`<circle class="arcdot${strong?" strong":""}" cx="${x2}" cy="${y}" r="2.5"/>`;}
+   });
+  }
+  if(s.sub==="store"||s.sub==="embed"){
+   s.A.forEach(t=>{const x=cx(t)+CW/2,l=s.L,y1=l===0?ry(0):ry(l),y2=l===NL?52:ry(l+1)+CH;
+    if(l<NL||s.sub==="embed")o+=`<path class="up" d="M${x},${y1-2} L${x},${y2+6}"/><path class="uph" d="M${x-5},${y2+12} L${x},${y2+4} L${x+5},${y2+12}"/>`;});
+  }
+  if(s.sub==="top"){
+   const x=cx(s.out)+CW/2,y1=ry(NL);
+   o+=`<path class="up" d="M${x},${y1-2} L${x},${56}"/><path class="uph" d="M${x-5},${62} L${x},${54} L${x+5},${62}"/>`;
+   o+=`<g class="nxt"><rect x="${x-56}" y="14" width="112" height="38" rx="8"/><text x="${x}" y="38" text-anchor="middle">→ ${s.nx}</text></g>`;
+  }
+  svg.innerHTML=o;
+  const cached=s.dl.filter((d,t)=>t<s.n&&d>=1).length;
+  const per=[1,2,3].map(l=>s.dl.filter((d,t)=>t<s.n&&d>=l).length+(s.sub==="store"&&l===s.L?s.A.length:0));
+  st.innerHTML=`<div><span>이번에 q, k, v를 새로 만드는 토큰</span><b>${s.sub==="sum"?"-":s.A.length+"개"}</b></div><div><span>캐시의 k, v (레이어 1 · 2 · 3)</span><b>${per.join(" · ")}칸</b></div><div><span>저장된 q</span><b>0개</b></div>`;
+ };
+ stepper(root,steps.length,render,2600);
+};
+})(window.WIDGETS);
+
+</script>
+<script>
+/* --- 애니메이션 위젯: mlpflow(MLP 안), training(가중치는 어떻게 만들어지나), moe(전문가 고르기), attvariants(최신 모델 어텐션 비교) --- */
+(function(W){
+const stepper=W._stepper;
+let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const R=(n,m,s=.6)=>Array.from({length:n},()=>Array.from({length:m},()=>(rnd()*2-1)*s));
+const mm=(x,M)=>M[0].map((_,j)=>x.reduce((a,xi,i)=>a+xi*M[i][j],0));
+const silu=v=>v/(1+Math.exp(-v));
+const f=v=>(v>=0?"":"−")+Math.abs(v).toFixed(1);
+const vec=(v,cls="",dim)=>`<span class="vec ${cls}">${v.map((n,i)=>`<i style="--a:${Math.min(1,Math.abs(n)/1.2)*70+8}%" class="${n<0?"ng":""}${dim&&dim[i]?" dim":""}">${f(n)}</i>`).join("")}</span>`;
+const capHTML=`<div class="an-ctrl"></div><div class="an-cap"><span class="an-ph"></span><p class="an-c"></p><p class="an-d"></p></div>`;
+const setCap=(root,o)=>{root.querySelector(".an-c").innerHTML=o.c;root.querySelector(".an-d").innerHTML=o.d||"";const p=root.querySelector(".an-ph");p.textContent=o.ph||"";p.hidden=!o.ph;p.className="an-ph "+(o.pc||"pf");};
+
+/* ===== MLP ===== */
+W.mlpflow=(root)=>{
+ seed=11;
+ const x=[0.8,-0.4,0.3,0.9,-0.6,0.2];
+ const Wg=R(6,16,.7),Wu=R(6,16,.7),Wd=R(16,6,.35);
+ const g=mm(x,Wg),u=mm(x,Wu),sg=g.map(silu),a=sg.map((v,i)=>v*u[i]),y=mm(a,Wd),o=x.map((v,i)=>v+y[i]);
+ const off=sg.map(v=>Math.abs(v)<0.12);
+ const S=[
+  {c:"어텐션을 마친 '학교'의 벡터 <b>x</b>예요. 어텐션에서 앞 토큰들의 정보를 이미 섞어 온 상태예요.",d:"실제로는 576칸이에요. 여기서는 6칸만 그렸어요. 숫자는 예시예요. MLP 앞에서 RMSNorm으로 크기를 한 번 고르게 맞춰요."},
+  {c:"① <b>넓히기</b>: x를 큰 표 두 개(<b>W_gate</b>, <b>W_up</b>)에 곱해서 576칸 → <b>1536칸</b>으로 늘려요.",d:"1536칸 하나하나를 <b>감지기</b>라고 생각하세요. W_gate의 열 하나가 감지기 하나예요. 각 감지기는 x 안에서 자기가 맡은 패턴(예: '장소를 나타내는 말', '과거형' 같은 것)이 있는지 점수를 매겨요. (여기서는 16칸만 그렸어요.)"},
+  {c:"② <b>켜기/끄기</b>: gate 점수에 <b>SiLU</b>를 씌워요. 음수는 거의 0으로 눌리고(꺼짐), 양수는 거의 그대로 남아요(켜짐).",d:"오른쪽 곡선이 SiLU예요. 이 '꺾임'이 비선형이에요. 이게 없으면 층을 아무리 쌓아도 행렬 하나와 같아져요."},
+  {c:"③ <b>통과시키기</b>: SiLU(gate) × up을 칸끼리 곱해요. 꺼진 감지기 칸은 0에 가까워서 up 값이 통과하지 못해요.",d:"흐린 칸이 꺼진 감지기예요. gate는 '이 감지기를 쓸까?', up은 '쓴다면 얼마나?'를 정해요. 이 구조를 <b>SwiGLU</b>라고 불러요. Llama, Qwen, SmolLM2 등 요즘 모델 대부분이 써요."},
+  {c:"④ <b>줄이기</b>: <b>W_down</b>을 곱해서 1536칸 → 576칸으로 되돌려요.",d:"켜진 감지기들이 각자 '내가 알고 있는 내용'을 576칸 벡터에 더해 넣는 단계예요. W_down의 행 하나 = 감지기 하나가 켜졌을 때 써 넣을 내용이에요."},
+  {c:"⑤ <b>더하기</b>: 원래 x에 MLP 결과를 더해요(잔차). 이게 이 레이어의 최종 출력이고, <b>다음 레이어의 x</b>가 돼요.",d:"더하기라서 MLP는 x를 갈아엎지 않고 '정보를 덧붙이는' 역할을 해요."},
+  {c:"MLP는 <b>다른 토큰을 전혀 보지 않아요.</b> '나는', '학교', '에'가 각자 따로 같은 MLP를 통과해요.",d:"어텐션 = 다른 토큰에게 물어보기, MLP = 혼자 곱씹기예요. 연구에 따르면 'Paris는 프랑스의 수도' 같은 <b>사실 지식</b>이 주로 MLP 가중치에 저장된다고 알려져 있어요. 감지기가 '프랑스의 수도'라는 패턴을 알아보면 W_down이 'Paris'쪽 정보를 써 넣는 식이에요."},
+  {c:"그래서 <b>파라미터 대부분이 MLP에</b> 있어요.",d:"SmolLM2 한 층의 MLP = 3 × 576 × 1536 = 약 265만 개. 30층이면 약 8천만 개로, 전체 1억 3천5백만 개의 약 <b>59%</b>예요. decode 때 매 스텝 이 가중치를 전부 메모리에서 읽어야 해서, 추론 속도에도 MLP가 가장 큰 몫을 차지해요."}
+ ];
+ const sv=`<svg viewBox="0 0 200 120" class="silu" aria-label="SiLU 곡선"><line x1="10" y1="80" x2="190" y2="80" class="ax"/><line x1="100" y1="8" x2="100" y2="112" class="ax"/>
+  <path d="${Array.from({length:81},(_,i)=>{const v=-4+i*0.1;return (i?"L":"M")+(100+v*22).toFixed(1)+","+(80-silu(v)*16).toFixed(1);}).join(" ")}" class="cv"/>
+  ${g.map(v=>{const c=Math.max(-4,Math.min(4,v));return `<circle cx="${(100+c*22).toFixed(1)}" cy="${(80-silu(c)*16).toFixed(1)}" r="2.6" class="pt"/>`;}).join("")}
+  <text x="12" y="104">음수 → 0 근처</text><text x="106" y="14">양수 → 그대로</text></svg>`;
+ root.innerHTML=`<div class="an ml">${capHTML}<div class="ml-stage">
+  <div class="ml-row qs" data-s="0"><span class="ml-l">x <small>576칸</small></span>${vec(x,"vx")}</div>
+  <div class="ml-row qs" data-s="1"><span class="ml-l">x × W_gate <small>1536칸</small></span>${vec(g,"vq")}</div>
+  <div class="ml-row qs" data-s="1"><span class="ml-l">x × W_up <small>1536칸</small></span>${vec(u,"vk")}</div>
+  <div class="ml-row qs ml-silu" data-s="2"><span class="ml-l">SiLU(gate)</span>${vec(sg,"vq",off)}${sv}</div>
+  <div class="ml-row qs" data-s="3"><span class="ml-l">SiLU(gate) × up</span>${vec(a,"vv",off)}</div>
+  <div class="ml-row qs" data-s="4"><span class="ml-l">× W_down <small>576칸</small></span>${vec(y,"vo")}</div>
+  <div class="ml-row qs" data-s="5"><span class="ml-l">x + 결과 = 출력</span>${vec(o,"vx")}<span class="qi-up">↑ 다음 레이어의 입력</span></div>
+  <div class="ml-par qs" data-s="6">${["나는","학교","에"].map(t=>`<div><b>${t}</b><span>→</span><span class="ml-box">MLP</span><span>→</span><span>출력</span></div>`).join("")}<p class="mini">세 토큰이 같은 MLP(같은 가중치)를 쓰지만, 서로의 값은 전혀 섞이지 않아요.</p></div>
+  <div class="kv-stats qs" data-s="7"><div><span>MLP 한 층 파라미터</span><b>2.65M</b></div><div><span>30층 합계</span><b>79.6M</b></div><div><span>전체 135M 중 비율</span><b>59%</b></div></div>
+ </div></div>`;
+ stepper(root,S.length,s=>{setCap(root,S[s]);
+  root.querySelectorAll(".qs").forEach(e=>{const n=+e.dataset.s;e.classList.toggle("on",s>=n);e.classList.toggle("hl",s===n);});
+  root.querySelector(".ml-stage").classList.toggle("show-dim",s>=2);
+ },3400);
+};
+
+/* ===== 학습: 가중치는 어떻게 만들어지나 ===== */
+W.training=(root)=>{
+ seed=5;const G0=R(8,14,1);
+ const cands=["갔다","왔다","먹었다","바나나"];
+ const S=[
+  {c:"학습 전: 모든 가중치(Wq, Wk, Wv, MLP 표, 임베딩…)는 <b>무작위 숫자</b>로 시작해요.",d:"이 상태의 모델은 아무 말이나 해요. 왼쪽 격자는 가중치 1억 3천5백만 개 중 일부를 색으로 그린 거예요.",p:null,it:"0",dz:0},
+  {c:"학습 문장 \"나는 학교에 갔다\"에서 \"나는 학교에\"까지만 넣고 <b>다음 단어를 맞혀 보게</b> 해요.",d:"무작위 상태라 후보들의 확률이 거의 비슷해요. 정답을 전혀 모르는 상태예요.",p:[.24,.26,.27,.23],it:"0",dz:0},
+  {c:"정답은 '갔다'. 모델이 정답에 준 확률이 24%뿐이라 <b>틀린 정도(loss)</b>를 계산해요: −log(0.24) ≈ <b>1.43</b>",d:"정답 확률이 100%면 loss는 0이에요. 학습의 목표는 딱 하나, 이 loss를 줄이는 거예요.",p:[.24,.26,.27,.23],it:"0",dz:0,loss:1.43},
+  {c:"<b>역전파</b>: loss를 줄이려면 각 가중치를 어느 쪽으로 얼마나 바꿔야 하는지 계산해서, <b>모든 가중치를 아주 조금씩</b> 고쳐요.",d:"테두리 칸이 바뀐 가중치예요. 실제로는 1억 3천5백만 개가 한 번에 조금씩 바뀌어요. 이 방법을 <b>경사 하강법</b>이라고 해요.",p:[.24,.26,.27,.23],it:"1",dz:1,loss:1.43},
+  {c:"다시 넣어 보면 '갔다'의 확률이 조금 올라요. 24% → <b>29%</b>",d:"한 번 고친 걸로는 아주 조금 좋아져요.",p:[.29,.26,.25,.20],it:"1",dz:1,loss:1.24},
+  {c:"이걸 인터넷 문장 <b>수조 개</b>로 <b>수십만 번 이상</b> 반복하면, 가중치에 언어 규칙과 지식이 새겨져요.",d:"SmolLM2-135M은 약 2조 토큰으로 학습했어요. 큰 모델은 GPU 수천~수만 대로 몇 달 걸려요. '왔다'도 말이 되니까 확률이 남아 있어요. 모델은 정답 하나를 외우는 게 아니라 <b>그럴듯한 정도</b>를 배워요.",p:[.68,.24,.06,.02],it:"수십만",dz:3,loss:.39},
+  {c:"학습이 끝나면 가중치를 <b>고정해서 파일로 저장</b>해요. 우리가 내려받는 모델 파일이 바로 이거예요.",d:"추론은 이 파일을 읽어서 계산만 해요. 가중치는 절대 바꾸지 않아요. 그래서 추론 서버를 만드는 사람의 일은 '<b>고정된 가중치로 계산을 얼마나 빨리 하느냐</b>'예요.",p:[.68,.24,.06,.02],it:"끝",dz:3,loss:.39,file:1}
+ ];
+ const grid=dz=>{seed=99;let o="";for(let r=0;r<8;r++)for(let c=0;c<14;c++){let v=G0[r][c];const ch=dz>0&&((r*7+c*3)%5<2);
+   if(dz)v=Math.tanh(v+(rnd()*2-1)*.35*dz);const a=Math.min(1,Math.abs(v))*75+10;
+   o+=`<rect x="${c*15}" y="${r*15}" width="13" height="13" rx="2" style="fill:color-mix(in srgb,var(${v<0?"--k":"--q"}) ${a}%,var(--surface))"${ch&&dz===1?' class="chg"':""}/>`;}return o;};
+ root.innerHTML=`<div class="an tr">${capHTML}<div class="tr-stage">
+  <div class="tr-w"><svg viewBox="-2 -2 214 124" aria-label="가중치 격자"></svg><p class="mini">가중치 (일부) · 학습 횟수 <b class="tr-it"></b></p><div class="tr-file" hidden>💾 model.safetensors<br><small>고정된 가중치</small></div></div>
+  <div class="tr-p"><p class="tr-q">"나는 학교에 ___"</p><div class="tr-bars"></div><p class="tr-loss"></p></div></div></div>`;
+ const svg=root.querySelector("svg"),bars=root.querySelector(".tr-bars");
+ stepper(root,S.length,s=>{const o=S[s];setCap(root,o);
+  svg.innerHTML=grid(o.dz);root.querySelector(".tr-it").textContent=o.it;root.querySelector(".tr-file").hidden=!o.file;
+  bars.innerHTML=o.p?cands.map((c,i)=>`<div class="tr-b${i===0?" ans":""}"><span>${c}${i===0&&s>=2?" ✓":""}</span><span class="pbar"><span style="width:${o.p[i]*100}%"></span></span><b>${Math.round(o.p[i]*100)}%</b></div>`).join(""):`<p class="mini">아직 아무것도 넣지 않았어요.</p>`;
+  root.querySelector(".tr-loss").innerHTML=o.loss?`loss = <b>${o.loss.toFixed(2)}</b>`:"";
+ },3600);
+};
+
+/* ===== MoE ===== */
+W.moe=(root)=>{
+ const NE=8,ex=i=>40+i*72,EW=60;
+ const sc={"학교":[.05,.31,.04,.08,.36,.06,.05,.05],"갔다":[.04,.06,.40,.05,.07,.05,.27,.06]};
+ const S=[
+  {c:"일반 MLP: 모든 토큰이 <b>큰 MLP 하나를 통째로</b> 통과해요.",d:"지금까지 본 구조예요. 모델이 커지면 MLP도 커지고, 토큰 하나 계산량도 그만큼 늘어요.",m:"dense"},
+  {c:"<b>MoE</b>(Mixture of Experts): 큰 MLP 하나 대신 <b>작은 MLP(전문가)</b>를 여러 개 둬요.",d:"여기서는 8개만 그렸어요. GLM-5는 256개예요. 전문가 하나하나는 앞에서 본 MLP와 똑같은 구조예요.",m:"split"},
+  {c:"<b>라우터</b>가 토큰 '학교'를 보고 전문가마다 점수를 매겨요.",d:"라우터는 아주 작은 표 하나예요(벡터 × 표 → 점수 8개). 이것도 학습으로 만들어져요.",m:"route",t:"학교"},
+  {c:"점수가 높은 <b>2개만</b> 골라서 계산해요. 나머지 6개는 이 토큰에 대해 <b>아예 계산하지 않아요</b>.",d:"GLM-5는 256개 중 8개를 골라요. 그래서 모델 전체는 거대해도, 토큰 하나당 계산량은 작아요.",m:"pick",t:"학교"},
+  {c:"두 전문가의 결과를 점수 비율대로 섞어서 출력을 만들어요.",d:"그다음은 일반 MLP와 같아요. x에 더해서(잔차) 다음 레이어로 올라가요.",m:"mix",t:"학교"},
+  {c:"다른 토큰 '갔다'는 <b>다른 전문가</b>를 골라요.",d:"토큰마다 가는 길이 달라요. 학습하면서 전문가들이 자연스럽게 서로 다른 종류의 토큰을 맡게 돼요.",m:"pick",t:"갔다"},
+  {c:"정리: <b>가중치는 전부 메모리에 있어야 하지만, 계산은 일부만</b> 해요.",d:"이게 추론 서버에 주는 숙제예요. ① 전문가 전부를 GPU 메모리에 올려야 해서 메모리가 많이 필요해요. ② 배치 안의 토큰들이 서로 다른 전문가로 흩어져서, 전문가를 GPU 여러 대에 나눠 두고 토큰을 주고받아요. 이게 로드맵 5단계의 <b>EP(전문가 병렬)</b>예요.",m:"sum"}
+ ];
+ root.innerHTML=`<div class="an mo">${capHTML}<div class="chart-scroll"><svg viewBox="0 0 640 300" width="100%" style="min-width:540px;display:block" role="img" aria-label="MoE 애니메이션"></svg></div><div class="kv-stats mo-st"></div></div>`;
+ const svg=root.querySelector("svg"),st=root.querySelector(".mo-st");
+ stepper(root,S.length,s=>{const o=S[s];setCap(root,o);let h="";
+  if(o.m==="dense"){h+=`<g class="tokb"><rect x="270" y="14" width="100" height="36" rx="8"/><text x="320" y="37" text-anchor="middle">토큰</text></g>`;
+   h+=`<path class="up dn" d="M320,52 L320,96"/><g class="bigm"><rect x="60" y="100" width="520" height="80" rx="10"/><text x="320" y="146" text-anchor="middle">큰 MLP 하나 (전부 계산)</text></g><path class="up dn" d="M320,182 L320,236"/><g class="tokb"><rect x="270" y="240" width="100" height="36" rx="8"/><text x="320" y="263" text-anchor="middle">출력</text></g>`;}
+  else{
+   const p=o.t?sc[o.t]:null,top=p?p.map((v,i)=>i).sort((a,b)=>p[b]-p[a]).slice(0,2):[];
+   if(o.m!=="split"&&o.m!=="sum")h+=`<g class="tokb new"><rect x="270" y="8" width="100" height="34" rx="8"/><text x="320" y="30" text-anchor="middle">${o.t}</text></g><text x="40" y="100" class="lbl">라우터 점수</text>`;
+   for(let i=0;i<NE;i++){const on=top.includes(i)&&(o.m==="pick"||o.m==="mix"),cls=o.m==="sum"?"e":p&&o.m!=="route"?(on?"e on":"e off"):"e";
+    if(p){const bh=p[i]*150;h+=`<rect class="rb${on?" on":""}" x="${ex(i)+EW/2-10}" y="${140-bh}" width="20" height="${bh}" rx="3"/><text class="rv" x="${ex(i)+EW/2}" y="${136-bh}" text-anchor="middle">${Math.round(p[i]*100)}</text>`;
+     if(on)h+=`<path class="arc strong" d="M320,44 C320,100 ${ex(i)+EW/2},100 ${ex(i)+EW/2},150"/>`;}
+    h+=`<g class="${cls}"><rect x="${ex(i)}" y="150" width="${EW}" height="56" rx="8"/><text x="${ex(i)+EW/2}" y="174" text-anchor="middle">전문가</text><text x="${ex(i)+EW/2}" y="194" text-anchor="middle">${i+1}</text></g>`;
+    if(on&&o.m==="mix")h+=`<path class="up" d="M${ex(i)+EW/2},208 C${ex(i)+EW/2},240 320,236 320,252"/>`;}
+   if(o.m==="mix")h+=`<g class="tokb"><rect x="250" y="254" width="140" height="36" rx="8"/><text x="320" y="277" text-anchor="middle">${top.map(i=>`${Math.round(p[i]/(p[top[0]]+p[top[1]])*100)}%×전문가${i+1}`).join(" + ")}</text></g>`;
+   if(o.m==="split")h+=`<text x="320" y="120" text-anchor="middle" class="lbl">큰 MLP를 작은 전문가 8개로</text>`;
+   if(o.m==="sum")h+=`<text x="320" y="120" text-anchor="middle" class="lbl">전부 메모리에 올려 두고, 토큰마다 일부만 계산</text>`;
+  }
+  svg.innerHTML=h;
+  st.innerHTML=o.m==="sum"?`<div><span>GLM-5 전체 / 토큰당 사용</span><b>744B / 약 40B</b></div><div><span>DeepSeek V4-Pro 전체 / 토큰당</span><b>1.6T / 약 49B</b></div><div><span>이 그림 (전문가 8개 중)</span><b>2개 사용</b></div>`
+   :`<div><span>전문가 수</span><b>${o.m==="dense"?"1 (큰 것)":NE+"개"}</b></div><div><span>이 토큰이 계산하는 전문가</span><b>${o.m==="pick"||o.m==="mix"?"2개":o.m==="dense"?"전부":"-"}</b></div>`;
+ },3400);
+};
+
+/* ===== 최신 모델 어텐션 비교 ===== */
+W.attvariants=(root)=>{
+ const N=24,X0=40,SW=576;
+ const idxScore=[.2,.1,.7,.15,.3,.9,.1,.2,.4,.05,.6,.25,.15,.8,.1,.3,.2,.5,.1,.35,.65,.2,.4,.95];
+ const cells=(n,cls,y=78,lab)=>{const w=SW/n;let o="";for(let i=0;i<n;i++)o+=`<rect class="cl ${typeof cls==="function"?cls(i):cls}" x="${X0+i*w}" y="${y}" width="${Math.max(3,w-4)}" height="30" rx="4"/>`;
+  if(lab)o+=`<text x="${X0}" y="${y-8}" class="lbl">${lab}</text>`;return o;};
+ const cx=(n,i)=>X0+i*(SW/n)+(SW/n-4)/2;
+ const qbox=`<g class="tokb new"><rect x="260" y="226" width="120" height="34" rx="8"/><text x="320" y="248" text-anchor="middle">새 토큰의 q</text></g>`;
+ const reads=(n,ids,y=108,from=226)=>ids.map(i=>`<path class="rl" d="M320,${from} L${cx(n,i)},${y+2}"/>`).join("");
+ const memo=(t,y=70)=>{let o=`<text x="250" y="${y-8}" class="lbl">메모 한 장 (크기 고정)</text>`;seed=3+t*7;for(let r=0;r<5;r++)for(let c=0;c<8;c++){const v=rnd();o+=`<rect class="mc${t&&((r+c+t)%4===0)?" chg":""}" x="${250+c*18}" y="${y+r*18}" width="16" height="16" rx="3" style="opacity:${(.25+v*.75).toFixed(2)}"/>`;}return o;};
+ const strip=(cur)=>["D","D","D","A"].map((k,i)=>`<g class="ly${i===cur?" cur":""}${k==="A"?" att":""}"><rect x="${X0+i*70}" y="6" width="64" height="24" rx="5"/><text x="${X0+i*70+32}" y="22" text-anchor="middle">${k==="A"?"어텐션":"DeltaNet"}</text></g>`).join("")+`<text x="${X0+290}" y="22" class="lbl">← 이 4층 묶음을 16번 반복 (64층)</text>`;
+ const top=(arr,k)=>arr.map((v,i)=>i).sort((a,b)=>arr[b]-arr[a]).slice(0,k);
+ const cmp6=[0,1,2,3,4,5].map(g=>Math.max(...idxScore.slice(g*4,g*4+4)));
+ const V={
+  base:{name:"기본 어텐션",ana:"지난 대화를 <b>한 글자도 빠짐없이</b> 노트에 적어 두고, 매번 처음부터 끝까지 다 읽어요.",steps:[
+   {c:"지난 토큰 24개의 k, v를 <b>하나도 빠짐없이</b> 저장해요.",d:"지금까지 배운 KV 캐시예요. Llama, SmolLM2가 이 방식이에요.",svg:()=>cells(N,"st",78,"KV 캐시")+qbox,st:"24칸",rd:"-"},
+   {c:"새 토큰의 q가 <b>24칸 전부</b>를 읽어요.",d:"정확하지만, 칸이 많을수록 읽는 시간이 늘어요.",svg:()=>cells(N,"rd",78,"KV 캐시")+reads(N,[...Array(N).keys()])+qbox,st:"24칸",rd:"24칸"},
+   {c:"대화가 길어지면 <b>저장도, 읽기도 같이</b> 늘어나요.",d:"100만 토큰이면 100만 칸을 저장하고, 단어 하나 만들 때마다 100만 칸을 읽어요. 이 문제를 풀려고 아래 세 가지 방법이 나왔어요.",svg:()=>cells(48,"rd",78,"KV 캐시 (토큰 48개)")+reads(48,[...Array(48).keys()])+qbox,st:"48칸",rd:"48칸"}]},
+  qwen:{name:"Qwen3.8",ana:"대부분의 층은 <b>요약 메모 한 장</b>만 들고 다니고, 4층마다 한 번만 <b>원본 노트</b>를 펼쳐 봐요.",steps:[
+   {c:"<b>DeltaNet 층</b>(4층 중 3층): k, v를 쌓지 않고 <b>메모 한 장</b>만 들고 다녀요.",d:"메모는 숫자 표 하나예요. 크기가 정해져 있어요.",svg:()=>strip(0)+memo(0)+qbox,st:"메모 1장",rd:"-"},
+   {c:"새 토큰이 오면 메모를 <b>조금 흐리게 지우고(gate)</b>, 새 정보를 <b>덧적어요(delta)</b>.",d:"테두리 칸이 이번에 고친 곳이에요. 오래된 내용은 점점 흐려져요. 그래서 '요약'이에요.",svg:()=>strip(1)+memo(1)+qbox,st:"메모 1장",rd:"-"},
+   {c:"q는 <b>메모 한 장만</b> 읽어요. 대화가 100만 토큰이 돼도 메모 크기는 그대로예요.",d:"그래서 빠르고 메모리도 일정해요. 대신 세세한 내용은 잊을 수 있어요.",svg:()=>strip(2)+memo(2)+`<path class="rl" d="M320,226 L322,162"/>`+qbox,st:"메모 1장",rd:"메모 1장"},
+   {c:"<b>4번째 층은 일반 어텐션</b>이라 원본 노트(KV 캐시)를 전부 펼쳐 봐요.",d:"요약 메모가 놓친 세부 내용을 여기서 되찾아요.",svg:()=>strip(3)+cells(N,"rd",78,"KV 캐시 (어텐션 층만)")+reads(N,[...Array(N).keys()])+qbox,st:"24칸",rd:"24칸"},
+   {c:"정리: KV 캐시가 필요한 층이 <b>64층 중 16층</b>뿐이에요. 캐시가 약 1/4로 줄어요.",d:"추론 서버는 'KV 캐시'와 '요청마다 하나씩 있는 메모' 두 종류를 같이 관리해야 해요.",svg:()=>strip(-1)+`<text x="320" y="110" text-anchor="middle" class="big">D D D <tspan class="tq">A</tspan> × 16 = 64층</text><text x="320" y="150" text-anchor="middle" class="lbl">캐시가 필요한 층: 16개</text>`,st:"1/4",rd:"층마다 다름"}]},
+  ds:{name:"DeepSeek V4",ana:"노트를 <b>몇 줄씩 묶어 압축</b>해 두고, <b>색인</b>으로 필요한 묶음만 찾아 읽어요.",steps:[
+   {c:"원래라면 토큰 24개의 k, v를 24칸에 저장해요.",d:"",svg:()=>cells(N,"st",78,"원래 KV 캐시")+qbox,st:"24칸",rd:"-"},
+   {c:"<b>4토큰씩 묶어서 1칸으로 압축</b>해 저장해요 (CSA). 24칸 → <b>6칸</b>.",d:"묶는 크기 4는 그림용 예시예요. 압축 방법도 학습으로 만들어져요.",svg:()=>cells(N,"sk",60,"원래 (저장 안 함)")+[0,1,2,3,4,5].map(g=>`<path class="mg" d="M${cx(N,g*4)},92 L${cx(6,g)},128 M${cx(N,g*4+3)},92 L${cx(6,g)},128"/>`).join("")+cells(6,"st cmp",130,"")+`<text x="${X0}" y="178" class="lbl">압축한 KV 캐시 (6칸)</text>`+qbox,st:"6칸",rd:"-"},
+   {c:"<b>색인기</b>(Lightning Indexer)가 6칸에 빠르게 점수를 매기고, q는 <b>상위 2칸만</b> 진짜로 읽어요.",d:"압축(저장을 줄임)과 골라 읽기(읽는 양을 줄임)를 둘 다 해요.",svg:()=>{const t=top(cmp6,2);return cells(6,i=>t.includes(i)?"rd cmp":"st cmp dimc",78,"압축한 KV 캐시")+cmp6.map((v,i)=>`<text x="${cx(6,i)}" y="126" text-anchor="middle" class="sc">${Math.round(v*100)}</text>`).join("")+`<g class="idx"><rect x="270" y="170" width="100" height="28" rx="6"/><text x="320" y="189" text-anchor="middle">색인기</text></g><path class="rl dim" d="M320,226 L320,200"/>`+t.map(i=>`<path class="rl" d="M320,170 L${cx(6,i)},110"/>`).join("")+qbox;},st:"6칸",rd:"2칸"},
+   {c:"어떤 층은 <b>훨씬 세게 압축</b>해요 (HCA). 넓은 범위를 대충 요약한 칸이에요.",d:"두 방식을 층마다 섞어 써요. 가까운 내용은 자세히, 먼 내용은 크게 뭉뚱그려 보는 식이에요.",svg:()=>cells(2,"st cmp",78,"아주 세게 압축한 KV 캐시 (2칸)")+reads(2,[0,1])+qbox,st:"2칸",rd:"2칸"},
+   {c:"정리: 100만 토큰 기준, KV 캐시가 이전 버전(V3.2)의 <b>약 10%</b>라고 해요.",d:"저장도 줄이고 읽기도 줄이는 방식이에요. 대신 압축과 색인 계산이 추가돼서, 추론 엔진에 전용 커널이 필요해요.",svg:()=>`<text x="320" y="110" text-anchor="middle" class="big">저장 ↓ + 읽기 ↓</text><text x="320" y="150" text-anchor="middle" class="lbl">압축(CSA, HCA) + 색인으로 골라 읽기</text>`,st:"약 10%",rd:"일부"}]},
+  glm:{name:"GLM-5",ana:"노트는 <b>전부 그대로</b> 두되, <b>색인</b>을 만들어서 관련 있는 줄만 골라 읽어요.",steps:[
+   {c:"저장은 기본 어텐션처럼 <b>24칸 전부</b> 해요.",d:"GLM-5는 DeepSeek이 V3.2에서 만든 희소 어텐션(DSA)을 가져다 썼어요.",svg:()=>cells(N,"st",78,"KV 캐시")+qbox,st:"24칸",rd:"-"},
+   {c:"<b>색인기</b>가 24칸 전부에 가볍게 점수를 매겨요.",d:"색인기는 아주 작은 계산이라 빨라요. 점수가 높을수록 지금 q와 관련 있는 토큰이에요.",svg:()=>cells(N,"st",78,"KV 캐시")+idxScore.map((v,i)=>`<rect class="ib" x="${cx(N,i)-5}" y="${150-v*36}" width="10" height="${v*36}" rx="2"/>`).join("")+`<text x="${X0}" y="166" class="lbl">색인 점수</text>`+qbox,st:"24칸",rd:"-"},
+   {c:"q는 점수가 높은 <b>6칸만</b> 진짜로 읽어요.",d:"실제로는 수십만 칸 중 수천 칸을 골라요. 읽는 양이 크게 줄어요.",svg:()=>{const t=top(idxScore,6);return cells(N,i=>t.includes(i)?"rd":"st dimc",78,"KV 캐시")+reads(N,t)+qbox;},st:"24칸",rd:"6칸"},
+   {c:"GLM-5.2는 한 번 고른 결과를 <b>여러 층이 같이</b> 써요 (IndexShare).",d:"층마다 색인을 새로 계산하지 않아도 돼서, 색인 비용도 아껴요.",svg:()=>{const t=top(idxScore,6);return [0,1,2].map(l=>cells(N,i=>t.includes(i)?"rd":"st dimc",44+l*50,`레이어 ${l+1}`)).join("")+qbox;},st:"24칸",rd:"6칸 (층끼리 공유)"},
+   {c:"정리: <b>저장은 그대로, 읽는 양만</b> 줄여요.",d:"메모리는 기본과 같지만, 긴 대화에서 단어 하나 만드는 시간이 크게 줄어요.",svg:()=>`<text x="320" y="110" text-anchor="middle" class="big">저장 = + 읽기 ↓</text><text x="320" y="150" text-anchor="middle" class="lbl">색인으로 골라 읽기 (DSA)</text>`,st:"24칸",rd:"일부"}]}
+ };
+ let cur="base",stop=null;
+ root.innerHTML=`<div class="an av"><div class="kv-ctrl"><div class="seg" role="group" aria-label="모델 선택">${Object.entries(V).map(([k,v])=>`<button type="button" data-k="${k}"${k===cur?' class="on"':""}>${v.name}</button>`).join("")}</div></div>
+  <p class="av-ana"></p>${capHTML}<div class="chart-scroll"><svg viewBox="0 0 640 270" width="100%" style="min-width:540px;display:block" role="img" aria-label="어텐션 방식 비교 애니메이션"></svg></div><div class="kv-stats av-st"></div>
+  <div class="av-tbl"><table><thead><tr><th>방식</th><th>저장 (KV 캐시)</th><th>읽기 (단어 하나당)</th><th>비유</th></tr></thead><tbody>
+   <tr><th>기본</th><td>전부</td><td>전부</td><td>노트 전체를 매번 다 읽기</td></tr>
+   <tr><th>Qwen3.8</th><td>1/4 층만</td><td>메모 + 가끔 전부</td><td>요약 메모, 4층마다 원본</td></tr>
+   <tr><th>DeepSeek V4</th><td>압축해서 적게</td><td>골라서 일부</td><td>묶어 압축 + 색인</td></tr>
+   <tr><th>GLM-5</th><td>전부</td><td>골라서 일부</td><td>색인으로 골라 읽기</td></tr></tbody></table></div></div>`;
+ const svg=root.querySelector("svg"),st=root.querySelector(".av-st");
+ const start=()=>{if(stop)stop();const v=V[cur];root.querySelector(".av-ana").innerHTML=`<b>비유</b> · ${v.ana}`;
+  stop=stepper(root,v.steps.length,s=>{const o=v.steps[s];setCap(root,{...o,ph:v.name,pc:cur==="base"?"pf":"dc"});svg.innerHTML=o.svg();
+   st.innerHTML=`<div><span>저장한 것</span><b>${o.st}</b></div><div><span>이번에 읽은 것</span><b>${o.rd}</b></div>`;},3400);};
+ root.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{cur=b.dataset.k;root.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));start();}));
+ start();
+};
+})(window.WIDGETS);
+
+</script>
+<script>
+const E={mac:["mac","맥"],free:["free","무료 GPU"],paid:["paid","유료 GPU"],big:["big","H100+"],web:["","웹"]};
+const PHASES=[
+{id:"p1",depth:"L7 · 개념",title:"큰 그림: LLM 추론은 어떻게 돌아가나",
+ intro:"코드를 짜기 전에 추론이 왜 느린지, 무엇이 병목인지 감을 잡는 단계예요. 이후 모든 최적화가 여기서 나오는 질문 하나에 대한 답이에요. 지금 이 순간 GPU는 메모리를 기다리나, 연산을 기다리나?",
+ goal:"작은 모델로 KV 캐시가 있을 때와 없을 때 생성 속도 차이를 직접 측정하고, 그 차이를 roofline으로 설명할 수 있으면 다음 단계로 가요.",
+ items:[
+ {id:"p1-1",t:"Transformer 구조를 손으로 다시 짜보기",env:["mac"],why:"어텐션, MLP, RMSNorm, RoPE가 각각 어떤 행렬곱인지 알아야 나중에 어떤 연산을 합치고 쪼갤지 판단할 수 있어요.",do:"Karpathy 영상을 따라 GPT를 처음부터 구현해 보고, HuggingFace의 SmolLM2-135M 가중치를 직접 짠 forward에 올려 HF 출력과 logits가 일치하는지 확인해요.",res:[["Karpathy, Let's build GPT (영상)","https://www.youtube.com/watch?v=kCc8FmEb1nY"],["Jay Alammar, The Illustrated Transformer","https://jalammar.github.io/illustrated-transformer/"],["SmolLM2-135M (HuggingFace)","https://huggingface.co/HuggingFaceTB/SmolLM2-135M"]]},
+ {id:"p1-2",t:"Prefill과 Decode, 그리고 KV 캐시",env:["mac"],why:"프롬프트를 한 번에 처리하는 prefill은 연산이 많고, 토큰을 하나씩 뽑는 decode는 메모리를 많이 읽어요. 서빙 엔진 설계는 거의 다 이 비대칭에서 나와요.",do:"위에서 만든 모델에 KV 캐시를 붙이고, 캐시 없이 생성할 때와 토큰당 시간을 비교해요. 시퀀스 길이에 따라 어떻게 달라지는지 그래프로 그려 보세요.",res:[["Databricks, LLM Inference Performance Engineering","https://www.databricks.com/blog/llm-inference-performance-engineering-best-practices"],["Lilian Weng, Large Transformer Model Inference Optimization","https://lilianweng.github.io/posts/2023-01-10-inference-optimization/"]]},
+ {id:"p1-3",t:"성능의 첫 원리: memory-bound와 compute-bound",env:["web"],why:"연산량을 메모리 이동량으로 나눈 값(arithmetic intensity)이 GPU 스펙의 비율보다 낮으면 메모리가 병목이에요. 이 한 줄이 배칭, 양자화, 퓨전이 왜 효과 있는지 설명해요.",do:"Horace He의 글을 읽고, 이 사이트의 '추론 계산기' 탭에서 배치를 1에서 256까지 바꿔 가며 언제 compute-bound로 넘어가는지 확인해요.",res:[["Horace He, Making Deep Learning Go Brrrr From First Principles","https://horace.io/brrr_intro.html"],["How to Scale Your Model (Google DeepMind), Roofline 장","https://jax-ml.github.io/scaling-book/roofline/"]]},
+ {id:"p1-4",t:"샘플링 직접 구현하기",env:["mac"],why:"greedy, temperature, top-k, top-p, repetition penalty는 엔진마다 GPU에서 배치로 처리해요. 로직을 알아야 나중에 이걸 커널로 옮길 수 있어요.",do:"logits 텐서를 받아 배치 단위로 temperature, top-k, top-p를 적용하는 sampler를 짜요. 요청마다 파라미터가 달라도 동작하게 만드는 게 포인트예요.",res:[["HuggingFace, How to generate text","https://huggingface.co/blog/how-to-generate"]]},
+ {id:"p1-5",t:"GPU 용어 지도 훑기",env:["web"],why:"SM, warp, HBM, tensor core 같은 단어가 머릿속에 지도처럼 있어야 이후 자료가 술술 읽혀요.",do:"Modal GPU Glossary를 처음부터 끝까지 한 번 읽고, 이 사이트 용어집에 없는 단어를 메모해 두세요.",res:[["Modal, GPU Glossary","https://modal.com/gpu-glossary"]]},
+ {id:"p1-6",t:"GPU 관점에서 본 Transformer 연산량",env:["web"],why:"파라미터 수, FLOPs, 메모리 사용량을 손으로 추정하는 습관이 있어야 최적화 결과가 맞는지 틀렸는지 바로 알 수 있어요.",do:"Scaling Book의 Transformer 수학 장과 GPU 장을 읽고, Llama-3.1-8B의 토큰당 FLOPs와 KV 캐시 크기를 직접 계산해서 계산기 값과 비교해요.",res:[["How to Scale Your Model, All the Transformer Math","https://jax-ml.github.io/scaling-book/transformers/"],["How to Scale Your Model, How to Think About GPUs","https://jax-ml.github.io/scaling-book/gpus/"]]}
+ ]},
+{id:"p2",depth:"L6 · 엔진",title:"미니 인퍼런스 엔진 직접 만들기",
+ intro:"vLLM과 SGLang의 핵심 아이디어를 작은 엔진에 하나씩 붙여 보는 단계예요. 스케줄러와 KV 블록 관리는 CPU 로직이라 맥미니에서 135M 모델로 충분히 개발할 수 있어요.",
+ goal:"직접 만든 엔진이 OpenAI 호환 API로 동시 요청 수십 개를 받아 continuous batching, paged KV, prefix cache로 처리하고, HF generate와 같은 토큰을 내면 졸업이에요.",
+ items:[
+ {id:"p2-1",t:"nano-vllm 전체 코드 읽기",env:["mac"],why:"약 1,200줄 안에 vLLM의 핵심 구조가 다 들어 있어서, 큰 코드베이스 전에 전체 그림을 잡기 가장 좋아요.",do:"scheduler, block manager, model runner를 순서대로 읽으며 요청 하나가 들어와서 나갈 때까지의 흐름을 다이어그램으로 그려요.",res:[["nano-vllm (GitHub)","https://github.com/GeeeekExplorer/nano-vllm"]]},
+ {id:"p2-2",t:"Continuous batching (iteration-level scheduling)",env:["mac"],why:"요청이 끝날 때까지 배치를 묶어 두지 않고, 매 스텝마다 끝난 요청을 빼고 새 요청을 넣어요. 처리량이 몇 배씩 오르는 출발점이에요.",do:"요청 큐, running 리스트, 스텝마다 prefill과 decode를 섞는 스케줄러를 직접 짜요. 길이가 들쭉날쭉한 요청 100개로 static batching과 처리량을 비교해요.",res:[["Orca 논문 (OSDI '22)","https://www.usenix.org/conference/osdi22/presentation/yu"],["Anyscale, Continuous batching 해설","https://www.anyscale.com/blog/continuous-batching-llm-inference"]]},
+ {id:"p2-3",t:"PagedAttention과 KV 블록 매니저",env:["mac"],why:"KV 캐시를 OS의 가상 메모리처럼 고정 크기 블록으로 나누면 단편화가 사라지고 같은 메모리에 훨씬 많은 요청을 올릴 수 있어요.",do:"블록 풀, 요청별 block table, 할당과 해제, 메모리가 모자랄 때 preemption까지 구현해요. 처음엔 어텐션을 block table로 gather하는 순수 PyTorch로 짜면 돼요.",res:[["vLLM 논문, Efficient Memory Management for LLM Serving with PagedAttention","https://arxiv.org/abs/2309.06180"]]},
+ {id:"p2-4",t:"Prefix caching과 RadixAttention",env:["mac"],why:"시스템 프롬프트나 대화 기록처럼 앞부분이 같은 요청은 KV를 재사용할 수 있어요. 채팅과 에이전트 서빙에서 TTFT를 크게 줄여요.",do:"블록 해시 기반 prefix cache를 먼저 만들고, 이어서 radix tree와 LRU eviction으로 바꿔 봐요. 같은 시스템 프롬프트 요청에서 캐시 적중률을 측정해요.",res:[["SGLang 논문","https://arxiv.org/abs/2312.07104"],["mini-sglang (GitHub)","https://github.com/sgl-project/mini-sglang"]]},
+ {id:"p2-5",t:"Chunked prefill",env:["mac"],why:"긴 프롬프트 하나가 prefill을 독차지하면 다른 요청의 decode가 멈춰요. prefill을 잘게 쪼개 decode와 섞으면 지연이 고르게 돼요.",do:"스텝당 토큰 예산을 정하고 긴 prefill을 쪼개서 decode와 같이 넣는 정책을 구현해요. TPOT의 p99가 어떻게 바뀌는지 봐요.",res:[["Sarathi-Serve 논문","https://arxiv.org/abs/2403.02310"]]},
+ {id:"p2-6",t:"OpenAI 호환 API 서버와 스트리밍",env:["mac"],why:"엔진과 별개로 요청을 받고, 토크나이즈하고, SSE로 토큰을 흘려보내는 프론트엔드가 필요해요. 실서비스 지연의 상당 부분이 여기서 생겨요.",do:"FastAPI로 /v1/chat/completions를 만들고, 엔진 루프는 별도 프로세스로 띄워 큐로 통신하게 해요. vLLM의 API 서버와 엔진 분리 구조를 참고해요.",res:[["OpenAI Chat Completions API 레퍼런스","https://platform.openai.com/docs/api-reference/chat"],["vLLM OpenAI 호환 서버 문서","https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html"]]},
+ {id:"p2-7",t:"벤치마크: TTFT, TPOT, 처리량",env:["mac","free"],why:"측정 없는 최적화는 감이에요. 서빙 성능은 평균이 아니라 분포(p50, p99)와 SLO로 봐요.",do:"요청 도착을 포아송 분포로 흉내 내는 부하 생성기를 짜고, 요청률을 올려 가며 TTFT와 TPOT 곡선을 그려요. 같은 스크립트를 Colab T4에서도 돌려 봐요.",res:[["vLLM 벤치마크 문서","https://docs.vllm.ai/en/latest/contributing/benchmarks.html"]]},
+ {id:"p2-8",t:"CPU 오버헤드 줄이기: 스케줄링과 연산 겹치기",env:["free"],why:"GPU가 빨라질수록 파이썬 스케줄러가 병목이 돼요. 다음 스텝 스케줄링을 현재 GPU 연산과 겹치는 게 요즘 엔진의 핵심 기법이에요.",do:"mini-sglang의 overlap scheduling을 읽고, 내 엔진에서 GPU가 노는 시간을 torch.profiler로 측정한 뒤 겹치기를 적용해요.",res:[["mini-sglang (GitHub)","https://github.com/sgl-project/mini-sglang"],["PyTorch Profiler 튜토리얼","https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html"]]}
+ ]},
+{id:"p3",depth:"L5 · GPU 입문",title:"GPU 프로그래밍 입문: CUDA와 Triton",
+ intro:"여기서부터 GPU를 직접 다뤄요. GPU가 없어도 시작할 수 있는 길이 많아요. Triton Puzzles는 CPU 인터프리터로 맥에서 돌고, LeetGPU는 브라우저에서 CUDA를 실행해 줘요.",
+ goal:"reduction, softmax, layernorm 커널을 CUDA와 Triton 양쪽으로 짜고, Nsight Compute로 메모리 대역폭을 몇 % 썼는지 설명할 수 있으면 다음으로 가요.",
+ items:[
+ {id:"p3-1",t:"GPU 실행 모델: SM, warp, 메모리 계층",env:["web"],why:"스레드 블록이 SM에 어떻게 올라가고, warp 32개 스레드가 어떻게 같이 움직이고, 레지스터, shared memory, L2, HBM의 속도와 크기가 얼마나 다른지가 모든 커널 최적화의 기초예요.",do:"PMPP 책 1~6장을 읽고, 내가 쓸 GPU(T4, L4)의 SM 수, shared memory 크기, 대역폭을 표로 정리해요.",res:[["Programming Massively Parallel Processors, 4판 (책)","https://www.elsevier.com/books/programming-massively-parallel-processors/hwu/978-0-323-91231-0"],["NVIDIA CUDA C++ Programming Guide","https://docs.nvidia.com/cuda/cuda-c-programming-guide/"]]},
+ {id:"p3-2",t:"GPU Puzzles로 병렬 사고 익히기",env:["free"],why:"짧은 퍼즐을 풀면서 인덱싱, shared memory, 동기화를 몸으로 익혀요. Colab에서 바로 돌아가요.",do:"14개 퍼즐을 전부 풀어요. 특히 prefix sum과 matmul 퍼즐은 나중에 계속 다시 나와요.",res:[["Sasha Rush, GPU Puzzles","https://github.com/srush/GPU-Puzzles"]]},
+ {id:"p3-3",t:"첫 CUDA 커널: vector add부터 reduction까지",env:["free","web"],why:"메모리 coalescing, warp divergence, shared memory bank conflict를 직접 겪어 봐야 이후 자료가 와닿아요.",do:"vector add, 단계별 reduction(naive → shared memory → warp shuffle), 2D transpose를 짜고 단계마다 대역폭을 측정해요. GPU가 없을 땐 LeetGPU에서 연습해요.",res:[["LeetGPU (브라우저에서 CUDA 실행)","https://leetgpu.com"],["Mark Harris, Optimizing Parallel Reduction in CUDA (PDF)","https://developer.download.nvidia.com/assets/cuda/files/reduction.pdf"]]},
+ {id:"p3-4",t:"Triton 입문: Triton Puzzles와 공식 튜토리얼",env:["mac","free"],why:"Triton은 블록 단위로 생각하게 해 줘서 CUDA보다 빠르게 쓸 만한 커널을 만들 수 있어요. vLLM과 SGLang에도 Triton 커널이 많아요.",do:"Triton Puzzles를 맥에서 인터프리터 모드(TRITON_INTERPRET=1)로 풀고, 공식 튜토리얼의 vector add, fused softmax, layernorm을 Colab에서 실행하며 PyTorch와 속도를 비교해요.",res:[["Sasha Rush, Triton Puzzles","https://github.com/srush/Triton-Puzzles"],["Triton 공식 튜토리얼","https://triton-lang.org/main/getting-started/tutorials/index.html"]]},
+ {id:"p3-5",t:"프로파일링: Nsight Systems와 Nsight Compute",env:["free"],why:"Nsight Systems로 타임라인에서 GPU가 노는 구간을 찾고, Nsight Compute로 커널 하나가 왜 느린지(메모리, 연산, 지연) 봐요. 감이 아니라 숫자로 최적화하는 도구예요.",do:"내 엔진의 decode 스텝을 nsys로 찍고 가장 오래 걸리는 커널 세 개를 ncu로 분석해요. 'Speed of Light' 섹션 수치를 읽을 수 있게 되는 게 목표예요.",res:[["Nsight Compute 문서","https://docs.nvidia.com/nsight-compute/"],["Nsight Systems 문서","https://docs.nvidia.com/nsight-systems/"]]},
+ {id:"p3-6",t:"GPU MODE 강의 시리즈 따라가기",env:["web"],why:"커널 개발자들이 모인 커뮤니티의 강의 모음이에요. 프로파일링, Triton, CUTLASS, 양자화 같은 주제를 실무자가 직접 설명해요.",do:"1~10강을 먼저 보고, 이후 관심 주제를 골라 봐요. Discord 커뮤니티에도 들어가 두면 막힐 때 도움이 돼요.",res:[["GPU MODE 강의 자료 (GitHub)","https://github.com/gpu-mode/lectures"],["GPU MODE (YouTube)","https://www.youtube.com/@GPUMODE"]]}
+ ]},
+{id:"p4",depth:"L4 · 커널",title:"커널 최적화 심화: Matmul, Attention, 양자화",
+ intro:"추론 시간의 대부분은 행렬곱과 어텐션이에요. 이 두 커널을 바닥부터 짜서 라이브러리 수준에 가깝게 만들어 보는 단계예요. L4나 A100이 있으면 텐서 코어 실습이 훨씬 수월해요.",
+ goal:"직접 짠 Triton fused attention과 matmul이 같은 GPU에서 cuBLAS와 FlashAttention의 70% 이상 나오고, 그걸 내 엔진에 넣어서 쓰면 졸업이에요.",
+ items:[
+ {id:"p4-1",t:"Matmul 최적화 워크로그 재현하기",env:["free"],why:"tiling, shared memory, register blocking, vectorized load, warp tiling까지 행렬곱 하나로 GPU 최적화 기법 대부분을 배울 수 있어요.",do:"Simon Boehm의 글을 따라 10단계 커널을 직접 짜고, 단계마다 GFLOPS와 cuBLAS 대비 비율을 표로 남겨요.",res:[["Simon Boehm, How to Optimize a CUDA Matmul Kernel","https://siboehm.com/articles/22/CUDA-MMM"]]},
+ {id:"p4-2",t:"Triton matmul과 autotuning",env:["free"],why:"같은 알고리즘이라도 블록 크기와 파이프라인 단계 수에 따라 성능이 크게 달라져요. 자동 튜닝 감각을 익혀요.",do:"공식 matmul 튜토리얼을 실행하고, 블록 크기와 num_stages, num_warps를 바꿔 가며 결과를 비교해요. 생성된 PTX도 열어 봐요.",res:[["Triton 튜토리얼: Matrix Multiplication","https://triton-lang.org/main/getting-started/tutorials/03-matrix-multiplication.html"]]},
+ {id:"p4-3",t:"Tensor Core와 데이터 타입",env:["paid"],why:"현대 GPU 연산 성능의 대부분은 텐서 코어에서 나와요. FP16, BF16, FP8, INT8에 따라 쓸 수 있는 명령과 정밀도가 달라요.",do:"WMMA API로 matmul을 짜고, 이어서 PTX mma.sync로 다시 짜요. T4는 FP16까지, L4는 FP8까지 실험할 수 있어요.",res:[["CUDA Programming Guide, Warp Matrix Functions","https://docs.nvidia.com/cuda/cuda-c-programming-guide/#warp-matrix-functions"],["PTX ISA, mma 명령","https://docs.nvidia.com/cuda/parallel-thread-execution/"]]},
+ {id:"p4-4",t:"FlashAttention 1, 2와 fused attention 직접 짜기",env:["free","paid"],why:"어텐션을 타일 단위로 쪼개고 online softmax로 합치면 N×N 행렬을 HBM에 쓰지 않아도 돼요. IO를 의식하는 알고리즘 설계의 대표 사례예요.",do:"두 논문을 읽고 online softmax를 손으로 유도한 뒤, Triton fused attention 튜토리얼을 보지 않고 먼저 직접 짜 보고 나서 비교해요.",res:[["FlashAttention 논문","https://arxiv.org/abs/2205.14135"],["FlashAttention-2 논문","https://arxiv.org/abs/2307.08691"],["Triton 튜토리얼: Fused Attention","https://triton-lang.org/main/getting-started/tutorials/06-fused-attention.html"]]},
+ {id:"p4-5",t:"Decode 어텐션: paged 커널과 FlashInfer",env:["free"],why:"디코드는 쿼리가 토큰 하나라서 prefill용 커널과 최적화 방향이 달라요. KV를 여러 블록으로 나눠 병렬 처리하는 split-K(flash-decoding) 기법이 핵심이에요.",do:"2단계에서 만든 block table을 그대로 받는 paged decode 어텐션 커널을 Triton으로 짜고, FlashInfer와 속도를 비교해요.",res:[["FlashInfer (GitHub)","https://github.com/flashinfer-ai/flashinfer"],["FlashInfer 논문","https://arxiv.org/abs/2501.01005"]]},
+ {id:"p4-6",t:"양자화 커널: INT4 가중치와 FP8",env:["paid"],why:"디코드는 메모리 병목이라 가중치를 작게 만들면 거의 그대로 빨라져요. 대신 커널 안에서 빠르게 역양자화하는 기술이 필요해요.",do:"AWQ와 GPTQ 논문을 읽고, Marlin 커널 구조를 분석해요. 직접 W4A16 GEMV 커널을 Triton으로 짜서 FP16 대비 속도를 측정해요.",res:[["AWQ 논문","https://arxiv.org/abs/2306.00978"],["GPTQ 논문","https://arxiv.org/abs/2210.17323"],["Marlin (GitHub)","https://github.com/IST-DASLab/marlin"]]},
+ {id:"p4-7",t:"커널 퓨전, torch.compile, CUDA Graph",env:["free"],why:"작은 커널을 수백 개 띄우면 실행 오버헤드가 쌓여요. 퓨전으로 메모리 왕복을 줄이고, CUDA Graph로 실행 비용을 거의 0으로 만들어요.",do:"내 엔진의 RMSNorm+residual, SiLU+mul을 Triton으로 합치고, decode 스텝을 배치 크기별 CUDA Graph로 캡처해서 전후 속도를 비교해요.",res:[["PyTorch, CUDA Graphs 소개","https://pytorch.org/blog/accelerating-pytorch-with-cuda-graphs/"],["gpt-fast (GitHub)","https://github.com/pytorch-labs/gpt-fast"]]}
+ ]},
+{id:"p5",depth:"L3 · 분산",title:"분산 추론과 대규모 서빙",
+ intro:"모델이 GPU 한 장에 안 들어가거나, 처리량을 더 뽑아야 할 때 쓰는 기법들이에요. Kaggle의 무료 T4 두 장으로 텐서 병렬까지는 실습할 수 있어요.",
+ goal:"내 엔진에 tensor parallel 2-way를 붙여 T4 두 장에서 돌리고, speculative decoding으로 단일 요청 속도를 올려 보면 졸업이에요.",
+ items:[
+ {id:"p5-1",t:"Tensor parallel과 NCCL all-reduce",env:["free"],why:"레이어 안의 행렬을 GPU 여러 장에 쪼개는 방식이에요. 통신이 언제 일어나고 얼마나 비싼지 알아야 GPU를 늘렸을 때 왜 덜 빨라지는지 설명할 수 있어요.",do:"Megatron 논문 방식으로 attention과 MLP를 column/row로 나누고, Kaggle T4×2에서 torch.distributed로 돌려요. all-reduce 시간을 따로 측정해요.",res:[["Megatron-LM 논문","https://arxiv.org/abs/1909.08053"],["NCCL (GitHub)","https://github.com/NVIDIA/nccl"],["Kaggle Notebooks","https://www.kaggle.com/code"]]},
+ {id:"p5-2",t:"MoE와 Expert parallel",env:["web"],why:"요즘 큰 모델은 대부분 MoE예요. 토큰마다 다른 전문가로 보내는 all-to-all 통신과 전문가 부하 불균형이 서빙의 새 병목이에요.",do:"DeepSeek-V3 기술 보고서의 추론 배치 부분을 읽고, 전문가 라우팅과 통신 패턴을 그림으로 정리해요.",res:[["DeepSeek-V3 Technical Report","https://arxiv.org/abs/2412.19437"],["DeepEP (GitHub)","https://github.com/deepseek-ai/DeepEP"]]},
+ {id:"p5-3",t:"Speculative decoding",env:["free"],why:"작은 모델이나 추가 헤드로 여러 토큰을 미리 추측하고 큰 모델이 한 번에 검증해요. 메모리 병목인 디코드에서 놀고 있는 연산을 활용하는 방법이에요.",do:"SmolLM2-135M을 draft, 360M을 target으로 두고 기본 speculative decoding을 구현해요. 출력 분포가 target과 같다는 걸 확인하고 수락률을 측정해요.",res:[["Leviathan et al., Fast Inference via Speculative Decoding","https://arxiv.org/abs/2211.17192"],["EAGLE 논문","https://arxiv.org/abs/2401.15077"]]},
+ {id:"p5-4",t:"Prefill/Decode 분리 (PD disaggregation)",env:["web"],why:"prefill과 decode를 다른 GPU 풀에서 돌리고 KV 캐시를 네트워크로 옮겨요. 대규모 서빙에서 지연 SLO를 맞추는 요즘 표준 구조예요.",do:"두 논문을 읽고 KV 전송량을 계산기로 추정해요. 내 엔진을 프로세스 두 개로 나눠 KV를 넘기는 프로토타입을 만들어 봐요.",res:[["DistServe 논문","https://arxiv.org/abs/2401.09670"],["Mooncake 논문","https://arxiv.org/abs/2407.00079"]]},
+ {id:"p5-5",t:"ML 인프라 실무 지식 쌓기",env:["web"],why:"네트워크, 스토리지, 장애 대응까지 GPU 클러스터를 실제로 운영하는 사람들의 노하우가 모여 있어요.",do:"Stas Bekman의 책에서 compute, network, inference 장을 골라 읽어요.",res:[["Stas Bekman, Machine Learning Engineering Open Book","https://github.com/stas00/ml-engineering"]]}
+ ]},
+{id:"p6",depth:"L2 · 하드웨어",title:"최신 아키텍처와 하드웨어 끝까지",
+ intro:"이 단계부터는 세계적으로도 깊이 아는 사람이 많지 않은 영역이에요. Hopper와 Blackwell은 이전 세대와 프로그래밍 모델이 꽤 달라서, H100이나 B200을 몇 시간씩 빌려 실습해야 해요.",
+ goal:"H100에서 직접 짠 GEMM이 cuBLAS의 80% 이상 나오고, 그 커널의 SASS를 읽으며 병목을 설명할 수 있으면 이 단계를 마친 거예요.",
+ items:[
+ {id:"p6-1",t:"CUTLASS와 CuTe 레이아웃 대수",env:["paid"],why:"NVIDIA가 고성능 커널을 만드는 방식이에요. CuTe의 layout과 tensor 추상화를 이해하면 FlashAttention-3 같은 코드를 읽을 수 있어요.",do:"CuTe 튜토리얼을 따라 layout 조합을 손으로 계산해 보고, CUTLASS 예제 GEMM을 빌드해서 돌려요.",res:[["CUTLASS (GitHub)","https://github.com/NVIDIA/cutlass"],["CuTe 문서 (CUTLASS 저장소 내)","https://github.com/NVIDIA/cutlass/tree/main/media/docs/cpp/cute"]]},
+ {id:"p6-2",t:"Hopper: TMA, WGMMA, warp specialization",env:["big"],why:"H100은 비동기 복사 엔진(TMA)과 warpgroup 단위 행렬곱(WGMMA)이 생겨서, 데이터를 나르는 warp와 계산하는 warp를 나누는 설계가 표준이 됐어요.",do:"FlashAttention-3 논문을 읽고, H100에서 TMA와 WGMMA를 쓰는 GEMM을 바닥부터 짜요. 아래 워크로그를 길잡이로 써요.",res:[["FlashAttention-3 논문","https://arxiv.org/abs/2407.08608"],["Outperforming cuBLAS on H100: a Worklog","https://cudaforfun.substack.com/p/outperforming-cublas-on-h100-a-worklog"]]},
+ {id:"p6-3",t:"ThunderKittens와 커널 DSL들",env:["big"],why:"타일 단위 추상화로 Hopper 커널을 짧게 짜는 연구 프로젝트예요. Triton, CuTe와 비교하면 각 DSL이 무엇을 숨기고 무엇을 드러내는지 보여요.",do:"ThunderKittens로 attention 커널을 짜 보고, 같은 커널을 Triton과 CuTe 버전으로 비교해요.",res:[["ThunderKittens (GitHub)","https://github.com/HazyResearch/ThunderKittens"]]},
+ {id:"p6-4",t:"Blackwell: tcgen05, Tensor Memory, FP4",env:["big"],why:"B200 세대는 텐서 코어 전용 메모리(TMEM)와 새 MMA 명령, FP4/FP6 같은 저정밀 포맷이 추가됐어요. 최신 추론 성능 경쟁의 현장이에요.",do:"PTX ISA 문서의 tcgen05 장을 읽고, CUTLASS의 Blackwell 예제를 분석해요. 가능하면 B200을 몇 시간 빌려 FP4 GEMM을 돌려 봐요.",res:[["PTX ISA 문서","https://docs.nvidia.com/cuda/parallel-thread-execution/"],["CUTLASS 예제 디렉터리","https://github.com/NVIDIA/cutlass/tree/main/examples"]]},
+ {id:"p6-5",t:"PTX와 SASS 읽기",env:["free"],why:"컴파일러가 실제로 무슨 명령을 내보냈는지 봐야 레지스터 스필, 불필요한 동기화, 메모리 명령 폭 같은 문제를 찾을 수 있어요.",do:"직접 짠 커널을 cuobjdump -sass와 nvdisasm으로 덤프해서, 루프 안 명령 수를 세고 Nsight Compute의 소스-SASS 매핑과 대조해요.",res:[["CUDA Binary Utilities (cuobjdump, nvdisasm)","https://docs.nvidia.com/cuda/cuda-binary-utilities/"],["PTX ISA 문서","https://docs.nvidia.com/cuda/parallel-thread-execution/"]]},
+ {id:"p6-6",t:"마이크로벤치마킹으로 하드웨어 해부하기",env:["free","paid"],why:"NVIDIA가 공개하지 않는 캐시 구조, 지연 시간, 명령 처리량을 직접 측정하는 기술이에요. 하드웨어를 진짜로 아는 사람과 문서만 읽은 사람의 차이가 여기서 나요.",do:"Volta와 Turing을 해부한 논문의 방법을 따라 T4에서 L1, L2, HBM 지연 시간과 shared memory bank 동작을 직접 측정해요.",res:[["Dissecting the NVIDIA Volta GPU Architecture via Microbenchmarking","https://arxiv.org/abs/1804.06826"],["Dissecting the NVIDIA Turing T4 GPU via Microbenchmarking","https://arxiv.org/abs/1903.07486"]]}
+ ]},
+{id:"p7",depth:"L1 · 현장",title:"실전 코드 읽기와 기여",
+ intro:"마지막은 다시 위로 올라와서 실제 프로덕션 엔진을 읽고 고치는 단계예요. 앞에서 직접 만들어 본 경험이 있으면 수십만 줄 코드가 익숙한 부품의 조합으로 보여요.",
+ goal:"vLLM, SGLang, Triton, FlashInfer 중 한 곳에 성능 개선 PR이 머지되고, 배운 내용을 워크로그로 공개하면 이 코스는 끝이에요. 그다음은 직접 길을 내는 거예요.",
+ items:[
+ {id:"p7-1",t:"vLLM V1 코드 리딩",env:["mac"],why:"가장 널리 쓰이는 엔진의 설계를 내 엔진과 하나하나 비교해 봐요.",do:"vllm/v1/core/sched/scheduler.py, vllm/v1/core/kv_cache_manager.py, vllm/v1/worker/gpu_model_runner.py 순서로 읽고 내 엔진과 다른 점을 목록으로 정리해요.",res:[["vLLM (GitHub)","https://github.com/vllm-project/vllm"],["vLLM 문서","https://docs.vllm.ai/"]]},
+ {id:"p7-2",t:"SGLang 코드 리딩",env:["mac"],why:"RadixAttention, overlap scheduler, 구조화 출력 등 vLLM과 다른 선택을 한 부분이 많아서 비교하며 읽으면 설계 감각이 생겨요.",do:"python/sglang/srt/managers/scheduler.py와 python/sglang/srt/mem_cache/radix_cache.py를 중심으로 읽어요.",res:[["SGLang (GitHub)","https://github.com/sgl-project/sglang"]]},
+ {id:"p7-3",t:"내 엔진과 vLLM, SGLang 정면 비교",env:["paid"],why:"같은 GPU, 같은 모델, 같은 부하에서 비교하면 내가 놓친 최적화가 숫자로 드러나요.",do:"L4나 A100 몇 시간을 빌려 2단계에서 만든 벤치마크로 세 엔진의 TTFT, TPOT, 처리량 곡선을 그리고, 차이가 나는 원인을 프로파일러로 추적해요.",res:[["RunPod","https://www.runpod.io/"],["Vast.ai","https://vast.ai/"]]},
+ {id:"p7-4",t:"오픈소스에 기여하기",env:["free"],why:"실제 사용자가 있는 코드에 기여하면 리뷰를 통해 세계 최고 수준의 엔지니어들에게 직접 피드백을 받을 수 있어요.",do:"관심 있는 저장소에서 good first issue나 성능 관련 이슈를 골라 PR을 보내요. 처음엔 벤치마크나 문서 개선도 좋아요.",res:[["vLLM good first issue","https://github.com/vllm-project/vllm/issues?q=is%3Aopen+label%3A%22good+first+issue%22"],["SGLang 이슈","https://github.com/sgl-project/sglang/issues"],["Triton (GitHub)","https://github.com/triton-lang/triton"]]},
+ {id:"p7-5",t:"워크로그 공개하기",env:["web"],why:"설명할 수 있어야 진짜로 아는 거예요. 이 분야의 유명한 글들은 대부분 누군가의 정직한 실험 기록이었어요.",do:"이 코스에서 한 실험 중 하나를 골라 단계별 수치와 실패까지 담은 글을 써요. Simon Boehm의 글 형식을 참고해요.",res:[["예시: How to Optimize a CUDA Matmul Kernel","https://siboehm.com/articles/22/CUDA-MMM"]]}
+ ]}
+];
+
+const GLOSS=[
+["SM","스트리밍 멀티프로세서",3,"GPU의 기본 연산 단위. 스레드 블록이 SM에 배정되고, SM마다 레지스터, shared memory, 텐서 코어를 가져요. H100 SXM은 132개."],
+["Warp","워프",3,"함께 같은 명령을 실행하는 32개 스레드 묶음. 분기가 갈리면(divergence) 양쪽을 순서대로 실행해서 느려져요."],
+["SIMT","단일 명령 다중 스레드",3,"warp의 스레드들이 같은 명령을 각자의 데이터에 실행하는 NVIDIA의 실행 모델."],
+["HBM","고대역폭 메모리",1,"GPU의 메인 메모리. 용량은 크지만 칩 안의 메모리보다 훨씬 느려요. 디코드 속도를 결정하는 경우가 많아요."],
+["Shared memory","공유 메모리 (SMEM)",3,"SM 안에 있는 빠른 메모리. 블록 안 스레드들이 공유하고, 타일링 최적화의 핵심이에요."],
+["Register","레지스터",3,"스레드마다 가진 가장 빠른 저장소. 너무 많이 쓰면 occupancy가 떨어지거나 메모리로 넘쳐요(spill)."],
+["L2 cache","L2 캐시",3,"모든 SM이 공유하는 캐시. HBM 접근을 줄여 줘요."],
+["Tensor Core","텐서 코어",4,"작은 행렬곱을 한 명령으로 처리하는 전용 유닛. 현대 GPU 연산 성능의 대부분이 여기서 나와요."],
+["Occupancy","점유율",3,"SM에 동시에 올라간 warp 수를 최대치로 나눈 값. 메모리 지연을 숨기는 데 영향을 줘요."],
+["Coalescing","메모리 병합",3,"warp의 스레드들이 연속된 주소를 읽으면 한 번의 트랜잭션으로 합쳐져요. 이게 깨지면 대역폭이 크게 떨어져요."],
+["Bank conflict","뱅크 충돌",3,"여러 스레드가 shared memory의 같은 뱅크 다른 주소에 접근하면 순서대로 처리돼서 느려지는 현상."],
+["Arithmetic intensity","연산 강도",1,"연산량(FLOPs)을 메모리 이동량(바이트)으로 나눈 값. GPU의 FLOPS/대역폭 비율보다 낮으면 memory-bound예요."],
+["Roofline","루프라인 모델",1,"연산 강도에 따라 도달 가능한 최대 성능을 그린 그래프. 메모리 한계와 연산 한계가 만나는 지점이 꺾이는 점이에요."],
+["Prefill","프리필",1,"프롬프트 전체를 한 번에 처리해서 KV 캐시를 채우는 단계. 연산량이 많아 보통 compute-bound."],
+["Decode","디코드",1,"토큰을 하나씩 생성하는 단계. 매 스텝 가중치 전체를 읽어서 보통 memory-bound."],
+["KV cache","KV 캐시",1,"이전 토큰들의 Key, Value를 저장해 두고 재사용하는 메모리. 길이와 배치에 비례해서 커져요."],
+["PagedAttention","페이지드 어텐션",2,"KV 캐시를 고정 크기 블록으로 나눠 block table로 관리하는 vLLM의 기법. 메모리 단편화를 없애요."],
+["Continuous batching","연속 배칭",2,"매 스텝마다 끝난 요청을 빼고 새 요청을 넣는 스케줄링. iteration-level scheduling이라고도 해요."],
+["RadixAttention","래딕스 어텐션",2,"요청들의 공통 prefix를 radix tree로 관리해 KV를 재사용하는 SGLang의 기법."],
+["Chunked prefill","청크 프리필",2,"긴 prefill을 잘게 나눠 decode와 같은 스텝에 섞어 처리하는 기법."],
+["TTFT","첫 토큰까지 시간",2,"요청을 보내고 첫 토큰을 받을 때까지 걸린 시간. 주로 prefill 속도와 대기 시간이 결정해요."],
+["TPOT / ITL","토큰 간 시간",2,"출력 토큰 사이의 평균 간격. 사용자가 느끼는 '글 써지는 속도'예요."],
+["Kernel fusion","커널 퓨전",4,"여러 연산을 커널 하나로 합쳐 중간 결과의 HBM 왕복을 없애는 최적화."],
+["CUDA Graph","쿠다 그래프",4,"여러 커널 실행을 한 번에 캡처해 두고 재생하는 기능. CPU 쪽 실행 오버헤드를 거의 없애요."],
+["Online softmax","온라인 소프트맥스",4,"전체 값을 다 보지 않고 블록 단위로 최댓값과 합을 갱신하며 softmax를 계산하는 방법. FlashAttention의 핵심."],
+["Split-K / Flash-decoding","스플릿 K",4,"디코드에서 긴 KV를 여러 블록으로 나눠 병렬 계산한 뒤 합치는 기법."],
+["Tensor parallel","텐서 병렬",5,"레이어 안의 행렬을 여러 GPU에 쪼개 계산하고 all-reduce로 합치는 방식."],
+["All-reduce","올리듀스",5,"모든 GPU의 값을 더해서 결과를 모두에게 돌려주는 집합 통신. NCCL이 담당해요."],
+["Speculative decoding","추측 디코딩",5,"작은 모델로 여러 토큰을 추측하고 큰 모델이 한 번에 검증해 디코드를 빠르게 하는 기법."],
+["PD disaggregation","프리필/디코드 분리",5,"prefill과 decode를 서로 다른 GPU에서 돌리고 KV를 전송하는 서빙 구조."],
+["TMA","텐서 메모리 가속기",6,"Hopper부터 생긴 비동기 대용량 메모리 복사 엔진. 스레드가 주소 계산 없이 타일을 옮길 수 있어요."],
+["WGMMA","워프그룹 MMA",6,"Hopper의 행렬곱 명령. warp 4개(warpgroup)가 함께 큰 타일을 비동기로 계산해요."],
+["Warp specialization","워프 특화",6,"데이터를 나르는 warp와 계산하는 warp를 역할별로 나누는 커널 설계."],
+["TMEM","텐서 메모리",6,"Blackwell에서 추가된 텐서 코어 전용 메모리. 누산 결과를 레지스터 대신 여기에 둬요."],
+["PTX","병렬 스레드 실행 ISA",6,"NVIDIA의 가상 어셈블리. 드라이버가 실제 GPU 명령으로 다시 컴파일해요."],
+["SASS","GPU 기계어",6,"실제 GPU에서 실행되는 명령. cuobjdump로 볼 수 있고, 진짜 병목은 여기서 보여요."]
+];
+
+/* ---------- progress state ---------- */
+const LS="silicon-descent-progress";
+let done={};
+try{done=JSON.parse(localStorage.getItem(LS)||"{}")||{}}catch(e){done={}}
+let db=null,docRef=null,canWrite=false,writing=Promise.resolve(),pending=null;
+const allItems=PHASES.flatMap(p=>p.items.map(i=>({...i,phase:p})));
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderRoad(){
+  $("#phases").innerHTML=PHASES.map((p,pi)=>`
+  <section class="phase" id="${p.id}">
+    <div class="phase-head"><span class="depth">${esc(p.depth)}</span><h2>${pi+1}단계 · ${esc(p.title)}</h2><span class="pct" data-pct="${p.id}"></span></div>
+    <p class="phase-intro">${esc(p.intro)}</p>
+    <p class="goal"><b>졸업 조건</b> ${esc(p.goal)}</p>
+    ${p.items.map(it=>`
+    <details class="item" data-id="${it.id}">
+      <summary><input type="checkbox" class="ck" id="ck-${it.id}" aria-label="${esc(it.t)} 완료"><span class="t">${esc(it.t)}</span>
+        <span class="envs">${it.env.map(e=>`<span class="env ${E[e][0]}">${E[e][1]}</span>`).join("")}</span></summary>
+      <div class="body">
+        <p class="why"><b>왜</b> ${esc(it.why)}</p>
+        <p class="do"><b>해볼 것</b> ${esc(it.do)}</p>
+        ${window.LESSONS&&LESSONS[it.id]?`<a class="btn golesson" href="#lesson-${it.id}">강의 보기 →</a>`:`<span class="soon">한국어 강의는 준비 중이에요. 앞 단계를 마치면 이어서 만들어 드릴게요.</span>`}
+        <div class="res-h">더 깊이 보기 (영어 원문)</div>
+        <ul class="res">${it.res.map(r=>`<li><a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a></li>`).join("")}</ul>
+      </div>
+    </details>`).join("")}
+  </section>`).join("");
+  $("#gauge").innerHTML=PHASES.map((p,pi)=>`<li><a href="#roadmap" data-jump="${p.id}" id="g-${p.id}"><span class="d">${esc(p.depth)}</span>${pi+1}. ${esc(p.title)}</a></li>`).join("");
+  document.querySelectorAll(".ck").forEach(ck=>{
+    ck.addEventListener("click",e=>e.stopPropagation());
+    ck.addEventListener("change",()=>{const id=ck.id.slice(3);if(ck.checked)done[id]=Date.now();else delete done[id];applyDone();save();});
+  });
+  document.querySelectorAll("[data-jump]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();document.getElementById(a.dataset.jump).scrollIntoView({behavior:"smooth"});}));
+}
+function applyDone(){
+  let n=0,cur=null;
+  allItems.forEach(it=>{const d=!!done[it.id];if(d)n++;const ck=document.getElementById("ck-"+it.id);if(ck)ck.checked=d;
+    const el=document.querySelector(`.item[data-id="${it.id}"]`);if(el)el.classList.toggle("is-done",d);});
+  const pct=Math.round(n/allItems.length*100);
+  $("#ovPct").textContent=pct+"%";$("#ovBar").style.width=pct+"%";$("#ovCount").textContent=`${n} / ${allItems.length} 항목 완료`;
+  const nx=allItems.find(it=>!done[it.id]);
+  $("#nextUp").innerHTML=nx?`다음 할 일 · <b>${esc(nx.t)}</b>${window.LESSONS&&LESSONS[nx.id]?` · <a href="#lesson-${nx.id}">강의 보기 →</a>`:""}`:"<b>전부 끝냈어요.</b> 이제 직접 길을 낼 차례예요.";
+  PHASES.forEach(p=>{const k=p.items.filter(i=>done[i.id]).length;
+    document.querySelector(`[data-pct="${p.id}"]`).textContent=`${k}/${p.items.length}`;
+    const g=document.getElementById("g-"+p.id);g.classList.toggle("done",k===p.items.length);
+    g.classList.toggle("cur",!!nx&&nx.phase.id===p.id);});
+}
+function save(){
+  try{localStorage.setItem(LS,JSON.stringify(done))}catch(e){}
+  if(!docRef||!canWrite)return;
+  pending={items:{...done},updatedAt:Date.now()};
+  writing=writing.then(async()=>{if(!pending)return;const d=pending;pending=null;
+    try{await docRef.set(d);$("#syncState").textContent="진도가 계정에 저장됐어요";}
+    catch(e){$("#syncState").textContent="계정 저장에 실패했어요. 이 브라우저에는 저장돼 있어요";}});
+}
+async function connect(){
+  const timer=setTimeout(()=>{if(!docRef)$("#syncState").textContent="이 브라우저에만 저장 중이에요";},10000);
+  try{
+    if(!window.claude||!window.claude.use){clearTimeout(timer);$("#syncState").textContent="이 브라우저에만 저장 중이에요";return;}
+    db=await window.claude.use("db");
+    const user=await window.claude.use("user");
+    if(!db){clearTimeout(timer);$("#syncState").textContent="이 브라우저에만 저장 중이에요";return;}
+    canWrite=user?await user.isOwner():false;
+    docRef=db.doc("progress/main");
+    const snap=await docRef.get();clearTimeout(timer);
+    if(snap.exists){const d=snap.data()||{};const remote=d.items||{};
+      const merged={...done,...remote};const localOnly=Object.keys(done).some(k=>!(k in remote));
+      done=merged;applyDone();try{localStorage.setItem(LS,JSON.stringify(done))}catch(e){}
+      if(localOnly&&canWrite)save();}
+    else if(canWrite&&Object.keys(done).length)save();
+    $("#syncState").textContent=canWrite?"진도가 계정에 저장돼요":"보기 전용이에요. 진도는 이 브라우저에만 저장돼요";
+  }catch(e){clearTimeout(timer);$("#syncState").textContent="이 브라우저에만 저장 중이에요";}
+}
+
+/* ---------- calculator ---------- */
+const GPUS=[
+ {n:"Mac mini M4 (대략)",bw:120,tf:4,mem:16},
+ {n:"NVIDIA T4 · Colab/Kaggle 무료",bw:320,tf:65,mem:16},
+ {n:"NVIDIA L4 · Colab Pro",bw:300,tf:121,mem:24},
+ {n:"NVIDIA A100 80GB SXM",bw:2039,tf:312,mem:80},
+ {n:"NVIDIA H100 SXM",bw:3350,tf:989,mem:80},
+ {n:"NVIDIA B200",bw:8000,tf:2250,mem:180}
+];
+const MODELS=[
+ {n:"SmolLM2-135M",p:0.135e9,L:30,kv:3,hd:64},
+ {n:"Qwen2.5-0.5B",p:0.49e9,L:24,kv:2,hd:64},
+ {n:"Llama-3.1-8B",p:8.03e9,L:32,kv:8,hd:128},
+ {n:"Qwen2.5-32B",p:32.8e9,L:64,kv:8,hd:128},
+ {n:"Llama-3.1-70B",p:70.6e9,L:80,kv:8,hd:128}
+];
+const BATCHES=[1,2,4,8,16,32,64,128,256,512,1024];
+$("#cGpu").innerHTML=GPUS.map((g,i)=>`<option value="${i}"${i===1?" selected":""}>${g.n}</option>`).join("");
+$("#cModel").innerHTML=MODELS.map((m,i)=>`<option value="${i}"${i===2?" selected":""}>${m.n}</option>`).join("");
+const fmtB=b=>b>=1e9?(b/1e9).toFixed(b>=1e10?0:1)+" GB":b>=1e6?(b/1e6).toFixed(0)+" MB":(b/1e3).toFixed(0)+" KB";
+const fmtN=n=>n>=1e4?Math.round(n).toLocaleString("ko-KR"):n>=100?n.toFixed(0):n>=10?n.toFixed(1):n.toFixed(2);
+function model(g,m,wd,kd,b,ctx){
+  const W=m.p*wd, kvTok=2*m.L*m.kv*m.hd*kd, KV=b*ctx*kvTok;
+  const tMem=(W+KV)/(g.bw*1e9), tCmp=2*m.p*b/(g.tf*1e12), t=Math.max(tMem,tCmp);
+  return {W,kvTok,KV,tMem,tCmp,t,tps:b/t,user:1/t,fits:(W+KV)<=g.mem*1e9*0.9,bound:tMem>=tCmp?"mem":"cmp",
+    ttft:2*m.p*ctx/(g.tf*1e12)};
+}
+function calc(){
+  const g=GPUS[+$("#cGpu").value],m=MODELS[+$("#cModel").value],wd=+$("#cWd").value,kd=+$("#cKd").value;
+  const b=BATCHES[+$("#cBatch").value],ctx=2**(+$("#cCtx").value);
+  $("#vBatch").textContent=b;$("#vCtx").textContent=ctx.toLocaleString("ko-KR");
+  const r=model(g,m,wd,kd,b,ctx), cap=g.mem*1e9;
+  const wPct=Math.min(100,r.W/cap*100), kPct=Math.min(100-wPct,r.KV/cap*100);
+  const ridge=g.tf*1e12/(g.bw*1e9);
+  $("#stats").innerHTML=`
+   <div class="stat"><div class="k">전체 처리량</div><div class="v">${fmtN(r.tps)} <small>tok/s</small></div>
+     <span class="pill ${r.fits?r.bound:"oom"}">${!r.fits?"메모리 초과":r.bound==="mem"?"memory-bound":"compute-bound"}</span></div>
+   <div class="stat"><div class="k">요청 하나가 느끼는 속도</div><div class="v">${fmtN(r.user)} <small>tok/s</small></div><div class="k">TPOT ≈ ${(r.t*1000).toFixed(r.t<0.01?2:1)} ms</div></div>
+   <div class="stat"><div class="k">TTFT (prefill 상한)</div><div class="v">${r.ttft<1?(r.ttft*1000).toFixed(r.ttft<0.01?2:0)+" <small>ms</small>":r.ttft.toFixed(2)+" <small>s</small>"}</div><div class="k">${ctx.toLocaleString("ko-KR")} 토큰 프롬프트 1개 기준</div></div>
+   <div class="stat" style="grid-column:1/-1"><div class="k">GPU 메모리 ${g.mem} GB 중 · 가중치 ${fmtB(r.W)} + KV 캐시 ${fmtB(r.KV)} (토큰당 ${fmtB(r.kvTok)})</div>
+     <div class="membar" aria-hidden="true"><span style="width:${wPct}%;background:var(--die)"></span><span style="width:${kPct}%;background:var(--accent)"></span></div>
+     <div class="k"><span style="color:var(--die)">■</span> 가중치 <span style="color:var(--accent);margin-left:10px">■</span> KV 캐시 · 사용률 ${((r.W+r.KV)/cap*100).toFixed(0)}%${r.fits?"":" · 넘쳐요"}</div></div>`;
+  $("#formula").textContent=
+`토큰당 KV  = 2 × 레이어 ${m.L} × KV헤드 ${m.kv} × head_dim ${m.hd} × ${kd}B = ${fmtB(r.kvTok)}
+메모리 시간 = (가중치 ${fmtB(r.W)} + KV ${fmtB(r.KV)}) ÷ ${g.bw} GB/s = ${(r.tMem*1000).toFixed(3)} ms
+연산 시간   = 2 × ${(m.p/1e9).toFixed(2)}B 파라미터 × 배치 ${b} ÷ ${g.tf} TFLOPS = ${(r.tCmp*1000).toFixed(3)} ms
+스텝 시간   = max(두 값) → 처리량 = 배치 ÷ 스텝 시간
+GPU 꺾임점  = ${g.tf} TFLOPS ÷ ${g.bw} GB/s ≈ 바이트당 ${ridge.toFixed(0)} FLOP`;
+  drawChart(g,m,wd,kd,ctx,b);
+}
+function drawChart(g,m,wd,kd,ctx,bSel){
+  const svg=$("#chart"),W=640,H=280,pl=58,pr=16,pt=14,pb=38;
+  const pts=BATCHES.map(b=>({b,...model(g,m,wd,kd,b,ctx)}));
+  const maxY=Math.max(...pts.map(p=>p.tps));
+  const nice=v=>{const e=10**Math.floor(Math.log10(v)),f=v/e;return (f<=1?1:f<=2?2:f<=5?5:10)*e;};
+  const yMax=nice(maxY*1.05);
+  const x=i=>pl+(W-pl-pr)*i/(BATCHES.length-1), y=v=>pt+(H-pt-pb)*(1-v/yMax);
+  let s="";
+  for(let k=0;k<=4;k++){const v=yMax*k/4,yy=y(v);
+    s+=`<line x1="${pl}" x2="${W-pr}" y1="${yy}" y2="${yy}" stroke="var(--line)" stroke-width="1"/>`;
+    s+=`<text x="${pl-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${fmtN(v)}</text>`;}
+  BATCHES.forEach((b,i)=>{s+=`<text x="${x(i)}" y="${H-pb+18}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="JetBrains Mono,monospace">${b}</text>`;});
+  s+=`<text x="${(pl+W-pr)/2}" y="${H-4}" text-anchor="middle" font-size="11" fill="var(--fg2)">배치 크기</text>`;
+  s+=`<text x="12" y="${pt+(H-pt-pb)/2}" text-anchor="middle" font-size="11" fill="var(--fg2)" transform="rotate(-90 12 ${pt+(H-pt-pb)/2})">tok/s</text>`;
+  const ci=pts.findIndex(p=>p.bound==="cmp");
+  if(ci>0){const xs=x(ci-1)+(x(ci)-x(ci-1))/2;
+    s+=`<rect x="${xs}" y="${pt}" width="${W-pr-xs}" height="${H-pt-pb}" fill="var(--accent-soft)" opacity=".55"/>`;
+    s+=`<text x="${xs+6}" y="${pt+14}" font-size="11" fill="var(--accent)">compute-bound</text>`;
+    s+=`<text x="${xs-6}" y="${pt+14}" font-size="11" fill="var(--die)" text-anchor="end">memory-bound</text>`;}
+  let fitPath="",oomPath="";
+  pts.forEach((p,i)=>{const c=`${x(i)},${y(p.tps)}`;
+    if(p.fits)fitPath+=(fitPath?" L":"M")+c;
+    if(!p.fits||(pts[i+1]&&!pts[i+1].fits&&p.fits)){oomPath+=(oomPath?" L":"M")+c;}});
+  if(oomPath)s+=`<path d="${oomPath}" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 4"/>`;
+  if(fitPath)s+=`<path d="${fitPath}" fill="none" stroke="var(--die)" stroke-width="2" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{if(p.b===bSel)s+=`<circle cx="${x(i)}" cy="${y(p.tps)}" r="6" fill="${p.fits?"var(--accent)":"var(--muted)"}" stroke="var(--surface)" stroke-width="2"/>`;});
+  s+=`<line id="xh" x1="0" x2="0" y1="${pt}" y2="${H-pb}" stroke="var(--fg2)" stroke-width="1" visibility="hidden"/>`;
+  pts.forEach((p,i)=>{const w=(W-pl-pr)/(BATCHES.length-1);
+    s+=`<rect class="hit" data-i="${i}" x="${x(i)-w/2}" y="${pt}" width="${w}" height="${H-pt-pb}" fill="transparent"/>`;});
+  svg.innerHTML=s;
+  const tip=$("#tip"),xh=svg.querySelector("#xh"),box=svg.parentElement.parentElement;
+  svg.querySelectorAll(".hit").forEach(r=>{
+    r.addEventListener("mouseenter",()=>{const p=pts[+r.dataset.i],i=+r.dataset.i;
+      xh.setAttribute("x1",x(i));xh.setAttribute("x2",x(i));xh.setAttribute("visibility","visible");
+      tip.textContent=`배치 ${p.b} · ${fmtN(p.tps)} tok/s · ${p.fits?(p.bound==="mem"?"메모리 병목":"연산 병목"):"메모리 초과"}`;
+      tip.hidden=false;const sb=svg.getBoundingClientRect(),bb=box.getBoundingClientRect();
+      const px=sb.left-bb.left+x(i)/W*sb.width, py=sb.top-bb.top+y(p.tps)/H*sb.height;
+      tip.style.left=Math.min(Math.max(8,px-tip.offsetWidth/2),bb.width-tip.offsetWidth-8)+"px";tip.style.top=Math.max(4,py-38)+"px";});
+    r.addEventListener("mouseleave",()=>{tip.hidden=true;xh.setAttribute("visibility","hidden");});
+    r.addEventListener("click",()=>{$("#cBatch").value=r.dataset.i;calc();});
+  });
+}
+["cGpu","cModel","cWd","cKd","cBatch","cCtx"].forEach(id=>document.getElementById(id).addEventListener("input",calc));
+
+/* ---------- glossary ---------- */
+function renderGloss(){
+  const q=$("#glq").value.trim().toLowerCase();
+  const list=GLOSS.filter(g=>!q||g.join(" ").toLowerCase().includes(q));
+  $("#gl").innerHTML=list.map(g=>`<div class="term"><span class="lv">${g[2]}단계</span><h4>${esc(g[0])}</h4><div class="ko">${esc(g[1])}</div><p>${esc(g[3])}</p></div>`).join("")||`<p style="color:var(--muted)">'${esc(q)}'에 맞는 용어가 없어요.</p>`;
+  $("#glCount").textContent=`${list.length}개`;
+}
+$("#glq").addEventListener("input",renderGloss);
+
+
+/* ---------- lesson view ---------- */
+function renderLesson(id){
+  const L=(window.LESSONS||{})[id],it=allItems.find(i=>i.id===id),root=$("#lessonRoot");
+  if(!L||!it){root.innerHTML=`<p>이 강의는 아직 준비 중이에요. <a href="#roadmap">로드맵으로 돌아가기</a></p>`;return;}
+  const p=it.phase,idx=p.items.findIndex(i=>i.id===id),pi=PHASES.indexOf(p);
+  const withL=allItems.filter(i=>window.LESSONS[i.id]);const li=withL.findIndex(i=>i.id===id);
+  const prev=withL[li-1],next=withL[li+1];
+  const labCmd=L.lab?`cd ~/workspace/inference-deepdive/labs && ./start.sh`:"";
+  root.innerHTML=`
+   <div class="crumb"><a href="#roadmap">로드맵</a><span>›</span><span>${pi+1}단계 · ${esc(p.title)}</span><span>›</span><span>${idx+1} / ${p.items.length}</span></div>
+   <h1>${esc(it.t)}</h1>
+   <p class="lead">${L.lead}</p>
+   ${L.sections.map(s=>`<section class="lsec"><h2>${esc(s.h)}</h2>${s.p.map(x=>`<p>${x}</p>`).join("")}</section>`).join("")}
+   ${(L.extra||[]).map((x,xi)=>`<div class="wbox"><h3>애니메이션 · ${esc(x.title)}</h3><p class="cap">${esc(x.cap)}</p><div id="extraMount${xi}"></div></div>`).join("")}
+   <div class="wbox"><h3>직접 만져 보기 · ${esc(L.widgetTitle)}</h3><p class="cap">${esc(L.widgetCap)}</p><div id="widgetMount"></div></div>
+   <div class="sumbox"><h3>핵심 정리</h3><ul>${L.summary.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+   <div class="quiz"><h3>확인 퀴즈</h3>${L.quiz.map((q,qi)=>`<div class="qz" data-q="${qi}"><p class="qq">${qi+1}. ${esc(q.q)}</p><div class="opts">${q.o.map((o,oi)=>`<button type="button" class="op" data-o="${oi}">${esc(o)}</button>`).join("")}</div><p class="exp" hidden></p></div>`).join("")}</div>
+   ${L.lab?`<div class="labbox"><h3>실습실에서 직접 해 보기 · ${esc(L.lab.file.replace(".ipynb",""))}</h3><p>${esc(L.lab.desc)}</p>
+     <p><b>1.</b> 맥의 터미널을 열고 아래 명령을 붙여 넣어요. 실습실 웹사이트가 브라우저에 자동으로 열려요.</p>
+     <div class="cmd"><code id="labCmd">${esc(labCmd)}</code><button type="button" class="btn ghost" id="copyCmd">복사</button></div>
+     <p><b>2.</b> 이미 켜 두었다면 바로 이 실습으로 가요.</p>
+     <a class="btn golesson" href="http://127.0.0.1:8765/#/lab/${esc(L.lab.file.replace(".ipynb",""))}" target="_blank" rel="noopener">실습실에서 이 실습 열기 →</a>
+     <p class="mini">실습실에서는 주황색 칸의 <code>...</code>를 채우고 ▶ 실행을 누르면 바로 아래에서 ✅ / ❌로 채점돼요. 막히면 정답 보기 버튼이 있어요. 계산은 모두 내 맥에서 돌아가서, 실습실은 맥에서 켰을 때만 열려요.</p></div>`:""}
+   <div class="lnav">
+     ${prev?`<a class="btn ghost" href="#lesson-${prev.id}">← ${esc(prev.t)}</a>`:`<span></span>`}
+     <button type="button" class="btn${done[id]?" done":""}" id="markDone">${done[id]?"완료했어요 ✓":"이 항목 완료로 표시"}</button>
+     ${next?`<a class="btn ghost" href="#lesson-${next.id}">${esc(next.t)} →</a>`:`<a class="btn ghost" href="#roadmap">로드맵으로</a>`}
+   </div>`;
+  (L.extra||[]).forEach((x,xi)=>{try{window.WIDGETS[x.widget]($("#extraMount"+xi));}catch(e){console.error(e);}});
+  try{window.WIDGETS[L.widget]($("#widgetMount"));}catch(e){$("#widgetMount").textContent="그림을 불러오지 못했어요.";console.error(e);}
+  root.querySelectorAll(".qz").forEach(qz=>{const q=L.quiz[+qz.dataset.q];
+    qz.querySelectorAll(".op").forEach(b=>b.addEventListener("click",()=>{const o=+b.dataset.o;
+      qz.querySelectorAll(".op").forEach(x=>x.classList.remove("right","wrong"));
+      b.classList.add(o===q.a?"right":"wrong");if(o!==q.a)qz.querySelector(`.op[data-o="${q.a}"]`).classList.add("right");
+      const ex=qz.querySelector(".exp");ex.hidden=false;ex.innerHTML=(o===q.a?"<b style='color:var(--ok)'>맞아요.</b> ":"<b style='color:var(--accent)'>아쉬워요.</b> ")+esc(q.e);}));});
+  const cp=$("#copyCmd");if(cp)cp.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(labCmd);cp.textContent="복사했어요";}
+    catch(e){const r=document.createRange();r.selectNodeContents($("#labCmd"));const s=getSelection();s.removeAllRanges();s.addRange(r);cp.textContent="선택됐어요. ⌘C로 복사하세요";}});
+  $("#markDone").addEventListener("click",()=>{if(done[id])delete done[id];else done[id]=Date.now();applyDone();save();
+    const b=$("#markDone");b.classList.toggle("done",!!done[id]);b.textContent=done[id]?"완료했어요 ✓":"이 항목 완료로 표시";});
+}
+
+/* ---------- routing ---------- */
+function route(){
+  const h=location.hash.slice(1);
+  const v=h.startsWith("lesson-")?"lesson":["roadmap","calc","glossary","anim"].includes(h)?h:"roadmap";
+  document.querySelectorAll(".view").forEach(s=>s.hidden=s.id!=="view-"+v);
+  document.querySelectorAll("nav.tabs a").forEach(a=>{const on=a.dataset.view===v||(v==="lesson"&&a.dataset.view==="roadmap");if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+  if(v==="calc")calc();
+  if(v==="lesson")renderLesson(h.slice(7));
+}
+window.addEventListener("hashchange",()=>{route();window.scrollTo(0,0);});
+
+[["qkvinside","animInside"],["qkvflow","animFlow"],["mlpflow","animMlp"],["training","animTrain"],["moe","animMoe"],["attvariants","animVar"]].forEach(([w,id])=>{try{window.WIDGETS[w]($("#"+id));}catch(e){console.error(e);$("#"+id).textContent="그림을 불러오지 못했어요.";}});
+document.querySelectorAll(".anav a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();if(location.hash!=="#anim")location.hash="anim";setTimeout(()=>$("#box-"+a.dataset.jump).scrollIntoView({behavior:"smooth"}),30);}));
+renderRoad();applyDone();renderGloss();route();connect();
+</script>
+
+</body></html>
