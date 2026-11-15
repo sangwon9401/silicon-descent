@@ -177,6 +177,9 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
 .btn:disabled{opacity:.4;cursor:default}
 .btn.done{background:var(--ok);border-color:var(--ok)}
 .golesson{justify-self:start}
+.colabbox{border-top:1px dashed var(--line,#ccc);padding-top:12px;display:grid;gap:10px}
+.colabbox p{margin:0}
+.btn.colab{justify-self:start}
 .soon{font-size:13px;color:var(--muted)}
 .res-h{font-size:12px;color:var(--muted);margin-top:4px}
 .mini{font-size:13px;color:var(--muted);margin:8px 0 0}
@@ -1490,6 +1493,9 @@ function renderLesson(id){
      <div class="cmd"><code id="labCmd">${esc(labCmd)}</code><button type="button" class="btn ghost" id="copyCmd">복사</button></div>
      <p><b>2.</b> 이미 켜 두었다면 바로 이 실습으로 가요.</p>
      <a class="btn golesson" href="http://127.0.0.1:8765/#/lab/${esc(L.lab.file.replace(".ipynb",""))}" target="_blank" rel="noopener">실습실에서 이 실습 열기 →</a>
+     <div class="colabbox"><p><b>맥이 없거나 밖에서 할 때</b>는 Google Colab으로 열어요. 설치 없이 브라우저에서 바로 돌아가요.</p>
+     <a class="btn colab" href="https://colab.research.google.com/github/sangwon9401/silicon-descent/blob/main/colab/${esc(L.lab.file)}" target="_blank" rel="noopener">Colab에서 열기 ↗</a>
+     <p class="mini">Colab에서는 맨 위 <b>Colab 준비</b> 칸을 먼저 실행하세요. 더 빠르게 하려면 메뉴 <b>런타임 → 런타임 유형 변경 → T4 GPU</b>를 고르세요. 고친 내용을 남기려면 <b>파일 → Drive에 사본 저장</b>을 누르세요.</p></div>
      <p class="mini">실습실에서는 주황색 칸의 <code>...</code>를 채우고 ▶ 실행을 누르면 바로 아래에서 ✅ / ❌로 채점돼요. 막히면 정답 보기 버튼이 있어요. 계산은 모두 내 맥에서 돌아가서, 실습실은 맥에서 켰을 때만 열려요.</p></div>`:""}
    <div class="lnav">
      ${prev?`<a class="btn ghost" href="#lesson-${prev.id}">← ${esc(prev.t)}</a>`:`<span></span>`}
