@@ -420,6 +420,8 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
 .av-tbl thead th{font-size:12px;color:var(--muted);font-weight:500}
 .anav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
 .anav a{font-size:13px;text-decoration:none;color:var(--die);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px}
+.qi-mix{display:grid;gap:4px;border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+.qi-sum{font-size:12px;color:var(--muted);padding-left:4px}
 /* ---- 0단계 기초 위젯 (.bz) ---- */
 .bz{display:grid;gap:12px}
 .bz-sub{font-size:13px;font-weight:600;color:var(--fg2);margin-top:4px}
@@ -539,6 +541,123 @@ code{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1p
 .bz-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--fg2)}
 .bz-leg i{display:inline-block;width:16px;height:3px;margin-right:6px;vertical-align:middle}
 .bz-leg i.l{background:var(--line)}.bz-leg i.r{background:var(--die)}.bz-leg i.s{background:var(--accent)}
+/* ---- 2~7단계 위젯 (.gx) ---- */
+.bz{--c1:var(--accent);--c2:var(--die);--c3:#6b4fa0;--c4:#b8860b;--c5:#3d6fb4;--c6:#a8456b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bz{--c3:#b49be0;--c4:#e0b84a;--c5:#7fa8e8;--c6:#e08aa8}}
+:root[data-theme="dark"] .bz{--c3:#b49be0;--c4:#e0b84a;--c5:#7fa8e8;--c6:#e08aa8}
+.gx-flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gx-node{display:grid;gap:2px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface);transition:all .3s;min-width:90px}
+.gx-node b{font-size:13px}.gx-node span{font-size:11px;color:var(--muted)}
+.gx-node.now{background:var(--accent);border-color:var(--accent)}.gx-node.now b,.gx-node.now span{color:var(--surface)}
+.gx-ar{color:var(--muted)}
+.gx-loop{font-size:12px;color:var(--fg2);border:1px dashed var(--line);border-radius:8px;padding:6px 10px}.gx-loop.now{border-color:var(--accent);color:var(--accent);font-weight:600}
+.gx-meter{display:grid;gap:8px}
+.gx-meter>div{display:grid;grid-template-columns:minmax(120px,170px) 1fr 70px;gap:10px;align-items:center;font-size:13px}
+.gx-meter b{font-family:var(--f-mono);font-size:13px;text-align:right}
+.gx-bar{height:16px;background:var(--sunk);border-radius:4px;overflow:hidden}.gx-bar i{display:block;height:100%;border-radius:4px;transition:width .35s}
+.gx-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--fg2)}
+.gx-legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-2px}
+.gx-idle{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,var(--line) 3px 5px)!important;border:1px solid var(--line)}
+.gx-grid{display:grid;gap:2px;overflow-x:auto;padding-bottom:4px}
+.gx-rl{font-size:11px;color:var(--muted);align-self:center}
+.gx-c{font-style:normal;font-size:10px;font-weight:700;text-align:center;line-height:20px;height:20px;border-radius:3px;background:color-mix(in srgb,var(--c) 75%,var(--surface));color:var(--surface)}
+.gx-c.e{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,var(--line) 3px 5px)}
+.gx-tn{font-size:9px;color:var(--muted);text-align:center;font-family:var(--f-mono)}
+.gx-mem{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
+.gx-blk{position:relative;border:1.5px solid var(--c);background:color-mix(in srgb,var(--c) 22%,var(--surface));border-radius:6px;padding:4px;min-height:44px;display:grid;justify-items:center;align-content:center;gap:3px}
+.gx-blk.free{border:1px dashed var(--line);background:var(--surface)}
+.gx-bi{position:absolute;top:1px;left:4px;font-size:9px;color:var(--muted);font-family:var(--f-mono)}
+.gx-blk b{font-size:13px}
+.gx-fill{display:flex;gap:2px}.gx-fill i{width:6px;height:6px;border-radius:50%;border:1px solid var(--c)}.gx-fill i.u{background:var(--c)}
+.gx-req{font-size:13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gx-chip{display:inline-block;border:1px solid var(--line);border-radius:12px;padding:2px 10px;font-size:12px;background:var(--surface)}
+.gx-split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.gx-split{grid-template-columns:1fr}}
+.gx-tree{display:grid;gap:4px}
+.gx-tn2{display:flex;justify-content:space-between;gap:8px;font-size:13px;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--surface)}
+.gx-tn2 i{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.gx-tn2.on{border-color:var(--accent);background:var(--accent-soft)}
+.gx-tl{display:flex;gap:2px;height:64px}
+.gx-step{display:flex;flex-direction:column;position:relative;border-radius:4px;overflow:hidden;min-width:8px}
+.gx-pf{background:var(--c1)}.gx-dc{background:var(--c2)}
+.gx-step span{position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:10px;font-family:var(--f-mono);color:var(--surface)}
+.gx-code{font-family:var(--f-mono);font-size:12px;background:var(--sunk);border-radius:8px;padding:10px 12px;margin:0;overflow-x:auto;white-space:pre;line-height:1.6;color:var(--fg)}
+.gx-chat{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface);min-height:52px;font-size:15px}
+.gx-req1{display:flex;gap:3px;align-items:center;flex-wrap:nowrap;overflow-x:auto}
+.gx-q0{font-size:11px;color:var(--muted);white-space:nowrap}
+.gx-wait{flex:2.2;background:var(--sunk);border:1px dashed var(--line);border-radius:4px;font-size:11px;text-align:center;padding:4px;white-space:nowrap}
+.gx-tk{flex:1;background:var(--c2);color:var(--surface);border-radius:4px;font-size:10px;text-align:center;padding:4px 0}
+.gx-req1l{display:flex;gap:6px;font-size:12px;color:var(--fg2);text-align:center;margin-top:-4px}
+.gx-plot{max-width:480px}
+.gx-p50{fill:none;stroke:var(--c2);stroke-width:2.5}.gx-p99{fill:none;stroke:var(--c1);stroke-width:2.5}
+.gx-cur{stroke:var(--muted);stroke-dasharray:3 3}
+.gx-dot{fill:var(--surface);stroke:var(--c2);stroke-width:2;cursor:pointer}.gx-dot.on{fill:var(--accent);stroke:var(--accent)}
+.bz text.gx-ann{font-size:10px;fill:var(--fg2)}
+.gx-tl2{display:grid;gap:6px}
+.gx-lane{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:center;font-size:12px}
+.gx-lane>div{position:relative;height:24px;background:var(--sunk);border-radius:4px}
+.gx-lane>div.g{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,var(--line) 3px 5px)}
+.gx-lane i{position:absolute;top:0;bottom:0;border-radius:3px;font-style:normal;font-size:10px;color:var(--surface);text-align:center;line-height:24px;border-right:1px solid var(--surface)}
+.gx-lane i.c{background:var(--c4)}.gx-lane i.g{background:var(--c2)}
+.gx-ladder{display:grid;gap:6px}
+.gx-lv{display:grid;grid-template-columns:1fr auto;gap:2px 10px;text-align:left;font:inherit;border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--fg);background:linear-gradient(90deg,color-mix(in srgb,var(--c2) 22%,var(--surface)) var(--w),var(--surface) var(--w))}
+.gx-lv b{font-size:13px}.gx-lv span{font-size:12px;color:var(--fg2);grid-column:1}.gx-lv i{font-style:normal;font-size:11px;font-family:var(--f-mono);color:var(--muted);grid-row:1/3;grid-column:2;align-self:center}
+.gx-lv.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.gx-blocks{display:grid;gap:6px}
+.gx-bk{display:grid;grid-template-columns:52px 1fr;gap:6px;align-items:center;font-size:11px;color:var(--muted)}
+.gx-bk>div{display:grid;grid-template-columns:repeat(32,1fr);gap:1px}
+.gx-bk i{height:12px;border-radius:2px;background:color-mix(in srgb,var(--c) 70%,var(--surface));cursor:pointer}
+.gx-bk i.off{background:var(--sunk)}.gx-bk i.pk{outline:2px solid var(--fg);outline-offset:1px}
+.gx-memgrid{display:grid;grid-template-columns:repeat(32,1fr);gap:1px;max-height:240px;overflow:auto}
+.gx-memgrid i{height:6px;background:var(--sunk)}.gx-memgrid i.s{background:color-mix(in srgb,var(--c1) 35%,var(--surface))}.gx-memgrid i.r{background:var(--c1)}
+.gx-vec{display:flex;flex-wrap:wrap;gap:2px}
+.gx-vec i{font-style:normal;font-family:var(--f-mono);font-size:11px;width:26px;height:24px;line-height:24px;text-align:center;border-radius:3px;background:color-mix(in srgb,var(--c) 30%,var(--surface));color:var(--fg)}
+.gx-vec i.pk{background:var(--c);color:var(--surface);font-weight:700}.gx-vec i.off{background:var(--sunk);color:var(--muted)}
+.gx-prof{display:flex;align-items:stretch;height:40px;gap:0;overflow:hidden;border-radius:4px}
+.gx-prof .gap{background:repeating-linear-gradient(45deg,var(--sunk) 0 3px,var(--line) 3px 5px)}
+.gx-prof .kn{border:0;font:inherit;font-size:9px;color:var(--surface);background:var(--c);overflow:hidden;white-space:nowrap;cursor:pointer;padding:0;min-width:2px;display:flex;align-items:center;justify-content:center}
+.gx-prof .kn.on{outline:2px solid var(--fg);outline-offset:-2px}
+.gx-mm3{display:grid;grid-template-columns:repeat(3,minmax(0,140px));gap:14px;justify-content:start}
+.gx-mm3>div>span{font-size:12px;color:var(--muted)}
+.gx-mm3>div>div{display:grid;grid-template-columns:repeat(8,1fr);gap:1px;aspect-ratio:1}
+.gx-mm3 i{background:var(--sunk)}.gx-mm3 i.hl{background:color-mix(in srgb,var(--c2) 60%,var(--surface))}.gx-mm3 i.on{background:var(--accent)}
+.gx-bits{display:flex;flex-wrap:wrap;gap:2px}
+.gx-bits i{width:16px;height:22px;border-radius:3px}
+.gx-bits i.s{width:auto;padding:0 4px;font-style:normal;font-size:10px;line-height:22px;background:var(--c6);color:var(--surface)}
+.gx-bits i.e{background:var(--c5)}.gx-bits i.m{background:var(--c2)}.gx-bits i.n{background:var(--c4)}
+.gx-os{display:grid;gap:4px}
+.gx-osr{display:flex;gap:4px;align-items:center}.gx-osr span{width:36px;font-size:12px;color:var(--muted)}
+.gx-osr i{font-style:normal;font-family:var(--f-mono);width:40px;text-align:center;padding:5px 0;border-radius:4px;background:var(--sunk);transition:all .3s}
+.gx-osr i.cur{background:var(--accent);color:var(--surface);font-weight:700}.gx-osr i.done{background:color-mix(in srgb,var(--c2) 30%,var(--surface))}
+.gx-state{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--f-mono);font-size:14px;background:var(--sunk);border-radius:8px;padding:8px 12px}
+.gx-sms{display:grid;grid-template-columns:repeat(22,1fr);gap:2px}
+.gx-sms i{aspect-ratio:1;background:var(--sunk);border-radius:2px}.gx-sms i.on{background:var(--c2)}
+.gx-qbars{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;height:150px}
+.gx-qb{position:relative;border-bottom:0}
+.gx-qb::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+.gx-qb span{position:absolute;width:45%}.gx-qb span.o{left:0;background:var(--c2)}.gx-qb span.d{right:0;background:var(--c1)}
+.gx-qb b{position:absolute;bottom:-2px;left:0;right:0;text-align:center;font-family:var(--f-mono);font-size:10px;color:var(--fg2)}
+.gx-tp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gx-gpu{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:6px;background:var(--surface);font-family:var(--f-mono);font-size:13px}
+.gx-gpu>b{font-family:var(--f-body)}.gx-ar2{color:var(--accent);font-weight:700}
+.gx-spec{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.gx-sp{border:1.5px dashed var(--line);border-radius:6px;padding:4px 10px;font-size:14px;opacity:.3;transition:all .3s}
+.gx-sp.on{opacity:1}.gx-sp.ok{border:1.5px solid var(--ok);background:var(--ok-soft)}.gx-sp.no{text-decoration:line-through;color:var(--muted)}
+.gx-sp.fix{border:1.5px solid var(--accent);background:var(--accent-soft);font-weight:700}
+.gx-pd{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.gx-pool{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:4px;background:var(--surface)}.gx-pool span{font-size:12px;color:var(--fg2)}
+.gx-arrow{font-size:13px;font-weight:700;color:var(--accent)}
+.gx-lay{display:grid;gap:3px;max-width:420px}
+.gx-lay button{font:inherit;font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-radius:4px;padding:6px 0;cursor:pointer;color:var(--fg);background:hsl(var(--h) 55% 85%)}
+:root[data-theme="dark"] .gx-lay button{background:hsl(var(--h) 35% 28%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gx-lay button{background:hsl(var(--h) 35% 28%)}}
+.gx-lay button.on{outline:2px solid var(--fg);outline-offset:1px;font-weight:700}
+.gx-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media (max-width:720px){.gx-3col{grid-template-columns:1fr}}
+.gx-3col>div>div{display:grid;gap:4px}
+.gx-ln{display:grid;gap:1px;text-align:left;font:inherit;border:1px solid var(--line);border-radius:6px;padding:6px 8px;background:var(--surface);cursor:pointer;min-height:44px;align-content:start}
+.gx-ln code{font-family:var(--f-mono);font-size:11px;color:var(--fg);white-space:pre-wrap;word-break:break-all}
+.gx-ln.on{border-color:var(--accent);background:var(--accent-soft)}
 @media (prefers-reduced-motion:reduce){.an *{animation:none!important}.an .arc,.an .up,.an .rl{stroke-dashoffset:0}.an .uph,.an .nxt rect,.an .nxt text{opacity:1}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -699,24 +818,24 @@ L["p1-2"]={
 };
 
 L["p1-3"]={
- lead:"GPU가 느린 이유는 둘 중 하나예요. <b>계산할 게 너무 많거나(compute-bound)</b>, <b>계산할 재료를 가져오는 게 느리거나(memory-bound)</b>. 이 강의는 지금 어느 쪽인지 숫자 하나로 판단하는 법을 알려 줘요. 앞으로 배울 최적화는 전부 이 판단에서 출발해요.",
+ lead:"GPU가 느릴 때 이유는 딱 둘 중 하나예요. <b>재료를 나르느라 느리거나</b>(memory-bound), <b>요리하느라 느리거나</b>(compute-bound). 어느 쪽인지 알아야 무엇을 고칠지 정할 수 있어요. 판단법은 간단해요. <b>두 시간을 재서 긴 쪽이 범인</b>이에요.",
  sections:[
-  {h:"1. 주방으로 생각해 보기",p:["GPU를 주방이라고 해 볼게요. <b>요리사(연산 유닛)</b>는 엄청나게 빠른데, 재료는 멀리 있는 <b>창고(HBM 메모리)</b>에 있고 <b>운반 통로(메모리 대역폭)</b>는 상대적으로 좁아요.","H100은 1초에 약 989조 번 계산(FP16)할 수 있지만, 창고에서 가져올 수 있는 재료는 1초에 3.35TB예요. 나누면 <b>재료 1바이트를 가져올 때마다 약 295번은 계산해야</b> 요리사가 쉬지 않아요. 그보다 적게 계산하면 요리사는 재료를 기다리며 놀아요."]},
-  {h:"2. 연산 강도: 판단 기준이 되는 숫자",p:["어떤 작업이 <b>옮긴 바이트당 몇 번 계산하는지</b>를 연산 강도(arithmetic intensity)라고 해요. 이 값이 GPU의 꺾임점(H100은 약 295)보다 낮으면 memory-bound, 높으면 compute-bound예요."]},
-  {h:"3. 예시로 감 잡기",p:["<b>벡터 덧셈</b> c = a + b: 원소 하나에 덧셈 1번, 그런데 읽기 2개와 쓰기 1개로 6바이트(FP16)를 옮겨요. 강도 약 0.17이에요. 극단적인 메모리 병목이에요.","<b>디코드 (배치 1)</b>: 가중치 행렬 하나에 파라미터가 N개면 2N바이트를 읽고, 토큰 하나에 2N번 계산해요. 강도 약 1이에요. 역시 메모리 병목이에요.","<b>디코드 (배치 b)</b>: 같은 가중치를 한 번 읽어서 토큰 b개를 계산하면 강도가 약 b로 올라가요. <b>배칭이 디코드 성능의 핵심인 이유</b>예요.","<b>Prefill 2,048토큰</b>: 강도가 수천이에요. 연산 병목이에요."]},
-  {h:"4. Roofline 그래프 읽기",p:["아래 그래프의 가로축이 연산 강도, 세로축이 낼 수 있는 최대 성능이에요. 왼쪽 비탈은 메모리가 막고 있는 구간, 오른쪽 평평한 지붕은 연산기가 꽉 찬 구간이에요. 둘이 만나는 곳이 꺾임점이에요."]},
-  {h:"앞으로 배울 것과의 연결",p:["Continuous batching은 배치를 키워 점을 오른쪽으로 옮기고, 양자화는 읽는 바이트를 줄여 같은 효과를 내고, 커널 퓨전은 메모리 왕복 자체를 없애요. 모두 이 그래프 위에서 점을 옮기는 일이에요. 상단의 '추론 계산기' 탭에서 실제 모델로도 확인해 보세요."]}
+  {h:"1. 비유: 요리사와 창고",p:["GPU 안에는 엄청 빠른 <b>요리사</b>(연산기)가 있고, 재료(가중치, KV 캐시)는 <b>창고</b>(GPU 메모리)에 있어요. 요리하려면 재료를 창고에서 날라 와야 해요.","요리사는 너무 빠르고 나르는 길은 상대적으로 좁아요. 그래서 대부분의 경우 요리사는 <b>재료가 오길 기다리며 놀아요</b>."]},
+  {h:"2. 판단법: 두 시간 비교하기",p:["<b>나르는 시간</b> = 읽어야 할 바이트 ÷ 메모리 속도<br><b>요리 시간</b> = 해야 할 계산 횟수 ÷ 계산 속도","두 일은 동시에 진행되니까, 실제 걸리는 시간은 <b>둘 중 긴 쪽</b>이에요. 나르는 시간이 길면 memory-bound, 요리 시간이 길면 compute-bound.","H100 기준 숫자: 메모리 속도 <b>3.35TB/s</b>, 계산 속도(FP16 텐서 코어) <b>989조 번/초</b>."]},
+  {h:"3. 예시: 8B 모델 (가중치 16GB)",p:["<b>decode, 요청 1개</b>: 토큰 하나 만들려면 가중치 16GB를 다 읽어야 해요 → 나르기 <b>4.8ms</b>. 계산은 약 160억 번 → 요리 <b>0.016ms</b>. 나르기가 300배 길어요. 요리사는 99% 넘게 놀아요. → <b>memory-bound</b>","<b>decode, 요청 64개를 묶으면</b>: 가중치는 똑같이 한 번만 읽어요 → 나르기 4.8ms 그대로. 계산은 64배 → 요리 1ms. 여전히 나르기가 길지만, 같은 4.8ms에 토큰을 <b>64개</b> 만들어요. 이게 배칭이 중요한 이유예요(2단계 2번).","<b>prefill 2,048토큰</b>: 나르기 4.8ms, 요리 약 33ms. 이번엔 요리가 길어요 → <b>compute-bound</b>. prefill이 decode와 성격이 다른 이유예요."]},
+  {h:"4. 숫자 하나로 줄이면: 1바이트당 계산 횟수",p:["다른 자료를 읽다 보면 <b>arithmetic intensity</b>(연산 강도)라는 말이 나와요. '1바이트 날라 올 때마다 계산을 몇 번 하나'예요. H100은 1바이트당 약 <b>295번</b> 계산해야 요리사가 쉬지 않아요(989조 ÷ 3.35조). 이 숫자를 꺾임점(ridge point)이라고 해요.","decode는 대략 '1바이트당 배치 크기만큼' 계산해요. 그래서 배치가 295보다 작으면 memory-bound예요. 실제로는 KV 캐시도 읽어야 해서 꺾임점에 닿기가 더 어려워요.","이걸 그래프로 그린 게 <b>roofline</b>이에요. 아래 위젯의 두 번째 그래프가 쉬운 버전이에요. 배치를 키우면 토큰 생산량이 쭉 늘다가(memory-bound 구간) 어느 순간 <b>평평해져요</b>(compute-bound 구간)."]},
+  {h:"5. 그래서 무엇을 고치나",p:["<b>memory-bound면 → 덜 나르기</b>: 배칭(한 번 나른 재료로 여러 요리), 양자화(재료를 작게 포장, 4단계 6번), 퓨전(중간 결과를 창고에 안 갖다 두기, 4단계 7번).","<b>compute-bound면 → 빨리 요리하기</b>: 텐서 코어 쓰기, 더 낮은 정밀도(FP8)로 계산하기(4단계 3번).","앞으로 배우는 최적화는 전부 이 두 갈래 중 하나예요. 상단 '추론 계산기' 탭에서 실제 모델로도 확인할 수 있어요."]}
  ],
- widget:"roofline",
- widgetTitle:"Roofline: 내 연산은 어디에 있나",
- widgetCap:"GPU를 바꾸고 디코드 배치 슬라이더를 움직여 보세요. 점이 비탈에 있으면 메모리 병목, 지붕에 닿으면 연산 병목이에요.",
- summary:["연산 강도 = 계산 횟수 ÷ 옮긴 바이트","꺾임점 = GPU 연산 성능 ÷ 메모리 대역폭 (H100 약 295, T4 약 200)","강도가 꺾임점보다 낮으면 memory-bound","디코드 강도 ≈ 배치 크기, 그래서 배칭이 중요","배칭, 양자화, 퓨전은 모두 점을 옮기는 일"],
+ widget:"bound",
+ widgetTitle:"나르기 vs 요리: 어느 쪽이 느린가",
+ widgetCap:"위에서 작업을 골라 두 막대를 비교해 보세요. 아래 그래프는 배치를 키울 때 1초에 만드는 토큰 수예요.",
+ summary:["느린 이유는 '나르기(메모리)' 아니면 '요리(계산)'","나르는 시간 = 바이트 ÷ 메모리 속도, 요리 시간 = 계산 횟수 ÷ 계산 속도","둘 중 긴 쪽이 병목","decode(배치 작음) = memory-bound, prefill = compute-bound","memory-bound → 덜 나르기(배칭·양자화·퓨전), compute-bound → 빨리 계산"],
  quiz:[
-  {q:"T4는 FP16 약 65 TFLOPS, 메모리 대역폭 320GB/s예요. 꺾임점은 대략 바이트당 몇 FLOP일까요?",o:["약 20","약 200","약 2","약 2,000"],a:1,e:"65 × 10¹² ÷ 320 × 10⁹ ≈ 203이에요."},
-  {q:"배치 1 디코드에서 가중치를 FP16에서 INT4로 바꾸면 이론상 속도는 어떻게 될까요? (KV 캐시는 무시)",o:["최대 약 4배 빨라져요","그대로예요","느려져요","16배 빨라져요"],a:0,e:"메모리 병목이라 읽는 바이트가 1/4이 되면 시간도 거의 1/4이 돼요. 실제로는 역양자화 비용 때문에 조금 덜 빨라져요."},
-  {q:"다음 중 compute-bound에 가장 가까운 작업은?",o:["배치 1 디코드","벡터 덧셈","2,048토큰 prefill","softmax"],a:2,e:"prefill은 같은 가중치로 수천 토큰을 한 번에 계산해서 연산 강도가 아주 높아요."}
+  {q:"decode에서 요청 1개일 때 GPU가 주로 하는 일은?",o:["계산","가중치를 메모리에서 읽어 오기를 기다림","디스크 읽기","토크나이즈"],a:1,e:"가중치 16GB를 읽는 데 4.8ms, 계산은 0.016ms라 대부분 기다려요."},
+  {q:"decode 요청을 1개에서 64개로 묶으면 한 스텝 시간은 대략?",o:["64배 길어진다","거의 그대로다","1/64로 준다","0이 된다"],a:1,e:"가중치는 한 번만 읽으니 나르는 시간이 그대로예요. 계산은 늘어도 아직 나르기보다 짧아요."},
+  {q:"memory-bound인 작업을 빠르게 하는 방법이 아닌 것은?",o:["배칭","양자화로 가중치 줄이기","커널 퓨전","계산 속도가 더 빠른 연산기만 추가"],a:3,e:"나르기가 병목이라 요리사를 더 빠르게 해도 기다리는 시간만 늘어요."}
  ],
- lab:{file:"03_roofline_on_my_mac.ipynb",desc:"내 맥에서 벡터 덧셈, 행렬-벡터 곱, 행렬곱의 속도를 직접 재고, 배치를 키울수록 처리량이 늘다가 멈추는 roofline 곡선을 내 손으로 그려요."}
+ lab:{file:"03_roofline_on_my_mac.ipynb",desc:"내 맥에서 벡터 덧셈, 행렬-벡터 곱, 행렬곱의 속도를 직접 재고, 배치를 키울수록 처리량이 늘다가 멈추는 곡선을 내 손으로 그려요."}
 };
 
 L["p1-4"]={
@@ -968,6 +1087,35 @@ BF16 가중치 = ${(total*2/1e9).toFixed(2)} GB</div>`;q("#paRes").textContent="
  draw();
 };
 
+W.bound=(root)=>{
+ const BW=3.35e12,FL=989e12,WB=16e9,PT=1.6e10;
+ const J=[["벡터 덧셈 (1억 칸)",6e8,1e8,0],["decode · 요청 1개",WB,PT,1],["decode · 요청 64개",WB,PT*64,64],["decode · 요청 512개",WB,PT*512,512],["prefill 2,048토큰",WB,PT*2048,0]];
+ let j=1;const BS=[1,2,4,8,16,32,64,128,256,512,1024];
+ const tps=b=>b/Math.max(WB/BW,PT*b/FL);
+ const X=i=>46+i*(280/(BS.length-1)),ymax=tps(1024)*1.1,Y=v=>170-v/ymax*150;
+ root.innerHTML=`<div class="an bz"><div class="bz-row" id="bdJ">${J.map((x,i)=>`<button type="button" class="btn ghost" data-j="${i}">${x[0]}</button>`).join("")}</div>
+  <div class="gx-meter"><div><span>📦 나르기 (메모리 읽기)</span><span class="gx-bar"><i id="bdM" style="background:var(--c2)"></i></span><b id="bdMv"></b></div>
+   <div><span>🍳 요리 (계산)</span><span class="gx-bar"><i id="bdC" style="background:var(--c1)"></i></span><b id="bdCv"></b></div></div>
+  <div class="bz-out" id="bdO"></div>
+  <div class="bz-sub">배치를 키우면 1초에 만드는 토큰 수 (8B 모델, H100)</div>
+  <svg viewBox="0 0 340 200" class="gx-plot" role="img" aria-label="배치 크기별 초당 토큰 수">
+   <line class="bz-axis" x1="46" y1="170" x2="330" y2="170"/><line class="bz-axis" x1="46" y1="15" x2="46" y2="170"/>
+   ${[20000,40000,60000].map(v=>`<line class="bz-grid" x1="46" x2="330" y1="${Y(v)}" y2="${Y(v)}"/><text x="40" y="${Y(v)+4}" text-anchor="end">${v/1000}천</text>`).join("")}
+   ${BS.map((b,i)=>`<text x="${X(i)}" y="184" text-anchor="middle">${b}</text>`).join("")}
+   <text x="188" y="198" text-anchor="middle">배치 (동시에 처리하는 요청 수)</text>
+   <path class="gx-p50" d="${BS.map((b,i)=>(i?"L":"M")+X(i).toFixed(1)+" "+Y(tps(b)).toFixed(1)).join("")}"/>
+   ${BS.map((b,i)=>`<circle class="gx-dot" data-b="${b}" cx="${X(i)}" cy="${Y(tps(b))}" r="4"/>`).join("")}
+   <text x="52" y="${Y(45000)}" class="gx-ann">메모리 병목 구간:</text><text x="52" y="${Y(45000)+13}" class="gx-ann">배치 늘리면 계속 증가 ↘</text>
+   <text x="${X(10)}" y="${Y(tps(1024))-10}" text-anchor="end" class="gx-ann">계산 병목: 평평 →</text></svg>
+  <p class="mini">KV 캐시 읽기는 빼고 가중치만 계산한 이상적인 값이에요. 실제로는 더 일찍, 더 낮게 평평해져요.</p></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#bdJ button").forEach(b=>b.classList.toggle("on",+b.dataset.j===j));const x=J[j],m=x[1]/BW*1e3,c=x[2]/FL*1e3,mx=Math.max(m,c);
+  q("#bdM").style.width=(m/mx*100)+"%";q("#bdC").style.width=(c/mx*100)+"%";const fm=v=>v<0.01?v.toFixed(4):v<1?v.toFixed(3):v.toFixed(1);q("#bdMv").textContent=fm(m)+"ms";q("#bdCv").textContent=fm(c)+"ms";
+  q("#bdO").innerHTML=m>c?`<b>memory-bound</b>: 나르기가 요리보다 <b>${(m/c).toFixed(m/c<10?1:0)}배</b> 길어요. 요리사는 시간의 <b>${(100-c/m*100).toFixed(c/m<0.01?1:0)}%</b>를 놀아요.${x[3]?` 이 스텝에 토큰 ${x[3]}개를 만들어요.`:""}`:`<b>compute-bound</b>: 요리가 나르기보다 <b>${(c/m).toFixed(1)}배</b> 길어요. 이제 연산기가 꽉 찼어요. 더 빠르게 하려면 계산 자체를 빠르게 해야 해요.${x[3]?` 이 스텝에 토큰 ${x[3]}개를 만들어요.`:""}`;
+  root.querySelectorAll(".gx-dot").forEach(d=>d.classList.toggle("on",+d.dataset.b===x[3]));};
+ root.querySelectorAll("#bdJ button").forEach(b=>b.addEventListener("click",()=>{j=+b.dataset.j;draw();}));draw();
+};
+
 window.LESSONS=L;window.WIDGETS=W;
 })();
 
@@ -1013,7 +1161,7 @@ W.qkvinside=(root)=>{
   {c:"같은 x에 서로 다른 가중치 세 개를 곱해서 <b class='tq'>q</b>, <b class='tk'>k</b>, <b class='tv'>v</b>를 만들어요. 토큰마다 세 개씩이에요.",d:"x × Wq = q (내가 찾는 것), x × Wk = k (내 이름표), x × Wv = v (내 내용). Wq, Wk, Wv는 학습으로 정해진 고정된 숫자 표예요."},
   {c:"이제 '에'의 입장에서 어텐션을 해 볼게요. '에'의 <b class='tq'>q</b>를 각 토큰의 <b class='tk'>k</b>와 곱해서 <b>점수</b>를 내요.",d:"곱한다 = 같은 자리 숫자끼리 곱해서 모두 더하기(내적). 점수가 크면 '이 토큰이 나한테 중요하다'는 뜻이에요."},
   {c:"점수를 <b>softmax</b>로 비율로 바꿔요. 세 비율을 더하면 100%예요.",d:"큰 점수는 더 크게, 작은 점수는 더 작게 만들어서 합이 1이 되게 하는 함수예요."},
-  {c:"그 비율대로 각 토큰의 <b class='tv'>v</b>를 섞어요. 이게 '에'의 <b>어텐션 결과</b>예요.",d:"비율 × v를 모두 더해요. '에'는 이제 '나는', '학교'의 내용을 조금씩 가져온 벡터를 갖게 됐어요."},
+  {c:"그 비율대로 각 토큰의 <b class='tv'>v</b>를 섞어요. 이게 '에'의 <b>어텐션 결과</b>예요.",d:"① 각 v의 숫자 하나하나에 비율을 <b>곱해요</b>(아래 세 줄). ② 세 줄을 <b>같은 칸끼리 더해요</b> → 섞은 결과. '에'는 이제 '나는', '학교'의 내용을 조금씩 가져온 벡터를 갖게 됐어요."},
   {c:"원래 x에 어텐션 결과를 더하고 MLP를 거치면 이 레이어의 출력 <b>x'</b>이 나와요. 이 x'이 <b>다음 레이어의 x</b>가 돼요.",d:"다음 레이어는 이 x'으로 다시 q, k, v를 만들어요. 그래서 레이어마다 q, k, v가 따로 있어요. (MLP 계산은 단순하게 그렸어요.)"},
   {c:"'나는'과 '학교'도 똑같이 해요. 단, <b>자기보다 뒤에 있는 토큰은 못 봐요.</b>",d:"표의 빈칸이 가려진 미래예요. '나는'은 자기만 봐요. 그래서 '나는'의 결과(그리고 위 레이어의 k, v)는 뒤에 무슨 단어가 와도 절대 안 바뀌어요. 이게 KV 캐시를 쓸 수 있는 이유예요."}
  ];
@@ -1025,7 +1173,7 @@ W.qkvinside=(root)=>{
   ${T.map((t,i)=>`<div class="qi-a"><span class="qi-f"><b class="tq">q</b>(에) · <b class="tk">k</b>(${t}) = <b>${f(A.sc[i])}</b></span>
    <span class="qi-p qs" data-s="3"><span class="pbar"><span style="width:${(A.p[i]*100).toFixed(0)}%"></span></span><b>${(A.p[i]*100).toFixed(0)}%</b></span>
    <span class="qi-m qs" data-s="4">× <b class="tv">v</b>(${t})</span></div>`).join("")}
-   <div class="qi-o qs" data-s="4"><span>섞은 결과</span>${vec(O,"vo")}</div>
+   <div class="qi-mix qs" data-s="4">${T.map((t,i)=>`<div class="qi-o"><span>${(A.p[i]*100).toFixed(0)}% × <b class="tv">v</b>(${t})</span>${vec(V[i].map(x=>x*A.p[i]),"vo")}</div>`).join("")}<div class="qi-sum">↓ 같은 칸끼리 더하기</div></div><div class="qi-o qs" data-s="4"><span>섞은 결과</span>${vec(O,"vo")}</div>
    <div class="qi-o qs" data-s="5"><span>x + 결과 → MLP → <b>x'</b></span>${vec(XN,"vx")}<span class="qi-up">↑ 다음 레이어의 입력</span></div></div>
   <div class="qi-mask qs" data-s="6"><h4>모든 토큰의 어텐션 비율</h4><table><thead><tr><th>보는 쪽 ＼ 보이는 쪽</th>${T.map(t=>`<th>${t}</th>`).join("")}</tr></thead><tbody>
    ${T.map((t,i)=>`<tr><th>${t}</th>${T.map((_,j)=>j<=i?`<td>${(att[i].p[j]*100).toFixed(0)}%</td>`:`<td class="msk">못 봄</td>`).join("")}</tr>`).join("")}</tbody></table></div>
@@ -1303,6 +1451,7 @@ const svgPt=(svg,ev)=>{const p=svg.createSVGPoint();p.x=ev.clientX;p.y=ev.client
 const ctrl=`<div class="an-ctrl"></div><div class="an-cap"><p class="an-c"></p><p class="an-d"></p></div>`;
 const capper=(root,S)=>{const c=root.querySelector(".an-c"),d=root.querySelector(".an-d");return s=>{c.innerHTML=S[s].c;d.innerHTML=S[s].d||"";};};
 
+W._bz={ctrl,capper,reveal,softmax,f1,f2,pct,svgPt,stepper};
 /* ---------- 1. 토큰과 임베딩 ---------- */
 W.b_embed=(root)=>{
  const P={"왕":[1.8,7.6],"여왕":[3.1,8.2],"남자":[1.4,5.5],"여자":[2.7,6.1],"학교":[6.0,7.3],"병원":[7.3,7.9],"회사":[6.7,6.5],"사과":[7.4,2.1],"바나나":[8.5,2.9],"포도":[7.7,3.5],"걷다":[3.3,2.3],"뛰다":[2.4,1.5],"달리다":[3.1,1.0]};
@@ -1732,6 +1881,1058 @@ L["p0-11"]={
 
 </script>
 <script>
+/* 2단계 · 미니 인퍼런스 엔진: 강의 8개 + 위젯 */
+(function(L,W){
+const {ctrl,capper,reveal,stepper,f1,pct}=W._bz;
+const C=i=>`var(--c${(i%6)+1})`;
+
+/* ---------- p2-1 요청 하나의 일생 ---------- */
+W.e_flow=(root)=>{
+ const N=[["api","API 서버","요청 받기"],["tok","토크나이저","글자 → 토큰 번호"],["sch","스케줄러","이번 스텝에 누구를 돌릴까"],["blk","블록 매니저","KV 캐시 자리 빌려주기"],["run","모델 러너","GPU에서 forward 한 번"],["smp","샘플러","다음 토큰 고르기"],["post","후처리","토큰 붙이기, 끝났나 확인"],["out","출력","토큰 → 글자, 사용자에게"]];
+ const S=[
+  {a:0,c:"사용자가 \"서울 날씨 알려줘\"를 보냈어요. API 서버가 요청을 받아요.",d:"nano-vllm에서는 <code>LLM.generate()</code>가 입구예요. 실제 vLLM은 HTTP 서버가 따로 있어요(2-6 강의)."},
+  {a:1,c:"토크나이저가 문장을 토큰 번호 목록으로 바꿔요.",d:"요청 하나가 <b>Sequence</b> 객체가 돼요. 토큰 목록, 지금까지 만든 토큰 수, 상태(대기/실행/끝)를 들고 다녀요. (<code>engine/sequence.py</code>)"},
+  {a:2,c:"요청이 <b>대기 줄(waiting)</b>에 들어가요. 엔진은 <b>스텝</b>을 계속 돌리는데, 스텝마다 스케줄러가 '이번에 누구를 GPU에 태울지' 골라요.",d:"새 요청은 prefill이 필요하고, 실행 중(running) 요청은 decode가 필요해요. (<code>engine/scheduler.py</code>)"},
+  {a:3,c:"스케줄러가 블록 매니저에게 \"이 요청 KV 캐시 자리 있어?\"라고 물어요. 자리가 있으면 블록을 빌려줘요.",d:"자리가 없으면 대기하거나, 실행 중인 요청 하나를 잠시 빼요(preemption). (<code>engine/block_manager.py</code>, 2-3 강의)"},
+  {a:4,c:"모델 러너가 고른 요청들을 <b>한 배치로 묶어</b> GPU에서 모델을 한 번 돌려요.",d:"30층을 다 지나 요청마다 logits가 나와요. KV 캐시도 여기서 채워져요. (<code>engine/model_runner.py</code>)"},
+  {a:5,c:"샘플러가 요청마다 다음 토큰을 하나씩 골라요.",d:"temperature 등 요청마다 설정이 달라도 한꺼번에 처리해요(1-4 강의). (<code>layers/sampler.py</code>)"},
+  {a:6,c:"새 토큰을 각 요청 뒤에 붙이고, 끝났는지(EOS 토큰, 최대 길이) 확인해요.",d:"끝난 요청은 블록을 반납하고 빠져요. 안 끝난 요청은 running에 남아요."},
+  {a:2,c:"그리고 <b>다시 스케줄러로</b>. 이 고리(스케줄 → 실행 → 후처리)가 엔진의 심장 박동이에요.",d:"<code>LLMEngine.step()</code> 안이 딱 이 세 줄이에요: <code>schedule()</code> → <code>model_runner.run()</code> → <code>postprocess()</code>. 요청이 다 끝날 때까지 반복해요."},
+  {a:7,c:"끝난 요청의 토큰을 글자로 되돌려 사용자에게 줘요.",d:"vLLM, SGLang도 뼈대는 똑같아요. 다만 스케줄러가 훨씬 똑똑하고(2-2, 2-5), 캐시 재사용(2-4), CPU·GPU 겹치기(2-8) 같은 기술이 붙어 있어요."}];
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="gx-flow">${N.map(n=>`<div class="gx-node" data-n="${n[0]}"><b>${n[1]}</b><span>${n[2]}</span></div>`).join('<span class="gx-ar">→</span>')}</div>
+  <div class="gx-loop">↻ 스텝 반복: 스케줄러 → 블록 매니저 → 모델 러너 → 샘플러 → 후처리 → 다시 스케줄러</div></div>`;
+ const cap=capper(root,S),nodes=[...root.querySelectorAll(".gx-node")];
+ stepper(root,S.length,s=>{cap(s);nodes.forEach((n,i)=>{n.classList.toggle("now",i===S[s].a);});root.querySelector(".gx-loop").classList.toggle("now",s===7);},3200);
+};
+
+/* ---------- p2-2 배칭 ---------- */
+W.e_batch=(root)=>{
+ const LEN=[3,8,2,6,4,7,5,3,6,2],SLOT=4;
+ const sim=mode=>{const rows=Array.from({length:SLOT},()=>[]);let q=LEN.map((l,i)=>({i,l})),cur=Array(SLOT).fill(null),t=0;
+  while(q.length||cur.some(c=>c)){
+   if(mode==="static"){if(cur.every(c=>!c))for(let k=0;k<SLOT;k++)cur[k]=q.length?{...q.shift()}:null;}
+   else for(let k=0;k<SLOT;k++)if(!cur[k]&&q.length)cur[k]={...q.shift()};
+   for(let k=0;k<SLOT;k++){if(cur[k]){rows[k].push(cur[k].i);cur[k].l--;if(cur[k].l===0)cur[k]=null;}else rows[k].push(-1);}
+   t++;if(t>60)break;}
+  return rows;};
+ let mode="static",B=0;
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-sub">① GPU가 왜 노나: 버스 비유</div>
+  <label class="bz-temp">한 번에 태우는 요청 수(배치) <b id="eB"></b><input type="range" id="eBi" min="0" max="9" step="1" value="0" aria-label="배치 크기"></label>
+  <div class="gx-meter"><div><span>가중치 읽기 시간</span><span class="gx-bar"><i id="eMem" style="background:var(--c2)"></i></span><b id="eMemv"></b></div>
+   <div><span>계산 시간</span><span class="gx-bar"><i id="eCmp" style="background:var(--c1)"></i></span><b id="eCmpv"></b></div></div>
+  <div class="bz-out" id="eBo"></div>
+  <div class="bz-sub">② static batching vs continuous batching (자리 4개, 요청 10개)</div>
+  <div class="seg" id="eM"><button type="button" data-m="static">static (한 팀씩)</button><button type="button" data-m="cont">continuous (빈자리 바로 채우기)</button></div>
+  <div class="gx-grid" id="eG"></div><div class="bz-out" id="eGo"></div></div>`;
+ const q=s=>root.querySelector(s),BS=[1,2,4,8,16,32,64,128,256,512];
+ const drawA=()=>{const b=BS[B],mem=16,cmp=0.16*b,step=Math.max(mem,cmp),mx=Math.max(mem,0.16*512);
+  q("#eB").textContent=b;q("#eMem").style.width=(mem/mx*100)+"%";q("#eCmp").style.width=(cmp/mx*100)+"%";q("#eMemv").textContent=mem+"ms";q("#eCmpv").textContent=cmp.toFixed(1)+"ms";
+  q("#eBo").innerHTML=`한 스텝 ≈ <b>${step.toFixed(1)}ms</b> (둘 중 긴 쪽) · 1초에 만드는 토큰 <b>${Math.round(b/step*1000).toLocaleString()}개</b> · 연산기 사용률 <b>${Math.min(100,cmp/step*100).toFixed(0)}%</b><br><span class="mini">가정: 8B 모델(가중치 16GB), 메모리 1,000GB/s, 연산 100 TFLOPS인 GPU. decode 한 스텝마다 가중치 16GB를 <b>무조건 한 번</b> 읽어야 해요(16ms). 요청이 1개든 64개든 읽는 양은 같아요. 버스가 손님 1명을 태우든 50명을 태우든 운행 시간이 같은 것처럼요. 그래서 배치가 작으면 연산기는 대부분 <b>놀아요</b>. 배치를 키우면 같은 시간에 훨씬 많은 토큰을 만들어요. 계산 시간이 읽기 시간을 넘는 지점(여기선 약 100)부터는 연산이 병목이 돼요.</span>`;};
+ const drawB=()=>{root.querySelectorAll("#eM button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));
+  const rows=sim(mode),T=rows[0].length,used=rows.flat().filter(v=>v>=0).length;
+  q("#eG").style.gridTemplateColumns=`52px repeat(${T},minmax(14px,1fr))`;
+  q("#eG").innerHTML=rows.map((r,k)=>`<span class="gx-rl">자리 ${k+1}</span>`+r.map(v=>v<0?`<i class="gx-c e" title="빈자리"></i>`:`<i class="gx-c" style="--c:${C(v)}" title="요청 ${String.fromCharCode(65+v)}">${String.fromCharCode(65+v)}</i>`).join("")).join("")+`<span class="gx-rl"></span>`+Array.from({length:T},(_,t)=>`<span class="gx-tn">${(t+1)%5===0?t+1:""}</span>`).join("");
+  q("#eGo").innerHTML=`끝날 때까지 <b>${T}스텝</b> · 자리 사용률 <b>${pct(used/(T*SLOT))}</b> (빗금 = 빈자리 낭비)<br><span class="mini">${mode==="static"?"한 팀(4개)을 태우면 <b>가장 긴 요청이 끝날 때까지</b> 다음 요청을 못 태워요. 일찍 끝난 자리는 빈 채로 GPU를 돌려요.":"매 스텝마다 끝난 자리에 대기 중인 요청을 <b>바로</b> 넣어요. 이걸 iteration-level scheduling이라고 해요. 빈자리가 거의 없어서 같은 일을 더 빨리 끝내요."} 각 칸 = 그 스텝에 토큰 1개 생성.</span>`;};
+ q("#eBi").addEventListener("input",e=>{B=+e.target.value;drawA();});
+ root.querySelectorAll("#eM button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;drawB();}));
+ drawA();drawB();
+};
+
+/* ---------- p2-3 PagedAttention ---------- */
+W.e_paged=(root)=>{
+ const R=["A","B","C","D","E"],LEN=[[5,9,13,17,20,22],[3,6,9,12,15,18],[8,10,12,14,16,18],[0,4,8,12,14,16],[0,0,3,6,9,12]],NB=24,BS=4,MAXB=8;
+ let t=0,mode="paged";
+ root.innerHTML=`<div class="an bz">
+  <div class="seg" id="pM"><button type="button" data-m="cont">옛 방식: 최대 길이만큼 미리 통째로</button><button type="button" data-m="paged">PagedAttention: 블록 단위로 필요할 때</button></div>
+  <label class="bz-temp">시간 <b id="pT"></b><input type="range" id="pTi" min="0" max="5" step="1" value="0" aria-label="시간"></label>
+  <div class="gx-mem" id="pG"></div><div class="gx-legend" id="pL"></div><div class="bz-out" id="pO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#pM button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));q("#pT").textContent=`t = ${t}`;
+  const cells=Array.from({length:NB},()=>({r:-1,n:0,res:false}));let wait=[],tables={};
+  if(mode==="cont"){let nxt=0;R.forEach((r,i)=>{const len=LEN[i][t];if(!len)return;if(nxt+MAXB>NB){wait.push(r);return;}
+    for(let b=0;b<MAXB;b++){const used=Math.max(0,Math.min(BS,len-b*BS));cells[nxt+b]={r:i,n:used,res:true};}tables[r]=`${nxt}~${nxt+MAXB-1}번 (연속 ${MAXB}칸 예약)`;nxt+=MAXB;});}
+  else{const own=R.map(()=>[]),free=[...Array(NB).keys()];
+   for(let tt=0;tt<=t;tt++)R.forEach((r,i)=>{const need=Math.ceil(LEN[i][tt]/BS);while(own[i].length<need&&free.length)own[i].push(free.shift());});
+   R.forEach((r,i)=>{const len=LEN[i][t];own[i].forEach((b,k)=>cells[b]={r:i,n:Math.max(0,Math.min(BS,len-k*BS)),res:false});if(len)tables[r]="["+own[i].join(", ")+"]";});}
+  q("#pG").innerHTML=cells.map((c,k)=>`<div class="gx-blk${c.r<0?" free":""}" style="--c:${c.r<0?"transparent":C(c.r)}" title="블록 ${k}"><span class="gx-bi">${k}</span>${c.r<0?"":`<b>${R[c.r]}</b><span class="gx-fill">${Array.from({length:BS},(_,j)=>`<i class="${j<c.n?"u":""}"></i>`).join("")}</span>`}</div>`).join("");
+  const used=cells.reduce((a,c)=>a+c.n,0),held=cells.filter(c=>c.r>=0).length*BS;
+  q("#pL").innerHTML=Object.entries(tables).map(([r,v])=>`<span><i style="background:${C(R.indexOf(r))}"></i>${r}: ${mode==="paged"?"block table ":""}${v}</span>`).join("");
+  q("#pO").innerHTML=`실제 토큰 <b>${used}개</b> / 잡아 둔 자리 <b>${held}개</b> → 낭비 <b>${held?pct(1-used/held):"0%"}</b> · 대기 중인 요청: <b>${wait.length?wait.join(", "):"없음"}</b><br><span class="mini">블록 하나 = 토큰 ${BS}개 자리 (작은 점이 채워진 자리). ${mode==="cont"?"요청이 얼마나 길어질지 모르니 최대 길이(토큰 32개)만큼 <b>연속된 자리</b>를 미리 잡아요. 대부분 비어 있는데도 다른 요청이 못 써서, D와 E는 메모리가 남아 보이는데도 기다려요.":"필요할 때 <b>아무 빈 블록이나</b> 하나씩 빌려요. 블록이 흩어져 있어도 요청마다 <b>block table</b>(내 블록 번호 목록)만 있으면 순서대로 찾아갈 수 있어요. 낭비는 각 요청의 마지막 블록 빈칸뿐이라 5개 요청이 다 들어가요."}</span>`;};
+ root.querySelectorAll("#pM button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;draw();}));
+ q("#pTi").addEventListener("input",e=>{t=+e.target.value;draw();});draw();
+};
+
+/* ---------- p2-4 Prefix caching ---------- */
+W.e_prefix=(root)=>{
+ const SEG={s1:["시스템: 너는 친절한 비서야",200],q1:["사용자: 서울 날씨?",10],a1:["비서: 맑아요",8],q3:["사용자: 내일은?",6],q2:["사용자: 파스타 레시피",12],s2:["시스템: 너는 코딩 도우미야",180],q4:["사용자: 파이썬 정렬",9]};
+ const REQ=[["s1","q1"],["s1","q2"],["s1","q1","a1","q3"],["s2","q4"],["s1","q2"]];
+ let n=0;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><button type="button" class="btn" id="xNext">다음 요청 보내기</button><button type="button" class="btn ghost" id="xReset">처음으로</button><span class="mini" id="xCnt"></span></div>
+  <div class="gx-req" id="xReq"></div><div class="gx-split"><div><div class="bz-lbl">캐시 트리 (radix tree)</div><div class="gx-tree" id="xTree"></div></div><div class="bz-out" id="xOut"></div></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{q("#xCnt").textContent=`보낸 요청 ${n} / ${REQ.length}`;q("#xNext").disabled=n>=REQ.length;
+  const tree={};let hitT=0,allT=0,last=null;
+  REQ.slice(0,n).forEach((r,ri)=>{let node=tree,hit=0,miss=0,path=[];r.forEach(sg=>{if(node[sg]){hit+=SEG[sg][1];}else{node[sg]={};miss+=SEG[sg][1];}path.push(sg);node=node[sg];});
+   allT+=hit+miss;hitT+=hit;if(ri===n-1)last={r,hit,miss,path};});
+  const render=(node,depth,path)=>Object.keys(node).map(k=>{const p=path.concat(k),on=last&&last.path.slice(0,p.length).join()===p.join();
+   return `<div class="gx-tn2${on?" on":""}" style="margin-left:${depth*16}px"><span>${depth?"└ ":""}${SEG[k][0]}</span><i>${SEG[k][1]}토큰</i></div>`+render(node[k],depth+1,p);}).join("");
+  q("#xTree").innerHTML=n?render(tree,0,[]):'<span class="mini">아직 비어 있어요</span>';
+  q("#xReq").innerHTML=n?`<b>방금 보낸 요청 ${n}:</b> `+last.r.map(sg=>`<span class="gx-chip">${SEG[sg][0]}</span>`).join(""):"";
+  q("#xOut").innerHTML=n?`이번 요청: 캐시에서 재사용 <b>${last.hit}토큰</b> · 새로 계산 <b>${last.miss}토큰</b><br>지금까지 적중률 <b>${pct(hitT/allT)}</b> (전체 ${allT}토큰 중 ${hitT}토큰 재사용)<br><span class="mini">앞부분이 똑같으면 그 부분의 KV 캐시는 계산 결과도 똑같아요. 그래서 트리에서 앞에서부터 일치하는 만큼 그대로 가져다 쓰고, 다른 부분부터만 prefill해요. 트리 가지가 꽉 차면 오래 안 쓴 가지부터 지워요(LRU).</span>`:'<span class="mini">"다음 요청 보내기"를 눌러 보세요. 시스템 프롬프트가 같은 요청이 계속 들어와요.</span>';};
+ q("#xNext").addEventListener("click",()=>{if(n<REQ.length){n++;draw();}});q("#xReset").addEventListener("click",()=>{n=0;draw();});draw();
+};
+
+/* ---------- p2-5 Chunked prefill ---------- */
+W.e_chunk=(root)=>{
+ const P=2000,BUD=512,base=10,per=0.02;let mode="whole";
+ root.innerHTML=`<div class="an bz"><div class="seg" id="kM"><button type="button" data-m="whole">긴 prefill을 통째로</button><button type="button" data-m="chunk">chunked prefill (스텝당 512토큰)</button></div>
+  <div class="gx-tl" id="kT"></div><div class="gx-legend"><span><i style="background:var(--c2)"></i>A, B, C의 decode (토큰 1개씩)</span><span><i style="background:var(--c1)"></i>D의 prefill</span></div><div class="bz-out" id="kO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#kM button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));
+  const steps=[];let left=P;
+  for(let i=0;i<9;i++){let pf=0;if(i>=2&&left>0){pf=mode==="whole"?left:Math.min(left,BUD-3);left-=pf;}steps.push({pf,dec:3,ms:base+per*(pf+3)});}
+  const tot=steps.reduce((a,s)=>a+s.ms,0);let acc=0;const gaps=[];let prev=0;
+  q("#kT").innerHTML=steps.map((s,i)=>{const w=s.ms/tot*100;acc+=s.ms;gaps.push(acc-prev);prev=acc;
+   return `<div class="gx-step" style="width:${w}%"><div class="gx-pf" style="flex:${per*s.pf}"></div><div class="gx-dc" style="flex:${base+per*3}"></div><span>${s.ms.toFixed(0)}ms</span></div>`;}).join("");
+  const dEnd=(()=>{let a=0;for(let i=0;i<steps.length;i++){a+=steps[i].ms;if(i>=2&&steps.slice(2,i+1).reduce((x,s)=>x+s.pf,0)>=P)return a-steps.slice(0,2).reduce((x,s)=>x+s.ms,0);}return 0;})();
+  q("#kO").innerHTML=`A, B, C가 토큰 사이에 가장 오래 기다린 시간: <b>${Math.max(...gaps).toFixed(0)}ms</b> (평소 ${(base+per*3).toFixed(0)}ms) · D의 첫 토큰까지(TTFT): <b>${dEnd.toFixed(0)}ms</b><br><span class="mini">${mode==="whole"?"D의 2,000토큰 prefill이 한 스텝을 독차지해서, 그 스텝 동안 A, B, C는 글자가 <b>뚝 끊겨요</b>. 사용자 셋이 동시에 버벅임을 느껴요.":"D를 512토큰씩 잘라서 매 스텝 A, B, C의 decode와 <b>같이</b> 태워요. 스텝이 조금씩 길어지지만 끊김이 사라지고, prefill 계산으로 GPU 연산기도 알차게 써요. 대신 D의 첫 토큰은 조금 늦어질 수 있어요."} (스텝 시간 = 10ms + 토큰당 0.02ms로 가정한 예시)</span>`;};
+ root.querySelectorAll("#kM button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;draw();}));draw();
+};
+
+/* ---------- p2-6 API 서버와 스트리밍 ---------- */
+W.e_api=(root)=>{
+ const out=["서울","은"," 오늘"," 맑","아요","."];
+ const S=[
+  {c:"① 클라이언트가 HTTP로 요청을 보내요.",d:"OpenAI와 같은 모양이라서 OpenAI용 프로그램을 주소만 바꿔 그대로 쓸 수 있어요.",code:'POST /v1/chat/completions\n{"model": "smollm2",\n "messages": [{"role": "user", "content": "서울 날씨?"}],\n "stream": true}'},
+  {c:"② <b>채팅 템플릿</b>을 씌워 한 줄 문자열로 만들어요.",d:"모델마다 대화를 표시하는 특수 토큰이 달라요. 이게 틀리면 모델이 엉뚱하게 답해요.",code:"<|im_start|>user\n서울 날씨?<|im_end|>\n<|im_start|>assistant\n"},
+  {c:"③ 토크나이즈: 문자열 → 토큰 번호.",d:"토크나이즈도 CPU 시간이 꽤 들어요. 그래서 vLLM은 API 서버와 엔진을 <b>다른 프로세스</b>로 나눠요.",code:"[1, 4093, 198, 10225, 29, 2, 198, 1, 520, 9531, 198]"},
+  {c:"④ 엔진 프로세스로 넘겨요(큐/소켓). API 서버는 바로 다음 요청을 받으러 가요.",d:"vLLM은 프로세스 사이를 ZeroMQ로 통신해요. 파이썬은 한 프로세스에서 CPU를 하나만 제대로 쓰기 때문에, 나누면 서로를 막지 않아요.",code:"engine_queue.put(Request(id=7, ids=[...], max_tokens=64))"},
+  {c:"⑤ 엔진이 스텝마다 토큰을 하나씩 만들어 돌려보내요.",d:"이 요청 말고도 수십 개 요청을 같은 스텝에서 같이 돌려요(2-2).",code:"step 1 → 1234\nstep 2 → 87\nstep 3 → 3321 ..."},
+  {c:"⑥ 토큰 → 글자 (점진적 디토크나이즈).",d:"한글은 글자 하나가 3바이트라 토큰 하나가 글자의 <b>일부</b>일 수 있어요. 완성된 글자만 내보내고 나머지는 다음 토큰을 기다려요. 안 그러면 � 같은 깨진 글자가 나와요.",code:'"서울" "은" " 오늘" " 맑" "아요" "."'},
+  {c:"⑦ <b>SSE</b>(Server-Sent Events)로 조각마다 바로 흘려보내요.",d:"응답을 다 만들고 보내면 사용자는 몇 초를 빈 화면으로 기다려요. 조각마다 보내면 첫 글자가 바로 보여요. 체감 속도는 TTFT와 TPOT가 정해요(2-7).",code:'data: {"choices":[{"delta":{"content":"서울"}}]}\n\ndata: {"choices":[{"delta":{"content":"은"}}]}\n\n...\ndata: [DONE]'}];
+ root.innerHTML=`<div class="an bz">${ctrl}<pre class="gx-code" id="aC"></pre><div class="gx-chat"><span class="bz-lbl">사용자 화면</span><div id="aS"></div></div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,s=>{cap(s);root.querySelector("#aC").textContent=S[s].code;root.querySelector("#aS").textContent=s>=6?out.join(""):s>=4?"(입력 중…)":"";},3400);
+};
+
+/* ---------- p2-7 벤치마크 ---------- */
+W.e_bench=(root)=>{
+ let rate=0.5;
+ const rng=(seed=>()=>{seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296;})(42);
+ const sim=rho=>{const N=20000,svc=1;let t=0,free=0;const w=[];for(let i=0;i<N;i++){t+=-Math.log(1-rng())/rho;const st=Math.max(t,free);free=st+svc;w.push(free-t);}w.sort((a,b)=>a-b);return [w[Math.floor(N*.5)],w[Math.floor(N*.99)]];};
+ const R=[];for(let r=0.05;r<0.96;r+=0.05)R.push([r,...sim(r)]);
+ const X=r=>40+r*280,Y=v=>170-Math.min(v,20)/20*150,line=k=>R.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+" "+Y(p[k]).toFixed(1)).join("");
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-sub">① 요청 하나에서 재는 세 가지</div>
+  <div class="gx-req1"><span class="gx-q0">요청 도착</span><span class="gx-wait">대기 + prefill</span>${Array.from({length:6},()=>`<span class="gx-tk">토큰</span>`).join("")}<span class="gx-q0">끝</span></div>
+  <div class="gx-req1l"><span style="flex:2.2">◀ <b>TTFT</b> (첫 토큰까지) ▶</span><span style="flex:6">◀ 토큰 사이 간격 = <b>TPOT</b> (ITL) ▶</span></div>
+  <p class="mini">E2E 지연 = TTFT + TPOT × (출력 토큰 수 − 1). 처리량 = 1초에 전체 시스템이 만드는 토큰 수.</p>
+  <div class="bz-sub">② 요청이 몰리면: 대기 시간의 p50과 p99</div>
+  <svg viewBox="0 0 340 200" class="gx-plot" role="img" aria-label="요청률에 따른 대기 시간">
+   <line class="bz-axis" x1="40" y1="170" x2="325" y2="170"/><line class="bz-axis" x1="40" y1="15" x2="40" y2="170"/>
+   ${[5,10,15,20].map(v=>`<line class="bz-grid" x1="40" x2="325" y1="${Y(v)}" y2="${Y(v)}"/><text x="34" y="${Y(v)+4}" text-anchor="end">${v}</text>`).join("")}
+   ${[0.25,0.5,0.75,1].map(v=>`<text x="${X(v)}" y="186" text-anchor="middle">${pct(v)}</text>`).join("")}
+   <text x="182" y="198" text-anchor="middle">요청률 (처리 능력 대비)</text><text x="8" y="12">지연(처리시간 배수)</text>
+   <path d="${line(1)}" class="gx-p50"/><path d="${line(2)}" class="gx-p99"/>
+   <line class="gx-cur" y1="15" y2="170"/></svg>
+  <div class="gx-legend"><span><i style="background:var(--c2)"></i>p50 (중간값)</span><span><i style="background:var(--c1)"></i>p99 (100명 중 가장 느린 1명)</span></div>
+  <label class="bz-temp">요청률 <b id="bR"></b><input type="range" id="bRi" min="0.05" max="0.95" step="0.05" value="0.5" aria-label="요청률"></label>
+  <div class="bz-out" id="bO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{const p=R.reduce((a,b)=>Math.abs(b[0]-rate)<Math.abs(a[0]-rate)?b:a);q("#bR").textContent=pct(rate);q(".gx-cur").setAttribute("x1",X(rate));q(".gx-cur").setAttribute("x2",X(rate));
+  q("#bO").innerHTML=`p50 = 처리시간의 <b>${p[1].toFixed(1)}배</b> · p99 = <b>${p[2].toFixed(1)}배</b><br><span class="mini">요청이 무작위로(포아송) 도착하는 간단한 대기열을 20,000번 흉내 낸 결과예요. 처리 능력의 70%를 넘기면 p99가 급격히 치솟아요. 평균만 보면 괜찮아 보여도 <b>가장 느린 사용자</b>는 한참 기다려요. 그래서 서빙은 \"p99 TTFT 1초 이하\" 같은 <b>SLO</b>를 지키는 최대 요청률로 성능을 말해요.</span>`;};
+ q("#bRi").addEventListener("input",e=>{rate=+e.target.value;draw();});draw();
+};
+
+/* ---------- p2-8 CPU와 GPU 겹치기 ---------- */
+W.e_overlap=(root)=>{
+ let cpu=3;const gpu=6,N=5;let mode="seq";
+ root.innerHTML=`<div class="an bz"><div class="seg" id="oM"><button type="button" data-m="seq">차례대로</button><button type="button" data-m="ovl">겹치기 (overlap scheduling)</button></div>
+  <label class="bz-temp">CPU 일(스케줄링 + 입력 준비) <b id="oC"></b><input type="range" id="oCi" min="1" max="10" step="1" value="3" aria-label="CPU 시간"></label>
+  <div class="gx-tl2" id="oT"></div><div class="gx-legend"><span><i style="background:var(--c4)"></i>CPU: 다음 스텝 준비</span><span><i style="background:var(--c2)"></i>GPU: forward</span><span><i class="gx-idle"></i>GPU 노는 시간</span></div><div class="bz-out" id="oO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#oM button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));q("#oC").textContent=cpu+"ms";
+  const C=[],G=[];let t=0;
+  if(mode==="seq"){for(let i=0;i<N;i++){C.push([t,cpu]);t+=cpu;G.push([t,gpu]);t+=gpu;}}
+  else{C.push([0,cpu]);let gEnd=cpu,cEnd=cpu;for(let i=0;i<N;i++){const gs=Math.max(gEnd,cEnd);G.push([gs,gpu]);gEnd=gs+gpu;if(i<N-1){const cs=gs;C.push([cs,cpu]);cEnd=cs+cpu;}}t=gEnd;}
+  const T=t,bar=(a,cls)=>a.map(([s,d])=>`<i class="${cls}" style="left:${s/T*100}%;width:${d/T*100}%"></i>`).join("");
+  q("#oT").innerHTML=`<div class="gx-lane"><span>CPU</span><div>${bar(C,"c")}</div></div><div class="gx-lane"><span>GPU</span><div class="g">${bar(G,"g")}</div></div>`;
+  const busy=N*gpu;q("#oO").innerHTML=`${N}스텝에 <b>${T}ms</b> · GPU 사용률 <b>${pct(busy/T)}</b><br><span class="mini">${mode==="seq"?"GPU가 일하는 동안 CPU는 기다리고, CPU가 다음 스텝을 준비하는 동안 GPU는 놀아요. GPU가 빨라질수록 이 노는 시간의 비중이 커져요.":"GPU가 스텝 n을 돌리는 동안 CPU가 스텝 n+1을 미리 준비해요. CPU 일이 GPU 일보다 짧으면 GPU는 쉬지 않아요. CPU 일이 더 길어지면(슬라이더) 그때는 CPU가 병목이에요."}</span>`;};
+ root.querySelectorAll("#oM button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;draw();}));
+ q("#oCi").addEventListener("input",e=>{cpu=+e.target.value;draw();});draw();
+};
+
+/* ================= 강의 ================= */
+L["p2-1"]={
+ lead:"2단계에서는 vLLM, SGLang의 핵심 아이디어를 내 손으로 작은 엔진에 붙여 봐요. 그 전에 지도가 필요해요. <b>nano-vllm</b>은 약 1,200줄짜리 파이썬 코드로 vLLM의 뼈대를 그대로 보여 주는 프로젝트예요. 요청 하나가 들어와서 나갈 때까지의 길을 먼저 따라가요.",
+ sections:[
+  {h:"1. 엔진 = 스텝을 계속 돌리는 고리",p:["추론 엔진은 결국 <b>while 루프</b>예요. 스텝 한 번마다 ① 스케줄러가 이번에 돌릴 요청들을 고르고 ② GPU에서 모델을 한 번 돌리고 ③ 결과 토큰을 요청 뒤에 붙여요. 요청이 남아 있는 한 반복해요.","중요한 건 '요청 하나씩'이 아니라 <b>여러 요청을 한 배치로 묶어</b> 한 번에 돌린다는 거예요. 왜 묶어야 하는지는 다음 강의(2-2)에서 봐요."]},
+  {h:"2. 주요 부품과 파일",p:["<b>Sequence</b> (<code>engine/sequence.py</code>): 요청 하나의 상태. 토큰 목록, 상태, 빌린 KV 블록 번호.","<b>Scheduler</b> (<code>engine/scheduler.py</code>): waiting 줄과 running 줄을 관리하고 이번 스텝에 누구를 돌릴지 정해요.","<b>BlockManager</b> (<code>engine/block_manager.py</code>): KV 캐시 메모리를 블록 단위로 빌려주고 돌려받아요. prefix 캐시도 여기 있어요.","<b>ModelRunner</b> (<code>engine/model_runner.py</code>): 배치를 GPU 입력으로 만들고, 모델을 돌리고, CUDA Graph로 decode를 빠르게 해요.","<b>Model + Sampler</b> (<code>models/</code>, <code>layers/</code>): 0단계에서 배운 그 Transformer와 샘플러예요."]},
+  {h:"3. 읽는 순서 추천",p:["① <code>LLMEngine.step()</code>부터 봐요. 고리 전체가 세 줄에 들어 있어요. ② <code>Scheduler.schedule()</code>에서 prefill과 decode를 어떻게 고르는지. ③ <code>BlockManager</code>의 allocate / append / deallocate. ④ <code>ModelRunner.prepare_prefill / prepare_decode</code>에서 배치가 어떤 텐서가 되는지.","nano-vllm은 한 스텝에 prefill만 하거나 decode만 해요. vLLM V1은 둘을 섞어요(2-5 chunked prefill). 이런 차이를 메모해 두면 7단계에서 vLLM 코드를 읽을 때 큰 도움이 돼요."]}
+ ],
+ widget:"e_flow",widgetTitle:"요청 하나의 일생",widgetCap:"다음 ▶을 눌러 요청이 엔진 안을 어떻게 지나가는지 따라가요. 괄호 안은 nano-vllm 파일 이름이에요.",
+ summary:["엔진 = 스케줄 → 실행 → 후처리를 반복하는 루프","여러 요청을 한 배치로 묶어 GPU에서 한 번에 돌림","스케줄러: 누구를 돌릴지 / 블록 매니저: KV 자리 / 모델 러너: GPU 실행","nano-vllm ≈ 1,200줄에 vLLM 뼈대가 다 있음"],
+ quiz:[
+  {q:"엔진이 매 스텝 맨 처음 하는 일은?",o:["토큰 샘플링","스케줄러가 이번에 돌릴 요청 고르기","모델 가중치 다운로드","HTTP 응답 보내기"],a:1,e:"스텝은 schedule() → run() → postprocess() 순서예요."},
+  {q:"KV 캐시 메모리를 빌려주고 돌려받는 부품은?",o:["Sampler","Tokenizer","BlockManager","API 서버"],a:2,e:"블록 매니저가 KV 블록을 관리해요. 다음 다음 강의(2-3)의 주인공이에요."}
+ ]};
+
+L["p2-2"]={
+ lead:"\"왜 GPU가 노는지\"의 답이 여기 있어요. decode는 요청 하나만 돌리면 GPU 연산기가 대부분 놀아요. 그래서 여러 요청을 <b>묶어서(배칭)</b> 돌려요. 그리고 묶는 방법을 <b>스텝마다</b> 바꾸는 continuous batching이 처리량을 몇 배씩 올려요.",
+ sections:[
+  {h:"1. 왜 GPU가 놀까: 매번 가중치를 다 읽어야 해서",p:["decode 한 스텝에서 토큰 하나를 만들려면 모델의 <b>모든 가중치</b>(8B 모델이면 16GB)를 GPU 메모리에서 한 번씩 읽어야 해요. 그런데 토큰 하나에 필요한 계산은 가중치 1개당 곱셈·덧셈 1번뿐이에요.","GPU는 계산은 엄청 빠른데, 메모리에서 읽어 오는 속도는 그만큼 빠르지 않아요. 그래서 데이터가 도착하길 기다리는 시간이 대부분이고 연산기는 놀아요. 이게 1단계 3번의 <b>memory-bound</b>예요."]},
+  {h:"2. 배칭: 한 번 읽은 가중치를 여러 요청이 같이 쓰기",p:["요청 64개를 묶으면 가중치를 <b>한 번</b> 읽어서 64개 요청의 계산에 다 써요. 읽는 시간은 거의 같은데 만드는 토큰은 64배예요. 버스가 손님 1명을 태우든 50명을 태우든 운행 시간이 같은 것과 같아요.","행렬로 보면 x(1 × 576) × W 대신 X(64 × 576) × W가 돼요. 행렬-벡터 곱이 행렬-행렬 곱이 되면서 연산기를 알차게 쓰게 돼요."]},
+  {h:"3. static batching의 문제",p:["가장 단순한 방법은 요청 4개를 묶어 다 끝날 때까지 돌리는 거예요. 그런데 답변 길이가 제각각이라, 짧은 요청이 끝나도 <b>가장 긴 요청이 끝날 때까지</b> 그 자리는 비어 있어요. 새 요청은 그동안 줄에서 기다려요."]},
+  {h:"4. continuous batching (iteration-level scheduling)",p:["해결책은 간단해요. 배치를 <b>스텝마다 다시 짜는</b> 거예요. 끝난 요청은 바로 빼고, 대기 중인 요청을 바로 넣어요. 2022년 Orca 논문이 제안했고 지금은 모든 엔진의 기본이에요.","이게 가능한 이유: 어텐션 말고는 요청끼리 계산이 섞이지 않아요(MLP는 토큰마다 따로). 그리고 어텐션은 요청마다 자기 KV 캐시만 보면 돼요. 그래서 요청마다 길이도, 진행 단계도 달라도 한 배치로 돌릴 수 있어요.","새로 들어온 요청은 prefill이 필요하고 기존 요청은 decode예요. 둘을 한 스텝에 어떻게 섞을지가 스케줄러의 핵심 고민이에요(2-5)."]},
+  {h:"5. 구현 포인트",p:["waiting 큐와 running 리스트를 두고, 스텝마다: 끝난 요청 제거 → 메모리(KV 블록)가 허락하는 만큼 waiting에서 꺼내 running에 추가 → running 전체를 한 배치로 실행.","한 스텝에 넣을 수 있는 양은 두 가지로 제한해요: 최대 요청 수(<code>max_num_seqs</code>)와 최대 토큰 수(<code>max_num_batched_tokens</code>)."]}
+ ],
+ widget:"e_batch",widgetTitle:"배칭이 왜 필요하고, 어떻게 묶나",widgetCap:"위 슬라이더로 배치 크기를 바꿔 보고, 아래에서 static과 continuous를 비교해 보세요.",
+ summary:["decode는 매 스텝 가중치 전체를 읽어야 해서 memory-bound","배칭 = 한 번 읽은 가중치로 여러 요청 계산 → 처리량 대폭 증가","static batching은 가장 긴 요청 때문에 빈자리 낭비","continuous batching은 스텝마다 빈자리를 바로 채움","제한: 최대 요청 수, 최대 토큰 수, KV 메모리"],
+ quiz:[
+  {q:"배치를 1에서 32로 늘리면 decode 한 스텝 시간은 대략?",o:["32배 늘어난다","거의 그대로다 (memory-bound 구간에서)","1/32로 준다","0이 된다"],a:1,e:"가중치 읽는 시간이 대부분이라 배치가 작을 땐 스텝 시간이 거의 안 변해요. 대신 토큰은 32배 만들어요."},
+  {q:"continuous batching이 static batching보다 나은 이유는?",o:["모델이 더 정확해져서","끝난 요청 자리에 새 요청을 바로 넣어 빈자리가 적어서","KV 캐시를 안 써서","prefill을 안 해서"],a:1,e:"스텝마다 배치를 다시 짜서 빈자리 낭비를 없애요."},
+  {q:"서로 다른 요청을 한 배치로 돌릴 수 있는 이유는?",o:["모든 요청 길이가 같아서","어텐션은 요청마다 자기 KV만 보고, 나머지 계산은 토큰마다 따로라서","GPU가 하나라서","샘플링을 안 해서"],a:1,e:"요청끼리 정보가 섞이는 곳이 없어서 길이나 진행 단계가 달라도 묶을 수 있어요."}
+ ]};
+
+L["p2-3"]={
+ lead:"KV 캐시는 요청마다 계속 자라는데, 얼마나 길어질지는 끝나 봐야 알아요. 옛날 방식은 최대 길이만큼 자리를 미리 잡아 둬서 메모리의 60~80%를 낭비했어요. <b>PagedAttention</b>은 운영체제의 가상 메모리처럼 KV를 작은 <b>블록</b>으로 나눠 필요할 때 빌려줘요. vLLM이 유명해진 이유예요.",
+ sections:[
+  {h:"1. 문제: 미리 잡아 두기의 낭비",p:["요청마다 '최대 2,048토큰' 같은 자리를 <b>연속으로</b> 예약하면, 실제로 100토큰만 쓰고 끝나도 나머지 1,948칸은 아무도 못 써요(내부 단편화). 요청이 오갈수록 중간중간 빈 구멍도 생겨요(외부 단편화).","결과적으로 GPU 메모리가 남아 보이는데도 새 요청을 못 받아요. 배치를 못 키우니 처리량이 떨어져요(2-2)."]},
+  {h:"2. 해결: 고정 크기 블록 + block table",p:["KV 캐시 메모리 전체를 블록(예: 토큰 16개 자리)으로 미리 잘라 <b>블록 풀</b>을 만들어요.","요청은 토큰이 블록을 꽉 채울 때마다 블록을 <b>하나씩</b> 빌려요. 어디 있는 블록이든 상관없어요. 대신 요청마다 <b>block table</b>(내 블록 번호 목록, 예: [7, 2, 15])을 들고 있어서 순서대로 찾아갈 수 있어요.","낭비는 각 요청의 마지막 블록 빈칸뿐이라 4% 미만이 돼요. 같은 메모리에 요청을 2~4배 더 올릴 수 있어요."]},
+  {h:"3. 어텐션은 어떻게 바뀌나",p:["어텐션 커널이 k, v를 읽을 때 '연속된 메모리'가 아니라 block table을 보고 블록을 하나씩 찾아가요. 그래서 이름이 Paged<b>Attention</b>이에요. 커널을 새로 짜야 해요(4단계 5번).","처음엔 순수 PyTorch로 해도 돼요: block table로 블록들을 모아(gather) 연속 텐서를 만든 다음 평소처럼 어텐션. 느리지만 정확해요."]},
+  {h:"4. 메모리가 모자라면: preemption",p:["모든 요청이 동시에 자라다 블록이 바닥나면, 실행 중인 요청 하나를 잠시 쫓아내요(preemption). 그 요청의 블록을 반납하고 waiting으로 돌려보낸 뒤, 나중에 다시 prefill부터 해요(recompute). 또는 KV를 CPU 메모리로 잠시 옮겨 둘 수도 있어요(swap).","구현할 것: 블록 풀(빈 블록 목록), allocate(새 요청), append(토큰 추가 시 필요하면 블록 하나 더), free(끝난 요청), 그리고 모자랄 때 preemption."]}
+ ],
+ widget:"e_paged",widgetTitle:"연속 예약 vs 블록 단위 빌리기",widgetCap:"두 방식을 바꿔 가며 시간 슬라이더를 움직여 보세요. 같은 메모리 24블록에 몇 개의 요청이 들어가는지 비교해요.",
+ summary:["KV 캐시는 길이를 미리 몰라서 통째로 예약하면 낭비가 큼","PagedAttention: 고정 크기 블록을 필요할 때 하나씩 빌림","요청마다 block table로 흩어진 블록을 순서대로 찾음","낭비가 거의 없어 배치를 크게 → 처리량 증가","블록이 모자라면 preemption (recompute 또는 swap)"],
+ quiz:[
+  {q:"block table이 하는 일은?",o:["토큰을 고른다","요청의 KV가 들어 있는 블록 번호를 순서대로 기록한다","가중치를 저장한다","요청 우선순위를 정한다"],a:1,e:"블록이 흩어져 있어도 block table만 있으면 순서대로 찾아갈 수 있어요."},
+  {q:"블록 크기가 16토큰이고 요청 길이가 35토큰이면 필요한 블록 수는?",o:["2개","3개","35개","16개"],a:1,e:"35 ÷ 16 = 2.19 → 올림해서 3개. 마지막 블록은 16칸 중 3칸만 써요."}
+ ]};
+
+L["p2-4"]={
+ lead:"채팅 서비스의 요청은 대부분 <b>앞부분이 똑같아요</b>. 같은 시스템 프롬프트, 이전 대화 기록, 같은 문서. 앞부분이 같으면 그 부분의 KV 캐시도 똑같으니 다시 계산할 필요가 없어요. 이걸 재사용하는 게 <b>prefix caching</b>이고, SGLang은 이를 트리로 관리하는 <b>RadixAttention</b>으로 유명해졌어요.",
+ sections:[
+  {h:"1. 왜 재사용할 수 있나",p:["0단계에서 봤듯이 토큰의 k, v는 <b>자기와 앞 토큰들</b>로만 정해져요(causal). 그래서 앞에서부터 똑같은 토큰 줄이면 KV도 비트 단위로 똑같아요. 뒤에 뭐가 오든 상관없어요.","효과: 재사용한 만큼 prefill을 건너뛰니 <b>TTFT가 크게 줄고</b>, GPU 계산도 아껴요. 시스템 프롬프트가 2,000토큰이면 매 요청마다 2,000토큰 prefill을 아끼는 셈이에요."]},
+  {h:"2. 방법 1: 블록 해시 (vLLM 방식)",p:["2-3의 KV 블록 단위로 생각해요. 블록 하나에 들어간 토큰들 + 그 앞 블록의 해시를 합쳐 해시값을 만들어요. 앞 블록 해시를 포함하니까 '앞부분 전체가 같아야' 같은 해시가 나와요.","새 요청이 오면 블록마다 해시를 계산해 이미 있는 블록인지 찾아요. 있으면 그 블록을 같이 쓰고(참조 카운트 +1), 없는 곳부터 prefill해요."]},
+  {h:"3. 방법 2: radix tree (SGLang 방식)",p:["모든 요청의 토큰 줄을 하나의 <b>트리</b>로 관리해요. 공통 앞부분은 줄기, 갈라지는 부분부터 가지예요. 새 요청은 뿌리부터 따라 내려가며 일치하는 만큼 재사용해요.","대화가 이어질 때(이전 답변 + 새 질문) 자연스럽게 가지가 길어져서, 멀티턴 채팅이나 에이전트처럼 같은 앞부분을 계속 쓰는 경우에 특히 좋아요."]},
+  {h:"4. 지우기: LRU",p:["메모리는 한정돼 있으니 지금 아무 요청도 안 쓰는 가지 중 <b>가장 오래 안 쓴 것</b>부터 지워요(LRU). 지금 실행 중인 요청이 쓰는 블록은 절대 지우면 안 돼요(참조 카운트로 확인).","구현 순서 추천: 블록 해시 캐시 → 적중률 측정 → radix tree + LRU로 교체."]}
+ ],
+ widget:"e_prefix",widgetTitle:"요청이 쌓이며 자라는 캐시 트리",widgetCap:"\"다음 요청 보내기\"를 눌러 보세요. 같은 시스템 프롬프트가 재사용되며 적중률이 올라가요.",
+ summary:["앞부분이 같으면 KV도 똑같다 (causal이라서)","재사용한 만큼 prefill 생략 → TTFT 감소","vLLM: 블록 해시(앞 블록 해시 포함) / SGLang: radix tree","안 쓰는 가지는 LRU로 지움, 사용 중인 블록은 보호"],
+ quiz:[
+  {q:"요청 X: [시스템 A][질문 1], 요청 Y: [시스템 A][질문 2]. Y가 재사용할 수 있는 것은?",o:["없음","시스템 A 부분의 KV","질문 2의 KV","전체"],a:1,e:"앞부분이 같은 구간(시스템 A)까지만 재사용해요."},
+  {q:"[질문 1][시스템 A] 순서의 요청은 위 X의 캐시를 재사용할 수 있나요?",o:["시스템 A 부분은 가능","불가능 (맨 앞부터 달라서)","전부 가능","질문 1만 가능"],a:1,e:"prefix(앞부분)가 같아야 해요. 위치가 달라지면 RoPE 위치도, 앞 문맥도 달라서 KV가 달라요."}
+ ]};
+
+L["p2-5"]={
+ lead:"긴 문서를 붙여 넣은 요청 하나가 들어오면, 그 prefill이 GPU를 독차지하는 동안 다른 사용자들의 답변이 <b>뚝 끊겨요</b>. <b>Chunked prefill</b>은 긴 prefill을 잘게 잘라 다른 요청의 decode와 같이 태우는 방법이에요.",
+ sections:[
+  {h:"1. prefill과 decode의 성격 차이 (복습)",p:["prefill은 토큰이 많아서 <b>계산</b>이 병목이에요. decode는 토큰이 1개라서 <b>메모리 읽기</b>가 병목이에요(2-2).","그래서 같은 스텝에 섞으면 오히려 좋아요. decode가 메모리를 읽는 동안 놀던 연산기를 prefill 계산이 채워 주거든요."]},
+  {h:"2. 문제: 큰 prefill이 끼어들 때",p:["10,000토큰 prefill은 decode 스텝의 수십 배 시간이 걸려요. 그 스텝 동안 다른 요청들은 다음 토큰을 못 받아요. 사용자는 글자가 나오다 갑자기 멈추는 걸 느껴요. TPOT의 p99가 나빠지는 대표적인 원인이에요."]},
+  {h:"3. 해결: 토큰 예산과 쪼개기",p:["스텝마다 <b>토큰 예산</b>(예: 2,048)을 정해요. 먼저 실행 중인 decode 요청들을 넣고(각 1토큰), 남은 예산만큼 prefill을 잘라서 채워요. 남은 prefill은 다음 스텝으로 넘겨요.","prefill 조각마다 KV 캐시가 블록에 차곡차곡 쌓이니까, 다음 조각은 앞 조각의 KV를 보면서 이어서 계산하면 돼요. 결과는 통째로 한 것과 똑같아요.","vLLM V1은 chunked prefill이 기본으로 켜져 있어요."]},
+  {h:"4. 대가",p:["긴 요청 본인의 첫 토큰(TTFT)은 조금 늦어질 수 있어요. 조각이 너무 작으면 GPU 효율도 떨어져요. 예산 크기는 'decode 끊김(TPOT)'과 '첫 토큰(TTFT)' 사이의 줄다리기예요. 직접 예산을 바꿔 가며 p99를 재 보는 게 이번 실습이에요."]}
+ ],
+ widget:"e_chunk",widgetTitle:"긴 prefill이 끼어들 때",widgetCap:"두 방식을 바꿔 보세요. 막대 폭이 스텝 시간이에요. A, B, C의 끊김과 D의 첫 토큰 시간을 비교해요.",
+ summary:["큰 prefill이 한 스텝을 독차지하면 다른 요청 decode가 끊김","스텝마다 토큰 예산을 정하고 prefill을 잘라 decode와 같이 실행","조각마다 KV가 쌓여 결과는 통째로 한 것과 동일","TPOT p99 개선 ↔ 긴 요청 TTFT 약간 손해","vLLM V1 기본 동작"],
+ quiz:[
+  {q:"chunked prefill이 주로 개선하는 지표는?",o:["모델 정확도","다른 요청들의 토큰 간 간격(TPOT) 꼬리 지연","모델 파일 크기","토크나이저 속도"],a:1,e:"긴 prefill 때문에 decode가 멈추는 현상을 줄여요."},
+  {q:"prefill을 쪼개도 결과가 같은 이유는?",o:["근사 계산이라서","앞 조각의 KV가 캐시에 쌓여 다음 조각이 그걸 보고 이어서 계산하니까","모델이 매번 다시 학습해서","결과가 사실 다르다"],a:1,e:"causal 어텐션이라 앞 조각 KV만 있으면 다음 조각 계산은 똑같아요."}
+ ]};
+
+L["p2-6"]={
+ lead:"엔진이 아무리 빨라도 사용자는 HTTP로 요청을 보내요. 요청을 받고, 템플릿을 씌우고, 토크나이즈하고, 토큰이 나오는 즉시 흘려보내는 <b>API 서버</b>가 필요해요. 여기서 생기는 지연이 생각보다 커요.",
+ sections:[
+  {h:"1. OpenAI 호환이 표준",p:["<code>POST /v1/chat/completions</code>에 messages 목록을 보내는 OpenAI 형식이 사실상 표준이에요. 이 형식만 맞추면 기존 SDK, 도구, 프레임워크를 그대로 붙일 수 있어요. vLLM, SGLang 모두 이 형식을 따라요."]},
+  {h:"2. 채팅 템플릿과 토크나이즈",p:["messages를 모델이 학습한 대화 형식(특수 토큰 포함)으로 바꿔야 해요. HuggingFace 토크나이저의 <code>apply_chat_template</code>이 이 일을 해요. 템플릿이 틀리면 모델 품질이 확 떨어져요."]},
+  {h:"3. 스트리밍: SSE",p:["<code>stream: true</code>면 토큰 조각이 나올 때마다 <code>data: {...}</code> 한 줄씩 보내고, 끝에 <code>data: [DONE]</code>을 보내요. 이게 SSE(Server-Sent Events)예요.","토큰 → 글자 변환은 <b>점진적</b>으로 해야 해요. 한글처럼 여러 바이트로 된 글자는 토큰 하나가 글자의 일부일 수 있어서, 완성된 글자만 내보내야 깨지지 않아요."]},
+  {h:"4. 프로세스 분리",p:["파이썬은 GIL 때문에 한 프로세스에서 CPU 일을 동시에 하나밖에 못 해요. API 서버(HTTP, 토크나이즈)와 엔진 루프(스케줄링, GPU 실행)를 한 프로세스에 두면 서로를 막아서 GPU가 놀아요.","그래서 vLLM은 API 서버 프로세스와 엔진 코어 프로세스를 나누고 ZeroMQ로 통신해요. 실습에서는 FastAPI + 별도 프로세스 + 큐로 같은 구조를 만들어요."]}
+ ],
+ widget:"e_api",widgetTitle:"HTTP 요청이 글자로 돌아오기까지",widgetCap:"다음 ▶을 눌러 요청이 거치는 단계와 실제 데이터 모양을 봐요. 토큰 번호는 예시예요.",
+ summary:["OpenAI 호환 /v1/chat/completions가 표준","채팅 템플릿 → 토크나이즈 → 엔진 → 점진적 디토크나이즈 → SSE","한글은 토큰이 글자의 일부일 수 있어 점진적 변환 필요","API 서버와 엔진을 다른 프로세스로 나눠 GIL 병목 회피"],
+ quiz:[
+  {q:"SSE 스트리밍의 가장 큰 장점은?",o:["GPU 계산이 줄어든다","첫 글자를 바로 보여 줘서 체감 지연이 줄어든다","모델이 더 정확해진다","KV 캐시가 줄어든다"],a:1,e:"전체 답변을 기다리지 않고 조각마다 보내니 사용자는 바로 글자를 봐요."},
+  {q:"vLLM이 API 서버와 엔진을 다른 프로세스로 나누는 이유는?",o:["보안 때문에","파이썬 GIL 때문에 CPU 일이 서로를 막지 않게","GPU가 두 개라서","토크나이저가 C++이라서"],a:1,e:"한 프로세스면 HTTP 처리와 스케줄링이 서로 기다려서 GPU가 놀아요."}
+ ]};
+
+L["p2-7"]={
+ lead:"\"빨라졌다\"를 숫자로 말할 수 있어야 해요. 서빙 성능은 평균 하나가 아니라 <b>TTFT, TPOT, 처리량</b>과 그 <b>분포(p50, p99)</b>로 봐요. 그리고 요청이 몰릴수록 어떻게 변하는지 곡선으로 그려요.",
+ sections:[
+  {h:"1. 세 가지 지표",p:["<b>TTFT</b>(Time To First Token): 요청을 보내고 첫 글자가 나올 때까지. 대기 시간 + prefill 시간이에요.","<b>TPOT</b>(Time Per Output Token) 또는 ITL(Inter-Token Latency): 글자 사이 간격. decode 스텝 시간이 거의 그대로 보여요. 사람이 읽는 속도(초당 5~10토큰)보다 빠르면 충분히 매끄러워요.","<b>처리량</b>(throughput): 1초에 시스템 전체가 만드는 토큰 수(또는 처리한 요청 수). 비용과 직결돼요."]},
+  {h:"2. 평균이 아니라 분포",p:["p50은 중간값, p99는 100명 중 가장 느린 1명이에요. 서비스 불만은 대부분 꼬리(p99)에서 나와요.","그래서 목표를 SLO로 정해요. 예: 'p99 TTFT ≤ 2초, p99 TPOT ≤ 100ms'. 그리고 <b>SLO를 지키면서 받을 수 있는 최대 요청률</b>로 엔진을 비교해요(goodput)."]},
+  {h:"3. 부하 생성기",p:["실제 사용자는 규칙적으로 오지 않아요. 요청 간격을 지수분포로 뽑으면(포아송 도착) 현실과 비슷해요. 입력·출력 길이도 실제 데이터셋(예: ShareGPT)에서 뽑아요.","요청률을 조금씩 올리며 TTFT, TPOT를 기록하면 '꺾이는 지점'이 보여요. 그 지점이 그 엔진의 실질적인 용량이에요."]},
+  {h:"4. 함정",p:["워밍업(첫 몇 요청은 컴파일, 캐시 때문에 느림)을 빼고 재요. 클라이언트와 서버 시간을 헷갈리지 마요. 같은 조건(모델, GPU, 길이 분포)에서만 비교해요. vLLM의 <code>benchmark_serving</code> 스크립트 구조를 참고하면 좋아요."]}
+ ],
+ widget:"e_bench",widgetTitle:"지표와 꼬리 지연",widgetCap:"요청률 슬라이더를 움직여 보세요. 처리 능력에 가까워질수록 p99가 먼저 폭발해요.",
+ summary:["TTFT = 첫 글자까지 / TPOT = 글자 사이 간격 / 처리량 = 초당 토큰","평균보다 p50, p99 같은 분포를 봄","SLO를 지키는 최대 요청률(goodput)로 비교","포아송 도착 부하로 요청률을 올려 가며 곡선을 그림"],
+ quiz:[
+  {q:"사용자가 '처음에 한참 아무것도 안 나온다'고 불평한다. 봐야 할 지표는?",o:["TPOT","TTFT","모델 크기","배치 크기"],a:1,e:"첫 글자까지의 시간, TTFT예요. 대기열과 prefill을 의심해요."},
+  {q:"요청률이 처리 능력의 95%일 때 일반적으로 일어나는 일은?",o:["p99 지연이 급격히 커진다","지연이 0이 된다","처리량이 0이 된다","아무 변화 없다"],a:0,e:"대기열이 길어지며 꼬리 지연이 폭발해요. 그래서 여유를 두고 운영해요."}
+ ]};
+
+L["p2-8"]={
+ lead:"GPU가 빨라질수록 이상한 일이 생겨요. GPU는 일을 금방 끝내고 <b>파이썬 스케줄러를 기다려요</b>. 매 스텝 CPU가 하는 일(스케줄링, 입력 텐서 만들기, 결과 처리)을 GPU 연산과 <b>겹치는</b> 게 요즘 엔진의 핵심 기법이에요.",
+ sections:[
+  {h:"1. CPU가 매 스텝 하는 일",p:["어떤 요청을 넣을지 고르기, 블록 할당, 토큰 번호·위치·block table을 텐서로 만들어 GPU로 보내기, 결과 토큰을 받아 요청에 붙이고 끝났는지 확인하기, 디토크나이즈.","작은 모델이나 빠른 GPU에서는 GPU forward가 몇 ms면 끝나는데, 이 CPU 일도 몇 ms예요. 그러면 GPU가 절반 가까이 놀아요."]},
+  {h:"2. 겹치기 (overlap scheduling)",p:["GPU가 스텝 n을 계산하는 동안 CPU가 스텝 n+1을 미리 준비해요. 문제는 스텝 n+1을 준비하려면 스텝 n의 결과 토큰이 필요하다는 거예요.","해결: 다음 스텝 입력에 '아직 모르는 토큰' 자리를 GPU 안에서 바로 채우게 해요(결과 토큰을 CPU로 가져오지 않고 GPU 텐서끼리 연결). 끝났는지 확인 같은 일은 한 스텝 늦게 처리해요. SGLang과 mini-sglang이 이 방식을 써요."]},
+  {h:"3. 측정부터",p:["<code>torch.profiler</code>나 Nsight Systems(3단계 5번)로 타임라인을 찍으면 GPU 줄에 빈칸이 보여요. 그 빈칸 비율이 겹치기로 얻을 수 있는 최대 이득이에요.","다른 CPU 절약 기법: CUDA Graph로 커널 실행 비용 줄이기(4단계 7번), 파이썬 객체 대신 미리 할당한 텐서 재사용, 디토크나이즈를 별도 프로세스로."]}
+ ],
+ widget:"e_overlap",widgetTitle:"CPU와 GPU 타임라인",widgetCap:"두 모드를 바꾸고 CPU 시간 슬라이더를 움직여 보세요. GPU 줄의 빈칸이 노는 시간이에요.",
+ summary:["빠른 GPU에서는 CPU 스케줄링이 병목이 됨","GPU가 스텝 n을 도는 동안 CPU가 스텝 n+1 준비","결과 토큰을 GPU 안에서 다음 입력으로 연결해 의존성 해결","프로파일러로 GPU 빈칸부터 측정"],
+ quiz:[
+  {q:"overlap scheduling이 줄이는 것은?",o:["모델 파라미터 수","GPU가 CPU를 기다리며 노는 시간","KV 캐시 크기","토크나이저 어휘 수"],a:1,e:"CPU 준비 시간을 GPU 계산 시간 뒤에 숨겨요."},
+  {q:"CPU 일이 GPU 일보다 길면 겹치기를 해도?",o:["GPU가 계속 바쁘다","CPU가 병목이라 GPU가 여전히 일부 논다","속도가 무한대가 된다","결과가 틀린다"],a:1,e:"겹쳐도 더 긴 쪽이 전체 속도를 정해요."}
+ ]};
+
+})(window.LESSONS,window.WIDGETS);
+
+</script>
+<script>
+/* 3단계 · GPU 프로그래밍 입문: 강의 6개 + 위젯 */
+(function(L,W){
+const {pct}=W._bz;
+const C=i=>`var(--c${(i%6)+1})`;
+
+/* ---------- p3-1 메모리 계층 ---------- */
+W.g_mem=(root)=>{
+ const G={T4:{sm:40,smem:96,l2:4,dram:16,bw:320,tf:65,kind:"GDDR6"},L4:{sm:58,smem:128,l2:48,dram:24,bw:300,tf:121,kind:"GDDR6"},A100:{sm:108,smem:192,l2:40,dram:40,bw:1555,tf:312,kind:"HBM2"},H100:{sm:132,smem:256,l2:50,dram:80,bw:3350,tf:989,kind:"HBM3"}};
+ let g="T4",sel=3;
+ const LV=g=>[["레지스터",`SM당 256KB · 전체 ${(G[g].sm*256/1024).toFixed(1)}MB`,"~1",G[g].sm*0.25,"손에 든 연필. 바로 써요. 스레드마다 자기 것."],
+  ["Shared memory / L1",`SM당 ${G[g].smem}KB · 전체 ${(G[g].sm*G[g].smem/1024).toFixed(1)}MB`,"~30",G[g].sm*G[g].smem/1024,"책상 위. 같은 블록의 스레드들이 같이 써요. 프로그래머가 직접 채워요."],
+  ["L2 캐시",`전체 ${G[g].l2}MB (모든 SM 공용)`,"~200",G[g].l2,"같은 층 공용 책장. 하드웨어가 알아서 채워요."],
+  [`GPU 메모리 (${G[g].kind})`,`${G[g].dram}GB · ${G[g].bw.toLocaleString()}GB/s`,"~500",G[g].dram*1024,"지하 창고. 크지만 멀어요. 모델 가중치와 KV 캐시가 여기 있어요."],
+  ["CPU 메모리 (PCIe 너머)","수백 GB · 약 16~64GB/s","수천+",512*1024,"다른 건물 창고. 웬만하면 안 가요."]];
+ root.innerHTML=`<div class="an bz"><div class="seg" id="mG">${Object.keys(G).map(k=>`<button type="button" data-g="${k}">${k}</button>`).join("")}</div>
+  <div class="gx-ladder" id="mL"></div><div class="bz-out" id="mO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#mG button").forEach(b=>b.classList.toggle("on",b.dataset.g===g));const lv=LV(g);
+  q("#mL").innerHTML=lv.map((l,i)=>`<button type="button" class="gx-lv${i===sel?" on":""}" data-i="${i}" style="--w:${Math.min(100,12+Math.log10(l[3]+1)*15)}%"><b>${l[0]}</b><span>${l[1]}</span><i>지연 ${l[2]} 사이클</i></button>`).join("");
+  root.querySelectorAll(".gx-lv").forEach(b=>b.addEventListener("click",()=>{sel=+b.dataset.i;draw();}));
+  const x=G[g];q("#mO").innerHTML=`<b>${lv[sel][0]}</b>: ${lv[sel][4]}<br><span class="mini">${g}: SM ${x.sm}개 · FP16 텐서 연산 약 ${x.tf} TFLOPS · 메모리 ${x.bw.toLocaleString()}GB/s → 메모리에서 1바이트 가져올 시간에 약 <b>${Math.round(x.tf*1e12/(x.bw*1e9))}번</b> 계산할 수 있어요. 그래서 한 번 가져온 데이터를 위쪽(빠른 곳)에 두고 여러 번 쓰는 게 모든 커널 최적화의 핵심이에요. 지연 사이클은 대략적인 값이에요.</span>`;};
+ root.querySelectorAll("#mG button").forEach(b=>b.addEventListener("click",()=>{g=b.dataset.g;draw();}));draw();
+};
+
+/* ---------- p3-2 스레드 인덱싱 ---------- */
+W.g_index=(root)=>{
+ const N=200;let bd=64,pick=70;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><span>blockDim (블록당 스레드 수)</span><div class="seg" id="iB">${[32,64,128].map(b=>`<button type="button" data-b="${b}">${b}</button>`).join("")}</div></div>
+  <p class="mini">원소 N = ${N}개를 스레드 하나당 1개씩 처리해요. 칸 하나 = 스레드 하나. 같은 색 묶음 = warp (32개). 칸을 눌러 보세요.</p>
+  <div id="iG" class="gx-blocks"></div><div class="bz-out" id="iO"></div>
+  <pre class="gx-code">__global__ void add(float* a, float* b, float* c, int n) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;  // 내 원소 번호
+    if (i < n) c[i] = a[i] + b[i];                  // 남는 스레드는 아무것도 안 함
+}
+add&lt;&lt;&lt;(n + 63) / 64, 64&gt;&gt;&gt;(a, b, c, n);           // 블록 수, 블록당 스레드 수</pre></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#iB button").forEach(b=>b.classList.toggle("on",+b.dataset.b===bd));const nb=Math.ceil(N/bd);
+  q("#iG").innerHTML=Array.from({length:nb},(_,b)=>`<div class="gx-bk"><span>블록 ${b}</span><div>${Array.from({length:bd},(_,t)=>{const i=b*bd+t;return `<i class="${i>=N?"off":""}${i===pick?" pk":""}" data-i="${i}" style="--c:${C(Math.floor(t/32))}"></i>`;}).join("")}</div></div>`).join("");
+  root.querySelectorAll("#iG i").forEach(c=>c.addEventListener("click",()=>{pick=+c.dataset.i;draw();}));
+  const b=Math.floor(pick/bd),t=pick%bd;
+  q("#iO").innerHTML=`블록 수 = ⌈${N} ÷ ${bd}⌉ = <b>${nb}</b> · 스레드 총 ${nb*bd}개 (${nb*bd-N}개는 남음)<br>고른 스레드: blockIdx.x = <b>${b}</b>, threadIdx.x = <b>${t}</b> → i = ${b} × ${bd} + ${t} = <b>${pick}</b> ${pick>=N?"→ i ≥ n 이라 <b>if</b>에 걸려 아무것도 안 해요":""} · warp ${Math.floor(t/32)}번<br><span class="mini">블록은 SM 하나에 통째로 올라가고, 블록 안 스레드는 32개씩 warp로 묶여 <b>같은 명령을 동시에</b> 실행해요. 블록끼리는 순서를 보장하지 않아요.</span>`;};
+ root.querySelectorAll("#iB button").forEach(b=>b.addEventListener("click",()=>{bd=+b.dataset.b;draw();}));draw();
+};
+
+/* ---------- p3-3 coalescing ---------- */
+W.g_coalesce=(root)=>{
+ const P={"연속 a[i]":i=>i,"간격 2 a[2i]":i=>2*i,"간격 32 a[32i]":i=>32*i,"뒤죽박죽":i=>(i*389+77)%1024};let mode="연속 a[i]";
+ root.innerHTML=`<div class="an bz"><div class="seg" id="cP">${Object.keys(P).map(k=>`<button type="button" data-p="${k}">${k}</button>`).join("")}</div>
+  <p class="mini">warp 하나(스레드 32개)가 float(4바이트)를 하나씩 읽어요. 칸 하나 = float 하나, 한 줄 = 32개 = 128바이트. 메모리는 <b>32바이트(sector) 단위</b>로만 가져올 수 있어요.</p>
+  <div class="gx-memgrid" id="cG"></div><div class="bz-out" id="cO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#cP button").forEach(b=>b.classList.toggle("on",b.dataset.p===mode));
+  const idx=Array.from({length:32},(_,i)=>P[mode](i)),rd=new Set(idx),sec=new Set(idx.map(i=>Math.floor(i/8)));
+  const rows=Math.max(1,Math.ceil((Math.max(...idx)+1)/32)),showRows=Math.min(rows,32);
+  q("#cG").innerHTML=Array.from({length:showRows*32},(_,i)=>`<i class="${rd.has(i)?"r":sec.has(Math.floor(i/8))?"s":""}"></i>`).join("");
+  const fetched=sec.size*32;
+  q("#cO").innerHTML=`가져온 sector <b>${sec.size}개</b> = ${fetched}바이트 · 실제로 쓴 데이터 128바이트 → 효율 <b>${pct(128/fetched)}</b><br><span class="mini">진한 칸 = 스레드가 읽은 값, 옅은 칸 = 같이 끌려온 쓸모없는 값. ${mode.startsWith("연속")?"이웃 스레드가 이웃 주소를 읽으면 sector 4개로 끝나요. 이게 <b>coalesced</b> 접근이에요.":"주소가 흩어지면 같은 128바이트를 위해 훨씬 많은 바이트를 메모리에서 끌어와요. 메모리 대역폭을 그만큼 버리는 거예요."}</span>`;};
+ root.querySelectorAll("#cP button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.p;draw();}));draw();
+};
+
+/* ---------- p3-4 Triton 블록 프로그램 ---------- */
+W.g_triton=(root)=>{
+ const N=20;let B=8,pid=0;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><span>BLOCK_SIZE</span><div class="seg" id="tB">${[4,8,16].map(b=>`<button type="button" data-b="${b}">${b}</button>`).join("")}</div></div>
+  <div class="gx-vec" id="tV"></div><div class="bz-row" id="tP"></div><pre class="gx-code" id="tC"></pre><div class="bz-out" id="tO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#tB button").forEach(b=>b.classList.toggle("on",+b.dataset.b===B));const np=Math.ceil(N/B);if(pid>=np)pid=0;
+  q("#tV").innerHTML=Array.from({length:np*B},(_,i)=>{const p=Math.floor(i/B);return `<i class="${i>=N?"off":""}${p===pid?" pk":""}" style="--c:${C(p)}">${i<N?i:"×"}</i>`;}).join("");
+  q("#tP").innerHTML=Array.from({length:np},(_,p)=>`<button type="button" class="btn ${p===pid?"":"ghost"}" data-p="${p}">pid ${p}</button>`).join("");
+  root.querySelectorAll("#tP button").forEach(b=>b.addEventListener("click",()=>{pid=+b.dataset.p;draw();}));
+  const offs=Array.from({length:B},(_,k)=>pid*B+k);
+  q("#tC").textContent=`@triton.jit
+def add_kernel(x_ptr, y_ptr, out_ptr, n, BLOCK_SIZE: tl.constexpr):
+    pid = tl.program_id(0)                        # 나는 ${pid}번 프로그램
+    offs = pid * BLOCK_SIZE + tl.arange(0, BLOCK_SIZE)
+    mask = offs < n                               # 끝을 넘는 칸은 끄기
+    x = tl.load(x_ptr + offs, mask=mask)
+    y = tl.load(y_ptr + offs, mask=mask)
+    tl.store(out_ptr + offs, x + y, mask=mask)
+
+grid = (triton.cdiv(n, BLOCK_SIZE),)              # 프로그램 ${np}개
+add_kernel[grid](x, y, out, n, BLOCK_SIZE=${B})`;
+  q("#tO").innerHTML=`pid ${pid}의 offs = [${offs.join(", ")}]<br>mask = [${offs.map(o=>o<N?"T":"F").join(", ")}]<br><span class="mini">CUDA는 '스레드 하나가 원소 하나'를 생각하지만, Triton은 <b>프로그램 하나가 블록(덩어리) 하나</b>를 생각해요. 블록 안을 스레드에 어떻게 나눌지, 메모리를 어떻게 묶어 읽을지는 컴파일러가 정해요.</span>`;};
+ root.querySelectorAll("#tB button").forEach(b=>b.addEventListener("click",()=>{B=+b.dataset.b;draw();}));draw();
+};
+
+/* ---------- p3-5 프로파일러 타임라인 ---------- */
+W.g_prof=(root)=>{
+ const K=[["rmsnorm",3,35,4],["qkv_gemm",14,82,9],["rope",2,30,3],["attention",9,70,6],["o_gemm",6,80,8],["add",2,38,2],["rmsnorm",3,35,4],["gate_up_gemm",28,85,10],["silu_mul",3,40,3],["down_gemm",15,84,9],["add",2,38,2]];
+ let graph=false,sel=7;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><label class="bz-ck"><input type="checkbox" id="pG"> CUDA Graph로 실행 (실행 간격 제거)</label></div>
+  <div class="bz-lbl">Nsight Systems 같은 타임라인 · decode 한 스텝 중 레이어 2개 (예시 값, 단위 μs)</div>
+  <div class="gx-prof" id="pT"></div><div class="bz-out" id="pO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{const seq=[...K,...K],gap=graph?0.5:5;let tot=0;seq.forEach(k=>tot+=k[1]+gap);
+  q("#pT").innerHTML=seq.map((k,i)=>`<span class="gap" style="flex:${gap}"></span><button type="button" class="kn${(i%K.length)===sel?" on":""}" data-i="${i%K.length}" style="flex:${k[1]};--c:${k[0].includes("gemm")?"var(--c2)":k[0]==="attention"?"var(--c3)":"var(--c4)"}" title="${k[0]}">${k[1]>=9?k[0]:""}</button>`).join("");
+  root.querySelectorAll("#pT .kn").forEach(b=>b.addEventListener("click",()=>{sel=+b.dataset.i;draw();}));
+  const k=K[sel],busy=seq.reduce((a,x)=>a+x[1],0);
+  q("#pO").innerHTML=`<b>${k[0]}</b> · ${k[1]}μs · Nsight Compute 'Speed of Light': 메모리 <b>${k[2]}%</b>, 연산 <b>${k[3]}%</b><br>${k[2]>=70?"→ 메모리 대역폭을 거의 다 쓰는 <b>memory-bound</b> 커널. 더 빠르게 하려면 읽는 바이트를 줄여야 해요(양자화, 퓨전).":"→ 메모리도 연산도 한참 남는 <b>너무 작은</b> 커널. 실행 비용과 지연이 대부분이라 다른 커널과 합치는(퓨전) 게 답이에요."}<br>스텝 전체 ${tot.toFixed(0)}μs 중 GPU가 실제로 일한 시간 <b>${pct(busy/tot)}</b><br><span class="mini">청록 막대 = 행렬곱, 보라 = 어텐션, 노랑 = 작은 커널, 빈칸 = 커널 사이 실행 간격. ${graph?"CUDA Graph는 커널 실행 순서를 미리 녹화해 두고 한 번에 재생해서 간격이 거의 사라져요(4단계 7번).":"CPU가 커널을 하나씩 실행시키는 사이에 GPU가 놀아요. 체크박스를 켜 보세요."}</span>`;};
+ q("#pG").addEventListener("change",e=>{graph=e.target.checked;draw();});draw();
+};
+
+/* ================= 강의 ================= */
+L["p3-1"]={
+ lead:"여기서부터 GPU를 직접 다뤄요. GPU는 <b>작은 일꾼 수천 명</b>이 <b>층층이 다른 속도의 창고</b>에서 데이터를 꺼내 일하는 공장이에요. 이 구조, 특히 메모리 계층을 알아야 커널이 왜 빠르고 느린지 설명할 수 있어요.",
+ sections:[
+  {h:"1. SM: GPU 안의 작은 공장",p:["GPU 칩 안에는 <b>SM</b>(Streaming Multiprocessor)이 수십~백여 개 있어요(T4 40개, H100 132개). SM 하나하나가 독립된 작은 공장이고, 안에 연산기, 레지스터, shared memory가 있어요.","내가 짠 커널을 실행하면 일이 <b>블록</b>(thread block) 단위로 쪼개져 SM들에 나눠 올라가요. 블록 하나는 SM 하나에서 끝까지 실행돼요."]},
+  {h:"2. warp: 32명이 한 몸처럼",p:["블록 안의 스레드는 <b>32개씩 warp</b>로 묶여요. warp 안 32개 스레드는 <b>같은 명령을 같은 순간에</b> 실행해요(SIMT). 데이터만 각자 달라요.","그래서 warp 안에서 if 문으로 갈라지면(일부는 A, 일부는 B), 두 갈래를 차례로 실행하고 나머지는 기다려요. 이게 <b>warp divergence</b>예요.","SM은 여러 warp를 번갈아 실행해요. 한 warp가 메모리를 기다리는 동안 다른 warp를 돌려서 기다림을 숨겨요. 그래서 SM에 warp가 충분히 많이 올라가 있어야 해요(occupancy)."]},
+  {h:"3. 메모리 계층: 가까울수록 빠르고 작다",p:["<b>레지스터</b>: 스레드 전용, 가장 빠름. <b>Shared memory</b>: 블록 안 스레드들이 공유, 프로그래머가 직접 관리. <b>L2</b>: 모든 SM 공용 캐시. <b>HBM/GDDR</b>: 큰 GPU 메모리, 가장 느림.","핵심 숫자: 메모리에서 1바이트 가져올 시간에 연산기는 수백 번 계산할 수 있어요. 그래서 좋은 커널은 HBM에서 한 번 가져온 데이터를 shared memory나 레지스터에 두고 <b>여러 번 재사용</b>해요. 4단계의 tiling, FlashAttention이 모두 이 원리예요."]},
+  {h:"4. 내 GPU 스펙 표 만들기",p:["실습 과제는 T4, L4 같은 내가 쓸 GPU의 SM 수, SM당 shared memory, L2 크기, 메모리 대역폭, 텐서 코어 성능을 표로 정리하는 거예요. 아래 그림의 GPU 버튼을 바꿔 가며 비교해 보세요. 이 숫자들이 머리에 있으면 '이 커널은 몇 ms쯤 걸려야 정상'을 감으로 알 수 있어요."]}
+ ],
+ extra:[{widget:"gpumap",title:"GPU 지도 (1단계 복습)",cap:"GPU 칩의 부품을 눌러 보세요."}],
+ widget:"g_mem",widgetTitle:"메모리 계층: 손 안 → 책상 → 책장 → 창고",widgetCap:"GPU를 바꾸고 각 층을 눌러 보세요. 막대 길이는 크기(로그 눈금)예요.",
+ summary:["GPU = SM 수십~백여 개, 일은 블록 단위로 SM에 배정","warp = 스레드 32개가 같은 명령을 동시에 실행","레지스터 > shared memory > L2 > HBM 순으로 빠르고 작음","1바이트 읽을 시간에 수백 번 계산 가능 → 재사용이 핵심"],
+ quiz:[
+  {q:"warp 하나는 스레드 몇 개인가요?",o:["8","16","32","1024"],a:2,e:"NVIDIA GPU의 warp는 32개 스레드예요."},
+  {q:"같은 블록의 스레드끼리 데이터를 빠르게 나눠 쓰는 곳은?",o:["HBM","Shared memory","CPU 메모리","디스크"],a:1,e:"shared memory는 블록 안 스레드가 공유하는 빠른 메모리예요."},
+  {q:"warp 안에서 if/else로 갈라지면?",o:["두 갈래가 동시에 실행된다","두 갈래를 차례로 실행해서 느려진다","에러가 난다","블록이 둘로 나뉜다"],a:1,e:"warp divergence. 같은 명령만 동시에 할 수 있어서 갈래를 순서대로 해요."}
+ ]};
+
+L["p3-2"]={
+ lead:"GPU 프로그래밍에서 제일 먼저 익숙해져야 할 건 <b>\"나는 몇 번째 스레드고, 몇 번째 데이터를 맡나\"</b>를 계산하는 거예요. GPU Puzzles는 이걸 짧은 퍼즐 14개로 몸에 익히게 해 줘요.",
+ sections:[
+  {h:"1. 스레드가 자기 일 찾기",p:["커널은 스레드 수천 개가 <b>똑같은 코드</b>를 실행해요. 각자 다른 데이터를 처리하려면 자기 번호가 필요해요. <code>threadIdx.x</code>(블록 안 번호), <code>blockIdx.x</code>(블록 번호), <code>blockDim.x</code>(블록 크기)로 계산해요.","가장 흔한 공식: <code>i = blockIdx.x * blockDim.x + threadIdx.x</code>. 그리고 데이터 개수가 블록 크기로 딱 나눠지지 않으니 <code>if (i < n)</code>으로 남는 스레드를 막아요."]},
+  {h:"2. 2D도 똑같이",p:["행렬처럼 2차원 데이터는 x, y 두 방향 번호를 써요. 행 = blockIdx.y * blockDim.y + threadIdx.y, 열 = blockIdx.x * blockDim.x + threadIdx.x. 메모리는 1차원이라 실제 주소는 행 × 너비 + 열이에요."]},
+  {h:"3. shared memory와 동기화",p:["블록 안 스레드들이 shared memory에 데이터를 같이 채우고 같이 읽으려면, '다 채울 때까지 기다려'가 필요해요. 그게 <code>__syncthreads()</code>(Triton/Numba에선 <code>cuda.syncthreads()</code>)예요. 빼먹으면 아직 안 채워진 값을 읽어 가끔만 틀리는 무서운 버그가 생겨요."]},
+  {h:"4. 퍼즐에서 특히 중요한 것",p:["<b>prefix sum</b>(누적 합)과 <b>matmul</b> 퍼즐은 나중에 계속 나와요. 누적 합은 top-p 샘플링에, matmul은 모든 곳에 쓰여요. Colab에서 Numba로 돌아가니 GPU 런타임만 켜면 바로 풀 수 있어요."]}
+ ],
+ widget:"g_index",widgetTitle:"내 번호 계산하기",widgetCap:"blockDim을 바꾸고 칸(스레드)을 눌러 보세요. 회색 칸은 n을 넘는 남는 스레드예요.",
+ summary:["모든 스레드가 같은 코드, 번호로 자기 데이터를 찾음","i = blockIdx.x × blockDim.x + threadIdx.x","if (i < n)으로 남는 스레드 막기","shared memory 쓸 땐 __syncthreads()로 기다리기"],
+ quiz:[
+  {q:"blockDim.x = 128, blockIdx.x = 2, threadIdx.x = 5일 때 i는?",o:["133","261","135","256"],a:1,e:"2 × 128 + 5 = 261."},
+  {q:"n = 1000, 블록당 256스레드면 블록은 몇 개?",o:["3","4","1000","256"],a:1,e:"1000 ÷ 256 = 3.9 → 올림 4개. 마지막 블록의 24개 스레드는 if에 걸려 쉬어요."}
+ ]};
+
+L["p3-3"]={
+ lead:"첫 CUDA 커널을 짜 봐요. 덧셈처럼 단순한 커널도 <b>메모리를 어떻게 읽느냐</b>에 따라 속도가 몇 배씩 달라져요. 이 강의의 세 가지 함정(coalescing, divergence, bank conflict)을 직접 겪어 보는 게 목표예요.",
+ sections:[
+  {h:"1. vector add와 대역폭 측정",p:["c[i] = a[i] + b[i]는 계산이 거의 없어서 완전히 memory-bound예요. 그래서 성능을 FLOPS가 아니라 <b>GB/s</b>로 재요: (읽은 바이트 + 쓴 바이트) ÷ 시간. 이 값이 GPU 스펙 대역폭의 80~90%면 잘 짠 거예요."]},
+  {h:"2. 함정 ①: coalescing",p:["warp의 32개 스레드가 <b>이웃한 주소</b>를 읽으면 메모리가 한 번에 묶어서 가져와요(coalesced). 주소가 흩어지면 필요 없는 바이트까지 여러 번 가져와서 대역폭을 버려요.","행렬 전치(transpose)가 대표 사례예요. 행 방향으로 읽고 열 방향으로 쓰면 쓰기가 흩어져요. shared memory에 타일을 올려 두고 방향을 바꿔 쓰면 해결돼요."]},
+  {h:"3. 함정 ②: warp divergence와 reduction",p:["배열 합(reduction)을 트리 모양으로 해요: 절반이 나머지 절반을 더하고, 또 절반… 처음 짜면 'i가 짝수인 스레드만' 같은 조건을 써서 warp 안에서 갈라져요. 조건을 '앞쪽 절반 스레드만'으로 바꾸면 warp 단위로 깔끔하게 쉬어서 빨라져요.","마지막 32개는 <b>warp shuffle</b>(<code>__shfl_down_sync</code>)로 shared memory 없이 레지스터끼리 주고받아요. 단계마다 대역폭을 재서 표로 남겨요."]},
+  {h:"4. 함정 ③: shared memory bank conflict",p:["shared memory는 32개 bank로 나뉘어 있어요. warp의 여러 스레드가 <b>같은 bank의 다른 주소</b>를 동시에 읽으면 차례로 처리돼요. 전치에서 열 방향으로 읽을 때 자주 생겨요. 배열 폭을 1 늘리는(padding, 32 → 33) 고전 기법으로 피해요.","GPU가 없으면 LeetGPU(브라우저에서 CUDA 실행)에서 연습할 수 있어요."]}
+ ],
+ widget:"g_coalesce",widgetTitle:"warp 하나가 메모리를 읽는 모양",widgetCap:"접근 패턴을 바꿔 보세요. 같은 128바이트를 얻으려고 실제로 끌어오는 양이 달라져요.",
+ summary:["단순 커널은 GB/s로 성능을 잼","이웃 스레드 = 이웃 주소 (coalescing)","warp 안 분기 줄이기, 마지막은 warp shuffle","shared memory bank conflict는 padding으로 회피"],
+ quiz:[
+  {q:"vector add 커널의 성능 지표로 알맞은 것은?",o:["TFLOPS","GB/s (메모리 대역폭)","토큰/초","정확도"],a:1,e:"계산이 거의 없고 읽고 쓰기가 대부분이라 대역폭으로 봐요."},
+  {q:"스레드 i가 a[32*i]를 읽으면?",o:["가장 효율적이다","주소가 흩어져 대역폭 낭비가 크다","에러가 난다","레지스터만 쓴다"],a:1,e:"warp의 32개 주소가 멀리 떨어져 각각 따로 가져와야 해요."}
+ ]};
+
+L["p3-4"]={
+ lead:"<b>Triton</b>은 파이썬으로 GPU 커널을 짜는 언어예요. CUDA처럼 '스레드 하나'가 아니라 <b>'데이터 덩어리(블록) 하나'</b> 단위로 생각하게 해 줘서, 훨씬 짧은 코드로 쓸 만한 커널을 만들 수 있어요. vLLM, SGLang에도 Triton 커널이 많아요.",
+ sections:[
+  {h:"1. 프로그램 하나 = 블록 하나",p:["Triton 커널은 '프로그램' 여러 개가 동시에 실행돼요. 각 프로그램은 <code>tl.program_id(0)</code>로 자기 번호를 알고, <code>tl.arange</code>로 자기가 맡을 칸 번호 묶음(offs)을 만들어요.","<code>tl.load</code>, <code>tl.store</code>는 칸 하나가 아니라 <b>묶음 전체</b>를 한 번에 읽고 써요. 끝을 넘는 칸은 <code>mask</code>로 꺼요."]},
+  {h:"2. 컴파일러가 해 주는 것",p:["블록 안을 스레드와 warp에 어떻게 나눌지, 메모리를 어떻게 묶어 읽을지(coalescing), shared memory를 어떻게 쓸지를 컴파일러가 정해요. 그래서 3-3에서 겪은 함정 상당수를 자동으로 피해요.","대신 BLOCK_SIZE, num_warps 같은 값은 내가 정하거나 autotune으로 찾아요(4단계 2번)."]},
+  {h:"3. 맥에서 연습하기",p:["<code>TRITON_INTERPRET=1</code>을 켜면 GPU 없이 CPU에서 Triton 코드를 실행해요. 느리지만 맞는지 확인하기엔 충분해요. Triton Puzzles를 이렇게 맥에서 풀 수 있어요.","속도 비교는 Colab GPU에서 해요. 공식 튜토리얼의 vector add, <b>fused softmax</b>, layernorm을 돌려 PyTorch와 비교해 보세요. fused softmax는 행 하나를 통째로 SRAM에 올려 HBM 왕복을 줄이는 퓨전의 첫 예제예요."]}
+ ],
+ widget:"g_triton",widgetTitle:"프로그램 하나가 맡는 블록",widgetCap:"BLOCK_SIZE를 바꾸고 pid 버튼을 눌러 보세요. 코드의 offs와 mask가 어떻게 되는지 보여요.",
+ summary:["Triton = 블록 단위로 생각하는 파이썬 GPU 언어","program_id + arange로 내 칸 묶음, mask로 끝 처리","스레드 배치, coalescing은 컴파일러가 처리","TRITON_INTERPRET=1로 맥에서 연습 가능"],
+ quiz:[
+  {q:"n = 20, BLOCK_SIZE = 8이면 프로그램은 몇 개?",o:["2","3","8","20"],a:1,e:"20 ÷ 8 = 2.5 → 올림 3개. 마지막 프로그램은 mask로 4칸을 꺼요."},
+  {q:"mask를 빼먹으면?",o:["더 빨라진다","배열 끝을 넘는 메모리를 읽거나 써서 틀리거나 망가진다","컴파일이 안 된다","아무 일도 없다"],a:1,e:"범위 밖 메모리를 건드리게 돼요."}
+ ]};
+
+L["p3-5"]={
+ lead:"최적화는 <b>측정</b>에서 시작해요. <b>Nsight Systems</b>로 시간 축 위에서 GPU가 노는 구간을 찾고, <b>Nsight Compute</b>로 커널 하나가 왜 느린지 들여다봐요. 감이 아니라 숫자로 일하게 해 주는 도구예요.",
+ sections:[
+  {h:"1. Nsight Systems (nsys): 넓게 보기",p:["<code>nsys profile python run.py</code>로 실행하면 CPU 스레드, CUDA API 호출, GPU 커널이 시간 축에 막대로 그려져요.","볼 것: GPU 줄의 <b>빈칸</b>(CPU 대기, 2-8), 가장 긴 커널들, 메모리 복사(CPU↔GPU). PyTorch에서는 <code>torch.cuda.nvtx.range</code>로 구간 이름을 붙이면 보기 편해요."]},
+  {h:"2. Nsight Compute (ncu): 깊게 보기",p:["커널 하나를 여러 번 다시 실행하며 하드웨어 카운터를 읽어요. 첫 화면 <b>Speed of Light</b>가 핵심이에요: 메모리 처리량이 최대치의 몇 %인지, 연산 처리량이 최대치의 몇 %인지.","메모리 %가 높으면 memory-bound → 읽는 양을 줄여야 해요. 연산 %가 높으면 compute-bound → 텐서 코어, 더 낮은 정밀도. 둘 다 낮으면 → 너무 작거나, 지연(latency)을 못 숨기고 있어요(occupancy, 의존성 확인)."]},
+  {h:"3. decode 스텝을 찍으면 보이는 것",p:["행렬곱 커널은 메모리 %가 높게 나와요(배치가 작으면 memory-bound). RMSNorm, add 같은 작은 커널은 둘 다 낮고 실행 간격이 커요 → 퓨전과 CUDA Graph 후보(4단계 7번).","목표는 'Speed of Light 수치를 읽고 다음에 할 일을 말할 수 있게' 되는 거예요."]}
+ ],
+ widget:"g_prof",widgetTitle:"타임라인 읽기 연습",widgetCap:"막대(커널)를 눌러 Speed of Light 수치를 보고, CUDA Graph 체크박스를 켜 보세요. 값은 예시예요.",
+ summary:["nsys = 시간 축 전체 그림, GPU 빈칸 찾기","ncu = 커널 하나 해부, Speed of Light부터","메모리 %↑ → 읽는 양 줄이기 / 연산 %↑ → 텐서 코어·저정밀도","둘 다 낮음 → 너무 작은 커널, 퓨전·CUDA Graph"],
+ quiz:[
+  {q:"GPU가 커널 사이사이 노는 구간을 찾기 좋은 도구는?",o:["Nsight Systems","Nsight Compute","nvidia-smi","pip"],a:0,e:"시간 축 타임라인을 보여 주는 nsys예요."},
+  {q:"ncu에서 메모리 85%, 연산 10%인 커널은?",o:["compute-bound","memory-bound","CPU-bound","정상적으로 노는 중"],a:1,e:"메모리 대역폭을 거의 다 쓰고 있어서 memory-bound예요."}
+ ]};
+
+L["p3-6"]={
+ lead:"<b>GPU MODE</b>는 커널 개발자들이 모인 커뮤니티예요. 매주 실무자가 직접 프로파일링, Triton, CUTLASS, 양자화, FlashAttention 같은 주제를 강의하고, 영상이 모두 공개돼 있어요. 이 코스의 3~6단계와 거의 겹치는 '살아 있는 교재'예요.",
+ sections:[
+  {h:"1. 어떻게 보면 좋을까",p:["1~10강을 먼저 순서대로 봐요. 프로파일링, CUDA 기초, PMPP 책 해설, Triton 입문이 들어 있어서 3단계 복습이 돼요.","그다음은 지금 하고 있는 단계에 맞춰 골라 봐요. 4단계를 할 땐 matmul, FlashAttention, 양자화 강의, 6단계를 할 땐 CUTLASS, Hopper 강의."]},
+  {h:"2. 영어가 부담될 때",p:["YouTube 자동 자막(한국어 자동 번역)을 켜고, 코드와 그림 위주로 봐요. 모르는 용어는 이 사이트 용어집과 0~3단계 강의에서 찾아요. 슬라이드와 코드는 GitHub 저장소(gpu-mode/lectures)에 있어요."]},
+  {h:"3. 커뮤니티 활용",p:["Discord에 들어가 두면 막혔을 때 질문할 곳이 생겨요. 커널 최적화 대회(leaderboard)도 열려서 내 커널을 다른 사람들과 비교해 볼 수 있어요. 영어 질문이 어려우면 짧은 문장과 코드, 에러 메시지 위주로 써도 충분해요."]}
+ ],
+ summary:["GPU MODE = 실무자 커널 강의 + 커뮤니티","1~10강으로 3단계 복습, 이후 단계별로 골라 보기","자동 번역 자막 + 코드 위주 시청","Discord에서 질문하고 대회로 실력 확인"],
+ quiz:[
+  {q:"GPU MODE 강의를 보는 가장 좋은 방법은?",o:["처음부터 끝까지 한 번에","1~10강 이후 지금 단계에 맞는 주제를 골라서","아무것도 안 하고 기다리기","자막 없이만 보기"],a:1,e:"기초 강의로 지도를 잡고, 그다음은 필요한 주제부터 봐요."}
+ ]};
+
+})(window.LESSONS,window.WIDGETS);
+
+</script>
+<script>
+/* 4단계 · 커널 최적화 심화: 강의 7개 + 위젯 */
+(function(L,W){
+const {ctrl,capper,stepper,f2,pct}=W._bz;
+
+/* ---------- p4-1 타일링 ---------- */
+W.k_tile=(root)=>{
+ const N=4096,TS=[1,8,16,32,64,128];let ti=0;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><span>타일 크기 T</span><div class="seg" id="tT">${TS.map((t,i)=>`<button type="button" data-i="${i}">${t}</button>`).join("")}</div></div>
+  <div class="gx-mm3"><div class="gx-tA"><span>A</span><div id="tA"></div></div><div class="gx-tB"><span>B</span><div id="tBm"></div></div><div class="gx-tC"><span>C = A × B</span><div id="tC"></div></div></div>
+  <div class="bz-out" id="tO"></div></div>`;
+ const q=s=>root.querySelector(s),G=8;
+ const grid=(f)=>Array.from({length:G*G},(_,k)=>`<i class="${f(Math.floor(k/G),k%G)}"></i>`).join("");
+ const draw=()=>{root.querySelectorAll("#tT button").forEach(b=>b.classList.toggle("on",+b.dataset.i===ti));const T=TS[ti],r=2,c=5;
+  q("#tA").innerHTML=grid((i)=>i===r?"hl":"");q("#tBm").innerHTML=grid((i,j)=>j===c?"hl":"");q("#tC").innerHTML=grid((i,j)=>i===r&&j===c?"on":"");
+  const loads=2*N**3/T*4,flops=2*N**3,ai=flops/loads,ridge=19.5e12/1555e9;
+  q("#tO").innerHTML=`C의 타일 하나(T × T = ${T*T}칸)를 계산하려면 A의 가로 띠(T줄)와 B의 세로 띠(T칸)를 읽어요. 한 번 읽은 값을 타일 안에서 <b>T번 재사용</b>해요.<br>N = 4,096 행렬곱(FP32): HBM에서 읽는 양 ≈ <b>${(loads/1e9).toFixed(loads<1e10?1:0)}GB</b> · 연산 ${(flops/1e9).toFixed(0)} GFLOP · 1바이트당 연산 <b>${ai.toFixed(ai<1?2:1)}</b><br>A100 FP32 기준 경계값 ≈ ${ridge.toFixed(1)} → ${ai<ridge?"<b>memory-bound</b>: 아직 데이터를 기다리느라 연산기가 놀아요.":"<b>compute-bound</b>: 이제 연산기가 바빠요. 여기부터는 계산 자체를 빠르게(벡터화, 텐서 코어) 해야 해요."}<br><span class="mini">T = 1은 '출력 한 칸마다 행 하나, 열 하나를 HBM에서 새로 읽는' 가장 순진한 커널이에요. 타일은 shared memory(블록 타일)와 레지스터(스레드 타일)에 올려 둬요.</span>`;};
+ root.querySelectorAll("#tT button").forEach(b=>b.addEventListener("click",()=>{ti=+b.dataset.i;draw();}));draw();
+};
+
+/* ---------- p4-3 / p6-4 데이터 타입 ---------- */
+W.k_dtype=(root)=>{
+ const F={"FP32":[8,23,127,3.4e38,"—(TF32 약 495)"],"BF16":[8,7,127,3.39e38,"약 990"],"FP16":[5,10,15,65504,"약 990"],"FP8 E4M3":[4,3,7,448,"약 1,980"],"FP8 E5M2":[5,2,15,57344,"약 1,980"],"FP4 E2M1":[2,1,1,6,"미지원 (Blackwell부터)"],"INT8":[0,0,0,127,"약 1,980"],"INT4":[0,0,0,7,"—"]};
+ let f="BF16",x=3.14159;
+ const rnd=(v,[e,m,b,mx])=>{if(!e){return Math.max(-mx-1,Math.min(mx,Math.round(v)));}const s=Math.sign(v),a=Math.abs(v);if(!a)return 0;let ex=Math.floor(Math.log2(a));ex=Math.max(ex,1-b);const qn=Math.pow(2,ex-m);return s*Math.min(mx,Math.round(a/qn)*qn);};
+ root.innerHTML=`<div class="an bz"><div class="seg" id="dF">${Object.keys(F).map(k=>`<button type="button" data-f="${k}">${k}</button>`).join("")}</div>
+  <div class="gx-bits" id="dB"></div>
+  <label class="bz-temp">넣어 볼 값 <b id="dXv"></b><input type="range" id="dX" min="0" max="100" step="0.5" value="58.3" aria-label="값 (로그 눈금)"></label>
+  <div class="bz-out" id="dO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#dF button").forEach(b=>b.classList.toggle("on",b.dataset.f===f));const d=F[f],[e,m]=d,bits=e?1+e+m:+f.slice(3);
+  q("#dB").innerHTML=e?`<i class="s">부호</i>${Array.from({length:e},()=>`<i class="e"></i>`).join("")}${Array.from({length:Math.min(m,23)},()=>`<i class="m"></i>`).join("")}`:`${Array.from({length:bits},()=>`<i class="n"></i>`).join("")}`;
+  const r=rnd(x,d),err=x?Math.abs(r-x)/Math.abs(x):0;q("#dXv").textContent=x.toPrecision(5);
+  q("#dO").innerHTML=`<b>${f}</b>: ${bits}비트${e?` = 부호 1 + 지수 ${e} + 가수 ${m}`:" 정수"} · 가장 큰 값 ${d[3]>1e6?d[3].toExponential(2).replace("e+"," × 10^"):d[3].toLocaleString()}<br>${x.toPrecision(6)} → 이 형식에 저장하면 <b>${r.toPrecision(6)}</b> (오차 ${(err*100).toFixed(err<0.001?3:1)}%)${!e?" (정수형은 보통 scale을 곱해서 써요, 4-6 강의)":""}<br>8B 모델 가중치 크기: <b>${(bits/8*8).toFixed(1)}GB</b> · H100 텐서 코어 성능(희소성 제외): ${d[4]} TFLOPS<br><span class="mini">지수 비트가 많으면 <b>범위</b>가 넓고(아주 크고 아주 작은 수), 가수 비트가 많으면 <b>정밀도</b>가 높아요(촘촘함). BF16은 FP32와 범위가 같고 정밀도만 낮춘 형식이라 학습·추론에 안정적이에요. 비트가 절반이 되면 메모리도 절반, 텐서 코어 속도는 대략 두 배예요.</span>`;};
+ root.querySelectorAll("#dF button").forEach(b=>b.addEventListener("click",()=>{f=b.dataset.f;draw();}));
+ q("#dX").addEventListener("input",e=>{x=Math.pow(10,-3+6*(+e.target.value)/100);draw();});
+ draw();
+};
+
+/* ---------- p4-4 online softmax ---------- */
+W.k_online=(root)=>{
+ const s=[2,5,1,4,3,6],v=[10,20,30,40,50,60],BS=2,nb=3;
+ const st=[];let m=-Infinity,l=0,acc=0;
+ for(let b=0;b<nb;b++){const ss=s.slice(b*BS,b*BS+BS),vv=v.slice(b*BS,b*BS+BS),mn=Math.max(m,...ss),sc=isFinite(m)?Math.exp(m-mn):0;
+  const l0=l*sc,a0=acc*sc;const ex=ss.map(x=>Math.exp(x-mn));l=l0+ex.reduce((a,c)=>a+c,0);acc=a0+ex.reduce((a,c,i)=>a+c*vv[i],0);st.push({b,ss,vv,mold:m,m:mn,sc,l,acc,ex});m=mn;}
+ const full=(()=>{const mx=Math.max(...s),e=s.map(x=>Math.exp(x-mx)),z=e.reduce((a,c)=>a+c,0);return e.reduce((a,c,i)=>a+c*v[i],0)/z;})();
+ const S=[{c:"q 하나의 점수 6개와 v 6개가 있어요. 보통은 점수를 <b>전부</b> 모아 softmax를 한 뒤 v를 섞어요.",d:"문제: 실제로는 점수가 수천~수만 개(토큰 수 × 토큰 수)라서 이 점수 표를 느린 HBM에 썼다가 다시 읽어야 해요. FlashAttention은 <b>블록 단위로 읽으며 바로바로</b> 처리해서 이 표를 아예 안 만들어요."}];
+ st.forEach((x,i)=>S.push({c:`블록 ${i+1}: 점수 [${x.ss.join(", ")}]를 읽어요. 지금까지 최댓값 m = <b>${x.m}</b>${i&&x.sc!==1?` (커졌어요! 이전 합계에 e<sup>${x.mold}−${x.m}</sup> = ${f2(x.sc)}를 곱해 <b>보정</b>)`:""}.`,d:`분모 l += ${x.ex.map(f2).join(" + ")} → <b>${f2(x.l)}</b> · 분자 acc += ${x.ex.map((e,k)=>`${f2(e)}×${x.vv[k]}`).join(" + ")} → <b>${f2(x.acc)}</b>. 블록 하나만 SRAM에 있으면 돼요.`}));
+ S.push({c:`끝: 결과 = acc ÷ l = ${f2(st[2].acc)} ÷ ${f2(st[2].l)} = <b>${f2(st[2].acc/st[2].l)}</b>`,d:`점수 전체를 한 번에 softmax한 정답: <b>${f2(full)}</b>. 똑같아요! 최댓값이 바뀔 때마다 이전 합계를 e<sup>(이전 최댓값 − 새 최댓값)</sup>로 줄여 주는 게 핵심 트릭이에요(online softmax).`});
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="gx-os"><div class="gx-osr"><span>점수</span>${s.map((x,i)=>`<i data-b="${Math.floor(i/BS)}">${x}</i>`).join("")}</div><div class="gx-osr"><span>v</span>${v.map((x,i)=>`<i data-b="${Math.floor(i/BS)}">${x}</i>`).join("")}</div></div>
+  <div class="gx-state" id="oS"></div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,k=>{cap(k);const b=k-1;root.querySelectorAll(".gx-osr i").forEach(e=>{const eb=+e.dataset.b;e.className=k===0||k>nb?"":eb===b?"cur":eb<b?"done":"";});
+  const x=k>=1&&k<=nb?st[k-1]:k>nb?st[nb-1]:null;
+  root.querySelector("#oS").innerHTML=x?`<span>m = <b>${x.m}</b></span><span>l = <b>${f2(x.l)}</b></span><span>acc = <b>${f2(x.acc)}</b></span>`:`<span class="mini">SRAM에 들고 다니는 값은 단 3개: 최댓값 m, 분모 l, 분자 acc</span>`;},3600);
+};
+
+/* ---------- p4-5 split-K decode ---------- */
+W.k_splitk=(root)=>{
+ const SM=132,H=8;let B=1,S=1,ctx=32768;
+ root.innerHTML=`<div class="an bz">
+  <div class="bz-row"><span>배치(요청 수)</span><div class="seg" id="sB">${[1,4,16,64].map(b=>`<button type="button" data-b="${b}">${b}</button>`).join("")}</div></div>
+  <div class="bz-row"><span>KV를 몇 조각으로 나눌까 (split)</span><div class="seg" id="sS">${[1,2,4,8,16].map(b=>`<button type="button" data-k="${b}">${b}</button>`).join("")}</div></div>
+  <div class="gx-sms" id="sG"></div><div class="bz-out" id="sO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#sB button").forEach(b=>b.classList.toggle("on",+b.dataset.b===B));root.querySelectorAll("#sS button").forEach(b=>b.classList.toggle("on",+b.dataset.k===S));
+  const blocks=B*H*S,busy=Math.min(SM,blocks),waves=Math.ceil(blocks/SM),t=waves*(ctx/S)+(S>1?ctx/64:0),t1=Math.ceil(B*H/SM)*ctx;
+  q("#sG").innerHTML=Array.from({length:SM},(_,i)=>`<i class="${i<busy?"on":""}"></i>`).join("");
+  q("#sO").innerHTML=`일 덩어리(블록) = 요청 ${B} × KV 헤드 ${H} × 조각 ${S} = <b>${blocks}개</b> · H100의 SM 132개 중 <b>${busy}개</b>가 일함 (${pct(busy/SM)})<br>문맥 32K 토큰 기준 예상 시간: split 1 대비 <b>${(t/t1*100).toFixed(0)}%</b><br><span class="mini">decode는 q가 토큰 1개라서 '요청 × 헤드'만큼밖에 일을 못 나눠요. 배치가 작으면 SM 대부분이 놀아요. 긴 KV를 여러 조각으로 나눠 각자 부분 결과(online softmax의 m, l, acc)를 만들고 마지막에 합치면(split-K, flash-decoding) 모든 SM을 쓸 수 있어요. 배치가 이미 크면 나눌 필요가 줄어요.</span>`;};
+ root.querySelectorAll("#sB button").forEach(b=>b.addEventListener("click",()=>{B=+b.dataset.b;draw();}));root.querySelectorAll("#sS button").forEach(b=>b.addEventListener("click",()=>{S=+b.dataset.k;draw();}));draw();
+};
+
+/* ---------- p4-6 양자화 ---------- */
+W.k_quant=(root)=>{
+ const w=[0.12,-0.31,0.05,0.44,-0.08,0.27,-0.52,0.19,0.03,-0.15,0.36,-0.22,0.09,0.61,-0.4,0.14];let b=4;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><span>비트 수</span><div class="seg" id="qB">${[8,4,3,2].map(x=>`<button type="button" data-b="${x}">INT${x}</button>`).join("")}</div></div>
+  <div class="gx-qbars" id="qG"></div><div class="gx-legend"><span><i style="background:var(--c2)"></i>원래 가중치 (FP16)</span><span><i style="background:var(--c1)"></i>양자화 후 되돌린 값</span></div><div class="bz-out" id="qO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#qB button").forEach(x=>x.classList.toggle("on",+x.dataset.b===b));
+  const qm=Math.pow(2,b-1)-1,mx=Math.max(...w.map(Math.abs)),sc=mx/qm,qi=w.map(x=>Math.max(-qm-1,Math.min(qm,Math.round(x/sc)))),dq=qi.map(x=>x*sc);
+  const err=w.reduce((a,x,i)=>a+Math.abs(x-dq[i]),0)/w.reduce((a,x)=>a+Math.abs(x),0);
+  q("#qG").innerHTML=w.map((x,i)=>`<div class="gx-qb"><span class="o" style="height:${Math.abs(x)/0.65*50}%;${x<0?"top:50%":"bottom:50%"}"></span><span class="d" style="height:${Math.abs(dq[i])/0.65*50}%;${dq[i]<0?"top:50%":"bottom:50%"}"></span><b>${qi[i]}</b></div>`).join("");
+  const gb=(b+16/128)/8*8;
+  q("#qO").innerHTML=`scale = ${mx} ÷ ${qm} = <b>${sc.toFixed(4)}</b> · 저장하는 것: 정수(막대 아래 숫자) ${w.length}개 + scale 1개<br>평균 오차 <b>${pct(err)}</b> · 8B 모델 크기 ≈ <b>${gb.toFixed(1)}GB</b> (FP16 16GB) · decode 이상적 속도 ≈ <b>${(16/gb).toFixed(1)}배</b><br><span class="mini">가장 큰 값(0.61)을 정수 최댓값(${qm})에 맞추는 scale을 정하고, 모든 값을 scale로 나눠 반올림해요. 계산할 땐 정수 × scale로 되돌려요(역양자화). decode는 memory-bound라 읽는 바이트가 줄면 거의 그만큼 빨라져요. 비트를 너무 줄이면 오차가 커져서 AWQ, GPTQ 같은 똑똑한 방법이 필요해요. (scale은 128개마다 하나라고 가정)</span>`;};
+ root.querySelectorAll("#qB button").forEach(x=>x.addEventListener("click",()=>{b=+x.dataset.b;draw();}));draw();
+};
+
+/* ---------- p4-7 퓨전과 CUDA Graph ---------- */
+W.k_fusion=(root)=>{
+ const M={base:[["add",3],["rmsnorm",4],["matmul",40],["silu",3],["mul",3],["matmul",40]],fuse:[["add+rmsnorm",5],["matmul",40],["silu×mul",4],["matmul",40]]};
+ let mode="base";
+ root.innerHTML=`<div class="an bz"><div class="seg" id="fM"><button type="button" data-m="base">기본 (커널 6개)</button><button type="button" data-m="fuse">퓨전 (커널 4개)</button><button type="button" data-m="graph">퓨전 + CUDA Graph</button></div>
+  <div class="gx-prof" id="fT"></div><div class="gx-legend"><span><i style="background:var(--c2)"></i>행렬곱</span><span><i style="background:var(--c4)"></i>작은 커널</span><span><i class="gx-idle"></i>실행 간격 (CPU가 커널을 띄우는 시간)</span></div><div class="bz-out" id="fO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#fM button").forEach(b=>b.classList.toggle("on",b.dataset.m===mode));const ks=mode==="base"?M.base:M.fuse,gap=mode==="graph"?0.5:6;
+  const tot=ks.reduce((a,k)=>a+k[1]+gap,0),small=ks.filter(k=>k[0]!=="matmul").length;
+  q("#fT").innerHTML=ks.map(k=>`<span class="gap" style="flex:${gap}"></span><span class="kn" style="flex:${k[1]};--c:${k[0]==="matmul"?"var(--c2)":"var(--c4)"}">${k[0]}</span>`).join("");
+  q("#fO").innerHTML=`총 <b>${tot.toFixed(0)}μs</b> (기본 ${M.base.reduce((a,k)=>a+k[1]+6,0)}μs) · 작은 커널 ${small}개 · 중간 결과를 HBM에 썼다 읽는 횟수 <b>${small}번</b><br><span class="mini">${mode==="base"?"add, rmsnorm, silu, mul은 계산은 거의 없는데 매번 전체 벡터를 HBM에서 읽고 다시 써요. 게다가 커널마다 실행 간격이 붙어요.":mode==="fuse"?"이웃한 작은 연산을 커널 하나로 합치면 중간 결과가 레지스터에만 머물러 HBM 왕복이 사라지고, 커널 수도 줄어요.":"CUDA Graph는 decode 한 스텝의 커널 실행 순서를 한 번 녹화해 두고 통째로 재생해요. CPU가 커널을 하나씩 띄우는 비용이 거의 사라져요. 대신 입력 모양이 고정이라 배치 크기별로 따로 녹화해요."} (시간은 예시)</span>`;};
+ root.querySelectorAll("#fM button").forEach(b=>b.addEventListener("click",()=>{mode=b.dataset.m;draw();}));draw();
+};
+
+/* ================= 강의 ================= */
+L["p4-1"]={
+ lead:"추론 시간 대부분은 <b>행렬곱</b>이에요. Simon Boehm의 유명한 글은 행렬곱 커널 하나를 10단계에 걸쳐 고쳐서 cuBLAS(NVIDIA 공식 라이브러리) 성능의 90% 넘게까지 끌어올려요. 이걸 따라 하면 GPU 최적화 기법 대부분을 한 번에 배워요.",
+ sections:[
+  {h:"1. 출발점: 순진한 커널",p:["출력 칸 하나를 스레드 하나가 맡아 A의 행과 B의 열을 HBM에서 직접 읽어 내적해요. 같은 값을 수천 번씩 HBM에서 다시 읽어서 cuBLAS의 1~2% 수준밖에 안 나와요."]},
+  {h:"2. 단계별로 무엇을 고치나",p:["① <b>coalescing</b>: 이웃 스레드가 이웃 주소를 읽게 인덱스 순서만 바꿔도 몇 배 빨라져요(3-3).","② <b>shared memory 타일링</b>: A, B의 타일을 shared memory에 올려 블록 안 스레드들이 같이 재사용해요.","③ <b>스레드 타일링(1D → 2D)</b>: 스레드 하나가 출력 여러 칸을 맡아 레지스터에 든 값을 여러 번 써요. 여기서 크게 뛰어요.","④ <b>벡터화 로드</b>: float4로 16바이트씩 읽어 명령 수를 줄여요. ⑤ <b>autotuning</b>: 타일 크기 조합 찾기. ⑥ <b>warp 타일링</b>: warp 단위로도 타일을 나눠 레지스터와 shared memory 사용을 맞춰요.","원문 표 기준(A6000, FP32)으로 대략 순진한 커널 ~1% → coalescing ~9% → shared memory ~13% → 1D 타일 ~37% → 2D 타일 ~69% → 벡터화 ~78% → warp 타일 ~94%예요."]},
+  {h:"3. 핵심 원리 하나: 재사용",p:["타일 크기 T로 묶으면 HBM에서 읽은 값 하나를 T번 쓰게 돼요. '1바이트당 연산 수'(arithmetic intensity)가 T에 비례해서 커지고, GPU의 경계값을 넘는 순간 memory-bound에서 compute-bound로 넘어가요. 1단계 3번 roofline이 여기서 그대로 쓰여요."]},
+  {h:"4. 실습 방법",p:["Colab T4에서 단계마다 GFLOPS와 cuBLAS 대비 %를 표로 남겨요. 숫자가 기대와 다르면 Nsight Compute로 이유를 찾아요(3-5). FP32 CUDA 코어 기준 실습이라 텐서 코어는 4-3에서 따로 다뤄요."]}
+ ],
+ widget:"k_tile",widgetTitle:"타일 크기와 재사용",widgetCap:"타일 크기 T를 바꿔 보세요. 읽는 양이 줄고 1바이트당 연산 수가 커지면서 어느 순간 compute-bound로 넘어가요.",
+ summary:["순진한 행렬곱은 같은 값을 HBM에서 계속 다시 읽음","coalescing → shared memory 타일 → 레지스터 타일 → 벡터화 → warp 타일","타일 크기 T만큼 재사용 → 1바이트당 연산 ∝ T","단계마다 GFLOPS와 cuBLAS 대비 %를 기록"],
+ quiz:[
+  {q:"shared memory 타일링이 빠른 근본 이유는?",o:["연산 수가 줄어서","HBM에서 읽은 값을 여러 번 재사용해서","스레드 수가 줄어서","정밀도를 낮춰서"],a:1,e:"연산량은 같고, 느린 HBM 읽기 횟수를 줄여요."},
+  {q:"타일 크기를 2배로 하면 이상적으로 HBM 읽기량은?",o:["2배","절반","그대로","4배"],a:1,e:"읽은 값을 T번 재사용하니 읽기량은 2N³/T에 비례해요."}
+ ]};
+
+L["p4-2"]={
+ lead:"Triton으로 행렬곱을 짜면 코드는 몇십 줄인데, <b>블록 크기, warp 수, 파이프라인 단계 수</b>를 어떻게 정하느냐에 따라 속도가 몇 배씩 달라져요. 이 값들을 자동으로 찾아 주는 게 <b>autotuning</b>이에요.",
+ sections:[
+  {h:"1. Triton matmul의 모양",p:["프로그램 하나가 출력의 BLOCK_M × BLOCK_N 타일을 맡아요. K 방향으로 BLOCK_K씩 A, B 조각을 <code>tl.load</code>하고 <code>tl.dot</code>으로 곱해 누적해요. <code>tl.dot</code>은 컴파일러가 텐서 코어 명령으로 바꿔 줘요.","4-1에서 손으로 했던 shared memory 타일링, 레지스터 타일링, 벡터화를 컴파일러가 대부분 해 줘요."]},
+  {h:"2. 튜닝할 값들",p:["<b>BLOCK_M, BLOCK_N, BLOCK_K</b>: 타일 크기. 크면 재사용이 늘지만 shared memory와 레지스터를 많이 써서 SM에 올라가는 프로그램 수가 줄어요.","<b>num_warps</b>: 프로그램 하나를 몇 개 warp가 같이 처리할지. <b>num_stages</b>: 다음 타일을 미리 불러오는 파이프라인 깊이. 계산하는 동안 다음 데이터를 가져와 기다림을 숨겨요.","<b>GROUP_SIZE_M</b>: 프로그램 실행 순서를 묶어 L2 캐시 재사용을 높여요."]},
+  {h:"3. @triton.autotune",p:["후보 설정 목록과 key(예: M, N, K)를 주면, 처음 실행할 때 후보를 전부 돌려 보고 가장 빠른 걸 기억해요. 행렬 모양이 바뀌면 다시 찾아요.","최적값은 GPU마다, 행렬 모양마다 달라요. decode처럼 M이 작은(배치 작은) 행렬곱은 prefill과 전혀 다른 설정이 이겨요."]},
+  {h:"4. 컴파일 결과 들여다보기",p:["커널 객체의 <code>.asm['ptx']</code>, <code>.asm['ttgir']</code>로 생성된 코드를 볼 수 있어요. 텐서 코어 명령(mma)이 나오는지, shared memory를 어떻게 쓰는지 확인해요. 6-5에서 PTX와 SASS를 본격적으로 읽어요."]}
+ ],
+ summary:["Triton matmul: 프로그램 하나 = 출력 타일 하나, tl.dot이 텐서 코어 사용","튜닝 값: BLOCK_M/N/K, num_warps, num_stages, GROUP_SIZE_M","@triton.autotune이 후보를 돌려 최적값을 기억","최적값은 GPU와 행렬 모양마다 다름"],
+ quiz:[
+  {q:"num_stages를 늘리면 주로 좋아지는 것은?",o:["정밀도","다음 타일을 미리 불러와 메모리 대기 숨기기","커널 개수 감소","KV 캐시 크기"],a:1,e:"계산하는 동안 다음 데이터를 가져오는 파이프라인이 깊어져요."},
+  {q:"decode용 작은 행렬곱과 prefill용 큰 행렬곱의 최적 설정은?",o:["항상 같다","보통 다르다","decode는 튜닝 불가","prefill은 튜닝 불필요"],a:1,e:"행렬 모양이 다르면 최적 타일 크기도 달라요."}
+ ]};
+
+L["p4-3"]={
+ lead:"요즘 GPU 연산 성능의 대부분은 <b>텐서 코어</b>에서 나와요. 행렬의 작은 조각을 한 명령으로 곱하는 전용 회로예요. 그리고 어떤 <b>숫자 형식</b>(FP16, BF16, FP8, INT8…)을 쓰느냐에 따라 쓸 수 있는 명령, 속도, 정밀도가 달라져요.",
+ sections:[
+  {h:"1. 텐서 코어란",p:["일반 CUDA 코어는 곱셈·덧셈을 숫자 하나씩 해요. 텐서 코어는 예를 들어 16×16 행렬 조각끼리의 곱셈을 warp 하나가 한 명령으로 해요. H100에서 FP16 텐서 코어는 FP32 CUDA 코어보다 10배 넘게 빨라요.","그래서 행렬곱과 어텐션은 무조건 텐서 코어로 돌려야 해요. 4-1의 FP32 커널은 원리 공부용이었어요."]},
+  {h:"2. 숫자 형식: 범위와 정밀도",p:["부동소수점은 부호 + 지수 + 가수예요. 지수 비트는 <b>범위</b>(얼마나 크고 작은 수까지), 가수 비트는 <b>정밀도</b>(얼마나 촘촘하게)를 정해요.","<b>FP16</b>: 범위가 좁아(최대 65,504) 큰 값에서 넘칠 수 있어요. <b>BF16</b>: FP32와 같은 범위에 정밀도만 낮춰서 안정적이라 요즘 기본이에요. <b>FP8</b>(Hopper부터): E4M3(정밀도 위주), E5M2(범위 위주) 두 가지. <b>FP4</b>(Blackwell부터, 6-4)."]},
+  {h:"3. 프로그래밍 단계",p:["<b>WMMA API</b>: CUDA C++에서 warp 단위로 fragment를 load → mma → store하는 가장 쉬운 방법.","<b>PTX mma.sync</b>: 한 단계 아래. 각 스레드가 fragment의 어느 원소를 들고 있는지 직접 맞춰야 해요. 대신 더 세밀하게 제어해요.","T4(Turing)는 FP16/INT8 텐서 코어, L4(Ada)는 FP8까지 실험할 수 있어요. Hopper는 더 큰 단위의 WGMMA를 써요(6-2)."]}
+ ],
+ widget:"k_dtype",widgetTitle:"숫자 형식 비교",widgetCap:"형식을 바꾸고 값 슬라이더를 움직여 보세요. 같은 수가 형식마다 얼마나 다르게 저장되는지 보여요.",
+ summary:["텐서 코어 = 행렬 조각 곱셈 전용 회로, 연산 성능 대부분","지수 비트 = 범위, 가수 비트 = 정밀도","BF16이 기본, FP8은 Hopper부터, FP4는 Blackwell부터","WMMA(쉬움) → PTX mma.sync(세밀함) → WGMMA(Hopper)"],
+ quiz:[
+  {q:"BF16과 FP16의 차이는?",o:["BF16이 범위가 넓고 정밀도가 낮다","BF16이 범위가 좁고 정밀도가 높다","완전히 같다","BF16은 정수다"],a:0,e:"BF16은 지수 8비트(FP32와 같은 범위), 가수 7비트예요."},
+  {q:"형식을 FP16에서 FP8로 바꾸면 이상적으로?",o:["메모리 절반, 텐서 코어 처리량 약 2배","메모리 2배","속도 절반","변화 없음"],a:0,e:"비트가 절반이면 메모리도 절반, 텐서 코어 처리량은 대략 두 배예요."}
+ ]};
+
+L["p4-4"]={
+ lead:"어텐션을 그대로 계산하면 토큰 수 N에 대해 <b>N × N 점수 표</b>를 만들어 HBM에 썼다 읽어요. 긴 문맥에선 이게 메모리와 시간을 다 잡아먹어요. <b>FlashAttention</b>은 점수 표를 아예 만들지 않고, 블록씩 읽으며 softmax를 이어서 계산하는 <b>online softmax</b>로 이 문제를 풀었어요.",
+ sections:[
+  {h:"1. 문제: 점수 표가 너무 크다",p:["N = 8,192면 점수 표가 헤드 하나에 6,700만 칸이에요. 계산(내적)은 금방인데 이 표를 HBM에 쓰고, softmax 하려고 다시 읽고, v와 곱하려고 또 읽어요. 연산기는 대부분 메모리를 기다려요."]},
+  {h:"2. 아이디어: 타일 + online softmax",p:["q 블록 하나를 SRAM에 올려 두고, k와 v를 블록씩 읽어요. 블록마다 점수를 구하고 바로 v와 섞어 누적해요. 점수 표는 SRAM에서 잠깐 있다 사라져요.","걸림돌은 softmax예요. 분모(전체 합)와 최댓값(숫자 넘침 방지용)을 알려면 점수를 다 봐야 하는 것 같죠. online softmax는 지금까지의 최댓값 m, 분모 l, 분자 acc만 들고 다니다가, 새 블록에서 최댓값이 커지면 이전 값들에 e<sup>(이전 m − 새 m)</sup>를 곱해 <b>보정</b>해요. 결과는 정확히 같아요(근사가 아니에요)."]},
+  {h:"3. FlashAttention 1 → 2",p:["FA1: 위 아이디어로 HBM 읽기·쓰기를 크게 줄여 2~4배 빨라짐. FA2: 루프 순서를 바꿔(q 블록을 바깥 루프로) 병렬성을 늘리고, 보정 계산을 마지막에 몰아서 불필요한 연산을 줄임. 다시 약 2배.","학습할 때는 역전파에서 점수 표를 다시 계산(recompute)하는데, 추론에서는 forward만 있으면 돼요."]},
+  {h:"4. 실습 방법",p:["먼저 종이에 online softmax를 직접 유도해 보세요(아래 위젯 숫자로). 그다음 Triton fused attention 튜토리얼을 <b>보지 않고</b> 직접 짜 보고, 막히면 튜토리얼과 비교해요. causal mask는 블록 단위로 '전부 보임 / 전부 가림 / 대각선 블록'으로 나눠 처리해요."]}
+ ],
+ widget:"k_online",widgetTitle:"online softmax 한 블록씩",widgetCap:"다음 ▶을 눌러 점수를 2개씩 읽으며 m, l, acc가 어떻게 변하는지 보세요. 마지막에 정답과 비교해요.",
+ summary:["보통 어텐션은 N×N 점수 표를 HBM에 썼다 읽음 (memory-bound)","FlashAttention: q 블록을 SRAM에 두고 k, v를 블록씩 읽어 바로 누적","online softmax: m, l, acc만 들고 다니며 최댓값 바뀌면 보정","근사가 아니라 정확히 같은 결과"],
+ quiz:[
+  {q:"FlashAttention이 빠른 주된 이유는?",o:["연산을 근사해서","N×N 점수 표를 HBM에 쓰지 않아 메모리 왕복을 줄여서","정밀도를 낮춰서","토큰을 건너뛰어서"],a:1,e:"IO(메모리 이동)를 줄이는 알고리즘이에요. 결과는 정확해요."},
+  {q:"online softmax에서 새 블록의 최댓값이 이전보다 크면?",o:["이전 블록을 다시 읽는다","이전 l과 acc에 e^(이전 m − 새 m)을 곱해 보정한다","무시한다","계산을 처음부터 다시 한다"],a:1,e:"이전 합계를 새 기준에 맞게 줄여 주면 다시 읽을 필요가 없어요."}
+ ]};
+
+L["p4-5"]={
+ lead:"decode의 어텐션은 prefill과 성격이 완전히 달라요. q가 <b>토큰 1개</b>뿐이고, 대신 읽어야 할 KV는 길어요. 게다가 KV는 2단계에서 만든 <b>흩어진 블록</b>에 들어 있어요. 이 조건에 맞춘 커널이 paged decode attention이고, 긴 문맥에서는 <b>split-K</b>(flash-decoding)가 핵심이에요.",
+ sections:[
+  {h:"1. decode 어텐션은 memory-bound",p:["q 하나와 KV 수천 개의 내적은 계산이 적고 KV를 읽는 양이 많아요. 그래서 성능은 'KV를 얼마나 빨리 읽나'로 정해져요. 좋은 커널은 KV 캐시 읽기 대역폭을 HBM 최대치에 가깝게 써요."]},
+  {h:"2. paged: block table 따라 읽기",p:["2-3에서 만든 block table을 커널 인자로 받아, 각 KV 블록의 실제 위치를 찾아가며 읽어요. 블록 크기(예: 16토큰)를 커널의 타일 크기와 맞추면 효율적이에요."]},
+  {h:"3. split-K (flash-decoding)",p:["일을 나누는 단위가 '요청 × 헤드'뿐이면, 배치가 작을 때 GPU의 SM 대부분이 놀아요. 해결책은 긴 KV를 여러 조각으로 나눠 조각마다 다른 SM이 처리하는 거예요.","각 조각은 online softmax의 부분 결과(m, l, acc)를 내고, 마지막에 작은 커널이 이것들을 보정하며 합쳐요(4-4의 트릭 그대로). 배치가 크거나 문맥이 짧으면 나눌 필요가 줄어요."]},
+  {h:"4. FlashInfer와 비교",p:["FlashInfer는 vLLM, SGLang이 쓰는 어텐션 커널 라이브러리예요. paged KV, GQA, split-K를 모두 지원해요. 내 Triton 커널과 같은 입력으로 속도를 비교하고, 차이가 나면 ncu로 메모리 처리량을 비교해요.","GQA(0단계 6번)도 활용해요. q 헤드 여러 개가 같은 KV를 쓰니, KV 블록을 한 번 읽어 여러 q 헤드에 같이 쓰면 읽는 양이 줄어요."]}
+ ],
+ widget:"k_splitk",widgetTitle:"SM을 얼마나 쓰고 있나",widgetCap:"배치와 split 수를 바꿔 보세요. 칸 하나가 H100의 SM 하나예요.",
+ summary:["decode 어텐션은 q 1개 + 긴 KV → memory-bound","paged 커널은 block table을 따라 흩어진 KV 블록을 읽음","배치가 작으면 SM이 놀아서 KV를 조각내 병렬 처리(split-K)","조각별 (m, l, acc)를 online softmax 보정으로 합침"],
+ quiz:[
+  {q:"split-K가 특히 효과적인 상황은?",o:["배치가 크고 문맥이 짧을 때","배치가 작고 문맥이 길 때","prefill 할 때","모델이 작을 때"],a:1,e:"일 덩어리가 적고 KV가 길 때 나눠야 SM을 다 쓸 수 있어요."},
+  {q:"조각별 결과를 합칠 때 쓰는 원리는?",o:["단순 평균","online softmax의 최댓값 보정","가장 큰 조각만 선택","곱하기"],a:1,e:"각 조각의 m, l, acc를 최댓값 기준으로 보정해 합쳐요."}
+ ]};
+
+L["p4-6"]={
+ lead:"decode는 memory-bound라서 <b>가중치를 작게 만들면</b> 거의 그만큼 빨라져요. 16비트 가중치를 4비트로 줄이면 읽는 양이 1/4이 되죠. 대신 커널 안에서 4비트 → 16비트로 <b>빠르게 되돌리는</b>(역양자화) 기술이 필요해요.",
+ sections:[
+  {h:"1. 양자화의 기본",p:["값들의 최댓값을 정수 최댓값에 맞추는 <b>scale</b>을 구하고, 값 ÷ scale을 반올림해 정수로 저장해요. 쓸 때는 정수 × scale로 되돌려요.","scale을 행렬 전체에 하나만 두면 큰 값 하나 때문에 나머지가 뭉개져요. 그래서 보통 128개씩 <b>그룹</b>으로 나눠 그룹마다 scale을 둬요."]},
+  {h:"2. 표기법: W4A16, W8A8, FP8",p:["W4A16 = 가중치 4비트, 활성값(계산 중 값) 16비트. decode(작은 배치)에 좋아요. 가중치 읽기만 줄이고 계산은 16비트로 해요.","W8A8, FP8 = 가중치와 활성값 모두 8비트. 텐서 코어도 8비트로 돌려서 prefill(큰 배치, compute-bound)에도 빨라요."]},
+  {h:"3. 품질 지키기: GPTQ, AWQ",p:["단순 반올림(RTN)으로 4비트를 하면 품질이 꽤 떨어져요.","<b>GPTQ</b>: 가중치를 하나씩 양자화하면서 생긴 오차를 아직 안 한 가중치들이 메우도록 조정해요. <b>AWQ</b>: 활성값이 큰 채널(중요한 가중치) 1% 정도를 찾아, 양자화 전에 크게 키워 두면 상대 오차가 줄어든다는 관찰을 써요."]},
+  {h:"4. 커널: Marlin",p:["W4A16 GEMV/GEMM 커널은 4비트를 읽어 레지스터에서 16비트로 풀고 바로 곱해요. Marlin은 가중치 배치를 미리 텐서 코어에 맞게 재배열해 두고, 비트 연산으로 아주 빠르게 풀어서 배치 16~32까지도 거의 이상적인 4배 속도를 내요.","실습: 먼저 Triton으로 단순한 W4A16 GEMV(배치 1)를 짜서 FP16 대비 속도를 재 보세요. 4비트 두 개를 1바이트에 넣고 시프트·마스크로 꺼내는 게 출발점이에요."]}
+ ],
+ widget:"k_quant",widgetTitle:"가중치 16개를 양자화하기",widgetCap:"비트 수를 바꿔 보세요. 막대 두 개가 다를수록 오차가 커요.",
+ summary:["decode는 memory-bound → 가중치 비트 줄이면 거의 그만큼 빨라짐","scale로 정수화, 그룹(예: 128개)마다 scale","W4A16은 decode용, W8A8/FP8은 prefill에도 이득","GPTQ, AWQ로 품질 유지, Marlin 같은 커널로 빠르게 역양자화"],
+ quiz:[
+  {q:"FP16 가중치를 4비트로 바꾸면 decode의 이상적인 속도 향상은?",o:["약 4배","약 16배","변화 없음","절반으로 느려짐"],a:0,e:"읽는 바이트가 1/4이 되니 memory-bound에서 약 4배예요(scale 오버헤드 제외)."},
+  {q:"W4A16에서 A16의 뜻은?",o:["활성값을 16비트로 계산","가중치가 16비트","어텐션 헤드 16개","16번 양자화"],a:0,e:"W는 weight(가중치), A는 activation(활성값)이에요."}
+ ]};
+
+L["p4-7"]={
+ lead:"decode 한 스텝은 커널 수백 개로 이뤄져요. 행렬곱 말고도 add, RMSNorm, SiLU 같은 <b>작은 커널</b>이 많은데, 이것들은 계산은 거의 없이 메모리만 왕복하고, 커널을 띄우는 비용까지 붙어요. <b>퓨전</b>과 <b>CUDA Graph</b>로 이 낭비를 없애요.",
+ sections:[
+  {h:"1. 커널 퓨전",p:["연이어 실행되는 연산을 커널 하나로 합쳐요. 예: residual add + RMSNorm, SiLU × mul(SwiGLU, 0단계 10번), RoPE + KV 캐시 쓰기. 중간 결과가 레지스터에 머물러 HBM에 썼다 다시 읽는 일이 사라져요.","vLLM에도 <code>fused_add_rms_norm</code>, <code>silu_and_mul</code> 같은 커널이 있어요. 직접 Triton으로 짜 보는 게 실습이에요."]},
+  {h:"2. torch.compile",p:["PyTorch 코드를 분석해 작은 연산들을 자동으로 Triton 커널로 합쳐 줘요. 손으로 짜기 전에 먼저 써 보면 어디까지 자동으로 되는지 감이 와요. 대신 컴파일 시간이 들고, 입력 모양이 바뀌면 다시 컴파일할 수 있어요."]},
+  {h:"3. CUDA Graph",p:["CPU가 커널을 하나 띄울 때마다 수 μs가 들어요. 커널 수백 개면 그 자체로 1ms가 넘어서, 작은 모델의 decode는 GPU가 아니라 CPU가 속도를 정해요.","CUDA Graph는 한 스텝의 커널 실행 순서를 녹화(capture)해 두고 통째로 재생(replay)해요. 대신 텐서 주소와 모양이 고정이라, 배치 크기별(1, 2, 4, 8, …)로 그래프를 미리 녹화해 두고 실제 배치를 가장 가까운 크기로 패딩해요. vLLM, SGLang이 decode에서 이렇게 해요."]},
+  {h:"4. 측정",p:["퓨전 전후, CUDA Graph 전후로 decode 스텝 시간을 재고 nsys 타임라인에서 커널 사이 빈칸이 줄었는지 확인해요(3-5)."]}
+ ],
+ widget:"k_fusion",widgetTitle:"작은 커널 줄이기",widgetCap:"세 모드를 바꿔 보세요. 빈칸(실행 간격)과 작은 커널 수가 줄어들어요.",
+ summary:["작은 커널은 계산 없이 HBM 왕복 + 실행 비용","퓨전: add+RMSNorm, SiLU×mul 등을 한 커널로","torch.compile로 자동 퓨전 먼저 시도","CUDA Graph: 커널 순서를 녹화·재생, 배치 크기별로 미리 녹화"],
+ quiz:[
+  {q:"add와 RMSNorm을 합치면 줄어드는 것은?",o:["모델 정확도","중간 결과의 HBM 쓰기·읽기와 커널 실행 횟수","파라미터 수","KV 캐시"],a:1,e:"중간 결과가 레지스터에 머물러 메모리 왕복이 사라지고 커널도 하나 줄어요."},
+  {q:"CUDA Graph를 배치 크기별로 따로 녹화하는 이유는?",o:["그래프는 텐서 모양이 고정이라서","GPU가 여러 개라서","정밀도 때문에","모델이 바뀌어서"],a:0,e:"녹화된 그래프는 모양과 주소가 고정이라 크기마다 따로 필요해요."}
+ ]};
+
+})(window.LESSONS,window.WIDGETS);
+
+</script>
+<script>
+/* 5~7단계 · 분산, 하드웨어, 현장: 강의 16개 + 위젯 */
+(function(L,W){
+const {ctrl,capper,stepper,f2,pct}=W._bz;
+
+/* ---------- p5-1 텐서 병렬 ---------- */
+W.d_tp=(root)=>{
+ const x=[1,2],U=[[1,0,2,-1],[0,1,1,1]],D=[[1,0],[0,1],[1,1],[-1,2]];
+ const h=U[0].map((_,j)=>x[0]*U[0][j]+x[1]*U[1][j]);
+ const p0=[0,1].map(k=>h[0]*D[0][k]+h[1]*D[1][k]),p1=[0,1].map(k=>h[2]*D[2][k]+h[3]*D[3][k]),y=p0.map((v,k)=>v+p1[k]);
+ const S=[
+  {c:"MLP 하나를 GPU 2장에 나눠 볼게요. 입력 x = [1, 2]는 두 GPU에 <b>똑같이</b> 복사돼 있어요.",d:"W_up(2×4)과 W_down(4×2)은 너무 크다고 치고, 반씩 나눠 GPU마다 절반만 저장해요.",s:0},
+  {c:"① W_up을 <b>세로로</b>(열 방향) 반씩 나눠요. GPU 0은 열 1~2, GPU 1은 열 3~4.",d:`각자 x × 내 절반 → GPU 0: [${h.slice(0,2).join(", ")}], GPU 1: [${h.slice(2).join(", ")}]. 통신 없이 각자 계산해요(column parallel).`,s:1},
+  {c:"② 활성화 함수(SiLU 등)도 각자 자기 칸에만 하면 돼요.",d:"칸끼리 섞이지 않는 연산이라 나눠도 그대로예요. (여기서는 숫자를 단순하게 두려고 생략했어요.)",s:1},
+  {c:"③ W_down을 <b>가로로</b>(행 방향) 반씩 나눠요. GPU 0은 행 1~2, GPU 1은 행 3~4. 각자 자기 절반으로 곱해요.",d:`GPU 0: [${p0.join(", ")}], GPU 1: [${p1.join(", ")}]. 둘 다 '최종 결과의 일부 합'이에요(row parallel).`,s:2},
+  {c:`④ <b>all-reduce</b>: 두 GPU가 결과를 서로 더해 똑같이 나눠 가져요 → [${y.join(", ")}]`,d:"통신은 MLP 하나에 이 한 번뿐이에요. 어텐션도 헤드를 나눠서 똑같이 한 번. 그래서 레이어마다 all-reduce 2번이에요. GPU를 늘릴수록 계산은 줄지만 이 통신은 남아서, 2배 GPU가 2배 속도가 되지 않아요.",s:3}];
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="gx-tp">${[0,1].map(g=>`<div class="gx-gpu"><b>GPU ${g}</b><div data-s="1">up 결과: [${h.slice(g*2,g*2+2).join(", ")}]</div><div data-s="2">down 부분합: [${(g?p1:p0).join(", ")}]</div><div data-s="3" class="gx-ar2">all-reduce 후: [${y.join(", ")}]</div></div>`).join("")}</div></div>`;
+ const cap=capper(root,S);
+ stepper(root,S.length,k=>{cap(k);const lv=S[k].s;root.querySelectorAll("[data-s]").forEach(e=>{e.classList.toggle("on",lv>=+e.dataset.s);e.classList.toggle("now",lv===+e.dataset.s);});},3400);
+};
+
+/* ---------- p5-3 speculative decoding ---------- */
+W.d_spec=(root)=>{
+ let a=0.7,k=4;
+ const ex=(a,k)=>a>=1?k+1:(1-Math.pow(a,k+1))/(1-a);
+ const S=[
+  {c:"작은 모델(draft)이 다음 토큰 4개를 <b>빠르게 추측</b>해요: \"학교에 / 갔다 / 그리고 / 밥을\"",d:"작은 모델은 수십 배 빨라서 4개를 만들어도 큰 모델 1스텝보다 짧게 걸려요."},
+  {c:"큰 모델(target)이 4개를 <b>한 번에</b> 검사해요. forward 한 번으로 각 자리의 확률을 다 구해요.",d:"decode는 memory-bound라 토큰 1개를 보든 5개를 보든 시간이 거의 같아요(1단계 3번). 노는 연산기를 활용하는 거예요."},
+  {c:"앞에서부터 확인해요: '학교에' ✅, '갔다' ✅, '그리고' ❌ (큰 모델은 '.'이 더 그럴듯하다고 봄)",d:"draft 확률 대비 target 확률로 받아들일지 정해요. 틀린 첫 자리에서 멈춰요. 그 뒤는 버려요."},
+  {c:"틀린 자리는 큰 모델 분포에서 다시 뽑아요 → '.'. 결과: 큰 모델 forward <b>한 번</b>에 토큰 <b>3개</b>.",d:"이 규칙대로 하면 출력 분포가 큰 모델 혼자 만든 것과 <b>수학적으로 똑같아요</b>. 품질 손해 없이 빨라져요."}];
+ root.innerHTML=`<div class="an bz">${ctrl}<div class="gx-spec"><span class="gx-chip">나는</span>${[["학교에","ok"],["갔다","ok"],["그리고","no"],["밥을","no"]].map((t,i)=>`<span class="gx-sp" data-i="${i}" data-r="${t[1]}">${t[0]}</span>`).join("")}<span class="gx-sp fix">.</span></div>
+  <div class="bz-sub">기대 속도: 한 번 검사에 평균 몇 토큰?</div>
+  <label class="bz-temp">맞힐 확률 α <b id="sA"></b><input type="range" id="sAi" min="0.3" max="0.95" step="0.05" value="0.7" aria-label="수락률"></label>
+  <label class="bz-temp">추측 개수 k <b id="sK"></b><input type="range" id="sKi" min="1" max="8" step="1" value="4" aria-label="추측 개수"></label>
+  <div class="bz-out" id="sO"></div></div>`;
+ const q=s=>root.querySelector(s),cap=capper(root,S);
+ const calc=()=>{q("#sA").textContent=a.toFixed(2);q("#sK").textContent=k;const e=ex(a,k);q("#sO").innerHTML=`큰 모델 forward 한 번에 평균 <b>${e.toFixed(2)}토큰</b> = (1 − α<sup>k+1</sup>) ÷ (1 − α)<br><span class="mini">α가 높을수록(작은 모델이 잘 맞힐수록) 이득이 커요. k를 너무 키우면 뒤쪽 추측은 거의 틀려서 draft 시간만 늘어요. 실제 속도 향상은 draft 비용을 빼야 해서 보통 2~3배예요.</span>`;};
+ stepper(root,S.length,s=>{cap(s);root.querySelectorAll(".gx-sp[data-i]").forEach(e=>{e.classList.toggle("on",s>=0);e.classList.toggle("ok",s>=2&&e.dataset.r==="ok"&&+e.dataset.i<2);e.classList.toggle("no",s>=2&&+e.dataset.i>=2);});q(".gx-sp.fix").classList.toggle("on",s>=3);},3400);
+ q("#sAi").addEventListener("input",e=>{a=+e.target.value;calc();});q("#sKi").addEventListener("input",e=>{k=+e.target.value;calc();});calc();
+};
+
+/* ---------- p5-4 PD 분리 ---------- */
+W.d_pd=(root)=>{
+ const M={"Llama-3.1-8B":131072,"Llama-3.1-70B":327680};let m="Llama-3.1-8B",len=8000,bw=50;
+ root.innerHTML=`<div class="an bz"><div class="gx-pd"><div class="gx-pool"><b>Prefill 풀</b><span>긴 프롬프트를 몰아서 처리 (compute-bound)</span></div><div class="gx-arrow" id="dA">KV 캐시 →</div><div class="gx-pool"><b>Decode 풀</b><span>큰 배치로 토큰 생성 (memory-bound)</span></div></div>
+  <div class="seg" id="dM">${Object.keys(M).map(k=>`<button type="button" data-m="${k}">${k}</button>`).join("")}</div>
+  <label class="bz-temp">프롬프트 길이 <b id="dL"></b><input type="range" id="dLi" min="500" max="64000" step="500" value="8000" aria-label="프롬프트 길이"></label>
+  <div class="bz-row"><span>네트워크</span><div class="seg" id="dB">${[[12.5,"100Gbps"],[50,"400Gbps"],[100,"800Gbps"]].map(x=>`<button type="button" data-b="${x[0]}">${x[1]}</button>`).join("")}</div></div>
+  <div class="bz-out" id="dO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#dM button").forEach(b=>b.classList.toggle("on",b.dataset.m===m));root.querySelectorAll("#dB button").forEach(b=>b.classList.toggle("on",+b.dataset.b===bw));q("#dL").textContent=len.toLocaleString()+"토큰";
+  const bytes=M[m]*len,ms=bytes/(bw*1e9)*1e3;
+  q("#dO").innerHTML=`넘겨야 할 KV 캐시: 토큰당 ${(M[m]/1024).toFixed(0)}KB × ${len.toLocaleString()} = <b>${(bytes/1e9).toFixed(2)}GB</b> → 전송 약 <b>${ms.toFixed(0)}ms</b><br><span class="mini">FP16, GQA 기준. 이 시간이 TTFT에 더해져요. 그래서 레이어별로 계산되는 대로 바로바로 보내서(파이프라이닝) 전송 시간을 prefill 계산 뒤에 숨겨요. 대신 decode 풀은 긴 prefill에 방해받지 않아 TPOT가 안정돼요.</span>`;};
+ root.querySelectorAll("#dM button").forEach(b=>b.addEventListener("click",()=>{m=b.dataset.m;draw();}));root.querySelectorAll("#dB button").forEach(b=>b.addEventListener("click",()=>{bw=+b.dataset.b;draw();}));
+ q("#dLi").addEventListener("input",e=>{len=+e.target.value;draw();});draw();
+};
+
+/* ---------- p6-1 CuTe 레이아웃 ---------- */
+W.h_layout=(root)=>{
+ const P={"열 우선 (4,8):(1,4)":[4,8,1,4],"행 우선 (4,8):(8,1)":[4,8,8,1],"패딩 (4,8):(1,5)":[4,8,1,5],"브로드캐스트 (4,8):(0,1)":[4,8,0,1]};let k="열 우선 (4,8):(1,4)",pick=[1,2];
+ root.innerHTML=`<div class="an bz"><div class="seg" id="lP">${Object.keys(P).map(x=>`<button type="button" data-p="${x}">${x}</button>`).join("")}</div>
+  <div class="gx-lay" id="lG"></div><div class="bz-out" id="lO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#lP button").forEach(b=>b.classList.toggle("on",b.dataset.p===k));const [M,N,s0,s1]=P[k];
+  q("#lG").style.gridTemplateColumns=`repeat(${N},1fr)`;
+  q("#lG").innerHTML=Array.from({length:M*N},(_,t)=>{const i=Math.floor(t/N),j=t%N,idx=i*s0+j*s1;return `<button type="button" data-i="${i}" data-j="${j}" class="${i===pick[0]&&j===pick[1]?"on":""}" style="--h:${(idx*37)%360}">${idx}</button>`;}).join("");
+  root.querySelectorAll("#lG button").forEach(b=>b.addEventListener("click",()=>{pick=[+b.dataset.i,+b.dataset.j];draw();}));
+  const [i,j]=pick;q("#lO").innerHTML=`좌표 (${i}, ${j}) → 메모리 위치 = ${i} × ${s0} + ${j} × ${s1} = <b>${i*s0+j*s1}</b><br><span class="mini">layout = shape(모양) : stride(한 칸 갈 때 메모리에서 몇 칸 건너뛰나). 칸 안 숫자가 실제 메모리 주소예요. 같은 데이터라도 stride만 바꾸면 행 우선, 열 우선, 패딩(bank conflict 회피), 브로드캐스트(stride 0 = 같은 값 반복)가 돼요. CuTe는 이 layout을 계층적으로 조합해서 스레드 배치, 타일 분할, 텐서 코어 데이터 배치를 모두 표현해요.</span>`;};
+ root.querySelectorAll("#lP button").forEach(b=>b.addEventListener("click",()=>{k=b.dataset.p;draw();}));draw();
+};
+
+/* ---------- p6-2 warp specialization ---------- */
+W.h_ws=(root)=>{
+ let st=1;const LD=4,MM=5,N=6;
+ root.innerHTML=`<div class="an bz"><div class="bz-row"><span>버퍼 단계 수 (stages)</span><div class="seg" id="wS">${[1,2,3,4].map(x=>`<button type="button" data-k="${x}">${x}</button>`).join("")}</div></div>
+  <div class="gx-tl2" id="wT"></div><div class="gx-legend"><span><i style="background:var(--c4)"></i>생산자 warp: TMA로 타일 불러오기</span><span><i style="background:var(--c2)"></i>소비자 warpgroup: WGMMA 계산</span></div><div class="bz-out" id="wO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll("#wS button").forEach(b=>b.classList.toggle("on",+b.dataset.k===st));
+  const L=[],C=[];const ldEnd=[],cEnd=[];
+  for(let i=0;i<N;i++){const free=i-st>=0?cEnd[i-st]:0;const ls=Math.max(i?ldEnd[i-1]:0,free);ldEnd[i]=ls+LD;L.push([ls,LD]);const cs=Math.max(ldEnd[i],i?cEnd[i-1]:0);cEnd[i]=cs+MM;C.push([cs,MM]);}
+  const T=cEnd[N-1],bar=(a,cls)=>a.map(([s,d],i)=>`<i class="${cls}" style="left:${s/T*100}%;width:${d/T*100}%">${i+1}</i>`).join("");
+  q("#wT").innerHTML=`<div class="gx-lane"><span>생산자</span><div>${bar(L,"c")}</div></div><div class="gx-lane"><span>소비자</span><div class="g">${bar(C,"g")}</div></div>`;
+  q("#wO").innerHTML=`타일 ${N}개 처리 시간 <b>${T}</b> (단위 시간) · 텐서 코어 사용률 <b>${pct(N*MM/T)}</b><br><span class="mini">${st===1?"버퍼가 하나면 계산이 끝나야 다음 타일을 불러올 수 있어서 둘이 번갈아 쉬어요.":"버퍼가 여러 개면 소비자가 타일 n을 계산하는 동안 생산자가 n+1, n+2를 미리 불러와요. 텐서 코어가 거의 쉬지 않아요."} Hopper에서는 데이터 나르기를 TMA(복사 전용 하드웨어)에 맡기니까, 생산자 warp는 레지스터를 거의 안 쓰고 소비자에게 레지스터를 몰아줄 수 있어요.</span>`;};
+ root.querySelectorAll("#wS button").forEach(b=>b.addEventListener("click",()=>{st=+b.dataset.k;draw();}));draw();
+};
+
+/* ---------- p6-5 PTX / SASS ---------- */
+W.h_sass=(root)=>{
+ const R=[["int i = blockIdx.x * blockDim.x + threadIdx.x;",["mov.u32 %r1, %ctaid.x;","mov.u32 %r2, %ntid.x;","mov.u32 %r3, %tid.x;","mad.lo.s32 %r4, %r1, %r2, %r3;"],["S2R R0, SR_CTAID.X","S2R R3, SR_TID.X","IMAD R0, R0, c[0x0][0x0], R3"]],
+  ["if (i < n)",["setp.ge.s32 %p1, %r4, %r5;","@%p1 bra $L_exit;"],["ISETP.GE.AND P0, PT, R0, c[0x0][0x178], PT","@P0 EXIT"]],
+  ["float x = a[i], y = b[i];",["mul.wide.s32 %rd4, %r4, 4;","add.s64 %rd5, %rd1, %rd4;","ld.global.f32 %f1, [%rd5];","add.s64 %rd6, %rd2, %rd4;","ld.global.f32 %f2, [%rd6];"],["IMAD.WIDE R2, R0, 0x4, c[0x0][0x160]","IMAD.WIDE R4, R0, 0x4, c[0x0][0x168]","LDG.E R2, [R2.64]","LDG.E R5, [R4.64]"]],
+  ["c[i] = x + y;",["add.f32 %f3, %f1, %f2;","add.s64 %rd7, %rd3, %rd4;","st.global.f32 [%rd7], %f3;"],["IMAD.WIDE R6, R0, 0x4, c[0x0][0x170]","FADD R9, R2, R5","STG.E [R6.64], R9"]]];
+ let sel=2;
+ root.innerHTML=`<div class="an bz"><div class="gx-3col"><div><div class="bz-lbl">CUDA C++</div><div id="hS"></div></div><div><div class="bz-lbl">PTX (가상 명령어)</div><div id="hP"></div></div><div><div class="bz-lbl">SASS (실제 기계어)</div><div id="hA"></div></div></div><div class="bz-out" id="hO"></div></div>`;
+ const q=s=>root.querySelector(s),T=["내 번호 계산: 블록 번호, 블록 크기, 스레드 번호를 특수 레지스터(SR_)에서 읽어 곱하고 더해요. IMAD = 정수 곱하고 더하기 한 번에.","범위 검사: 비교 결과를 술어 레지스터(P0)에 넣고, 참이면 EXIT. 분기 대신 '조건부 명령'이에요.","주소 계산 후 전역 메모리에서 읽기(LDG). c[0x0][0x160] 같은 건 커널 인자(포인터)가 들어 있는 상수 메모리예요. LDG가 메모리를 기다리는 동안 SM은 다른 warp를 돌려요.","더하고(FADD) 쓰기(STG). 직접 짠 커널에서 루프 안 명령 수, LDG가 128비트(LDG.E.128)로 묶였는지, 레지스터가 넘쳐 로컬 메모리(STL/LDL)를 쓰는지 보는 게 SASS 읽기의 핵심이에요."];
+ const draw=()=>{const row=(k,arr)=>R.map((r,i)=>`<button type="button" class="gx-ln${i===sel?" on":""}" data-i="${i}">${(k===0?[r[0]]:r[k]).map(x=>`<code>${x.replace(/</g,"&lt;")}</code>`).join("")}</button>`).join("");
+  q("#hS").innerHTML=row(0);q("#hP").innerHTML=row(1);q("#hA").innerHTML=row(2);
+  root.querySelectorAll(".gx-ln").forEach(b=>b.addEventListener("click",()=>{sel=+b.dataset.i;draw();}));
+  q("#hO").innerHTML=T[sel]+`<br><span class="mini">줄을 누르면 세 칸에서 같은 부분이 함께 강조돼요. 실제 출력은 컴파일러 버전과 GPU 세대마다 조금씩 달라요(예시).</span>`;};draw();
+};
+
+/* ---------- p6-6 포인터 추적 ---------- */
+W.h_chase=(root)=>{
+ const pts=[[4,32],[16,32],[32,33],[64,34],[128,190],[512,200],[2048,210],[4096,240],[8192,480],[32768,520],[131072,540]];let k=6;
+ const X=i=>40+i*(285/(pts.length-1)),Y=v=>170-v/600*150;
+ root.innerHTML=`<div class="an bz"><svg viewBox="0 0 340 200" class="gx-plot" role="img" aria-label="작업 크기별 메모리 지연">
+   <line class="bz-axis" x1="40" y1="170" x2="330" y2="170"/><line class="bz-axis" x1="40" y1="15" x2="40" y2="170"/>
+   ${[100,200,300,400,500].map(v=>`<line class="bz-grid" x1="40" x2="330" y1="${Y(v)}" y2="${Y(v)}"/><text x="34" y="${Y(v)+4}" text-anchor="end">${v}</text>`).join("")}
+   ${pts.map((p,i)=>i%2===0?`<text x="${X(i)}" y="184" text-anchor="middle">${p[0]>=1024?p[0]/1024+"M":p[0]+"K"}</text>`:"").join("")}
+   <text x="185" y="198" text-anchor="middle">훑는 배열 크기 (바이트)</text><text x="6" y="11">지연(사이클)</text>
+   <path class="gx-p99" d="${pts.map((p,i)=>(i?"L":"M")+X(i)+" "+Y(p[1])).join("")}"/>
+   ${pts.map((p,i)=>`<circle class="gx-dot${i===k?" on":""}" data-i="${i}" cx="${X(i)}" cy="${Y(p[1])}" r="5"/>`).join("")}
+   <text x="${X(1)}" y="${Y(32)-8}" class="gx-ann">L1</text><text x="${X(5)}" y="${Y(200)-8}" class="gx-ann">L2</text><text x="${X(9)}" y="${Y(520)-14}" text-anchor="end" class="gx-ann">GPU 메모리</text></svg>
+  <pre class="gx-code">// 한 스레드가 '다음 주소'를 따라가며 읽기 → 앞 읽기가 끝나야 다음을 알 수 있어 지연이 그대로 드러나요
+for (int n = 0; n < ITERS; n++) j = arr[j];</pre><div class="bz-out" id="cO"></div></div>`;
+ const q=s=>root.querySelector(s);
+ const draw=()=>{root.querySelectorAll(".gx-dot").forEach(d=>d.classList.toggle("on",+d.dataset.i===k));const p=pts[k];
+  q("#cO").innerHTML=`배열 ${p[0]>=1024?p[0]/1024+"MB":p[0]+"KB"} → 평균 지연 약 <b>${p[1]} 사이클</b> (${p[1]<100?"L1에 다 들어감":p[1]<300?"L1은 넘치고 L2에 들어감":"L2도 넘쳐 GPU 메모리까지 감"})<br><span class="mini">배열 크기를 키우며 지연을 재면 계단이 생겨요. 계단이 꺾이는 크기가 각 캐시의 실제 용량이에요. NVIDIA가 문서에 안 쓴 값을 이렇게 직접 알아내요. (모양을 보여 주려는 예시 값이에요. 직접 T4에서 재 보세요.)</span>`;};
+ root.querySelectorAll(".gx-dot").forEach(d=>d.addEventListener("click",()=>{k=+d.dataset.i;draw();}));draw();
+};
+
+/* ================= 강의: 5단계 ================= */
+L["p5-1"]={
+ lead:"모델이 GPU 한 장에 안 들어가거나 더 빠르게 돌리고 싶으면, <b>레이어 안의 행렬을 여러 GPU에 쪼개요</b>. 이게 텐서 병렬(Tensor Parallel, TP)이에요. 핵심은 '어떻게 쪼개야 통신이 가장 적은가'예요.",
+ sections:[
+  {h:"1. 쪼개는 방법: 열로, 그리고 행으로",p:["MLP는 '넓히기(W_up) → 활성화 → 줄이기(W_down)'였죠(0단계 10번). W_up은 <b>열 방향</b>으로 쪼개면 GPU마다 넓힌 칸의 일부를 통신 없이 계산해요. 활성화도 칸마다 따로라 그대로 해요.","W_down은 <b>행 방향</b>으로 쪼개면, GPU마다 자기가 가진 칸만으로 결과의 '부분합'을 만들어요. 마지막에 부분합을 더하면 끝이에요(all-reduce). 이 조합이 Megatron-LM 방식이에요."]},
+  {h:"2. 어텐션도 같은 원리",p:["헤드를 GPU마다 나눠요. GPU 0은 헤드 1~16, GPU 1은 17~32. Wq, Wk, Wv는 열로, Wo는 행으로 쪼개면 MLP와 똑같이 끝에 all-reduce 한 번이에요. KV 캐시도 헤드별로 나뉘어 GPU마다 일부만 저장해요.","결과적으로 레이어마다 all-reduce가 2번(어텐션 1, MLP 1)이에요."]},
+  {h:"3. 통신 비용",p:["all-reduce는 NCCL이라는 라이브러리가 해요. 같은 서버 안 GPU끼리는 NVLink(수백 GB/s)로 빠르지만, PCIe나 서버 사이 네트워크는 훨씬 느려요.","decode에서는 계산이 작아서 통신 시간의 비중이 커요. 그래서 GPU 2장이 2배 빠르지 않아요. TP는 보통 NVLink로 연결된 한 서버 안(최대 8장)에서만 써요.","실습: Kaggle의 T4 2장으로 torch.distributed TP를 만들고, all-reduce 시간을 따로 재서 전체 대비 비율을 봐요."]},
+  {h:"4. 다른 병렬화와 비교",p:["<b>파이프라인 병렬</b>(PP): 레이어를 나눠요(1~16층은 GPU 0, 17~32층은 GPU 1). 통신은 적지만 한 요청 기준으로는 빨라지지 않아요. 서버 여러 대에 걸칠 때 써요.","<b>데이터 병렬</b>(DP): 모델 전체를 GPU마다 복사하고 요청을 나눠 받아요. 가장 단순하고 통신이 없어요. 모델이 한 장에 들어가면 이게 제일 나아요.","<b>Expert 병렬</b>(EP): MoE 전문가를 나눠요(다음 강의)."]}
+ ],
+ widget:"d_tp",widgetTitle:"MLP를 GPU 2장에 나누기",widgetCap:"다음 ▶을 눌러 열 분할 → 행 분할 → all-reduce를 따라가요. 숫자로 직접 확인할 수 있어요.",
+ summary:["TP = 레이어 안 행렬을 여러 GPU에 쪼갬","W_up은 열, W_down은 행으로 쪼개면 통신은 끝에 all-reduce 1번","어텐션은 헤드별로 나눔 → 레이어마다 all-reduce 2번","decode는 통신 비중이 커서 GPU 수만큼 빨라지지 않음","NVLink로 연결된 한 서버 안에서 주로 사용"],
+ quiz:[
+  {q:"Megatron 방식 MLP에서 통신이 필요한 시점은?",o:["W_up 계산 직후","활성화 직후","W_down 계산 후 부분합을 더할 때","매 곱셈마다"],a:2,e:"열 분할 → 행 분할 조합이라 마지막에 all-reduce 한 번이면 돼요."},
+  {q:"모델이 GPU 한 장에 충분히 들어간다면 처리량 측면에서 보통 더 나은 방법은?",o:["텐서 병렬","데이터 병렬(모델 복사)","파이프라인 병렬","아무것도 안 함"],a:1,e:"통신이 없어서 GPU 수에 거의 비례해 처리량이 늘어요."}
+ ]};
+
+L["p5-2"]={
+ lead:"요즘 큰 모델 대부분은 <b>MoE</b>(Mixture of Experts)예요. MLP를 여러 '전문가'로 나누고 토큰마다 몇 개만 써요(0단계 10번, 애니메이션 5번 장면). 서빙할 땐 전문가를 GPU들에 나눠 두는 <b>Expert 병렬(EP)</b>을 쓰는데, 여기서 새로운 병목이 생겨요.",
+ sections:[
+  {h:"1. Expert 병렬의 흐름",p:["전문가 256개를 GPU 32장에 8개씩 나눠 둔다고 해 볼게요. 각 GPU는 자기 토큰들의 라우터 결과를 보고, 토큰을 <b>그 전문가가 있는 GPU로 보내요</b>(dispatch). 전문가가 계산하고, 결과를 <b>원래 GPU로 돌려보내요</b>(combine).","모든 GPU가 모든 GPU와 주고받는 이 통신을 <b>all-to-all</b>이라고 해요. 레이어마다 두 번(보내기, 받기) 일어나요."]},
+  {h:"2. 새 병목들",p:["<b>통신</b>: all-to-all은 서버 사이 네트워크를 많이 써요. DeepSeek은 이를 위해 DeepEP라는 통신 라이브러리를 따로 만들었어요.","<b>부하 불균형</b>: 인기 있는 전문가가 있는 GPU만 바쁘고 나머지는 기다려요. 인기 전문가를 여러 GPU에 복제해 두는 방법(redundant experts)으로 해결해요.","<b>작은 행렬곱</b>: 전문가 하나에 오는 토큰이 적으면 행렬곱이 작아서 GPU를 덜 써요. 그래서 MoE 서빙은 배치를 아주 크게 해요."]},
+  {h:"3. DeepSeek-V3의 선택",p:["기술 보고서를 보면 prefill과 decode를 다른 구성으로 돌려요(다음다음 강의 PD 분리). decode는 GPU를 많이 묶어 큰 EP로, 통신과 계산을 겹치기 위해 배치를 두 개로 나눠 번갈아 돌려요(한쪽이 통신하는 동안 다른 쪽이 계산).","실습은 보고서의 추론 부분을 읽고 '토큰 하나가 레이어 하나를 지나는 동안 어떤 통신이 언제 일어나는지'를 그림으로 그려 보는 거예요."]}
+ ],
+ widget:"moe",widgetTitle:"MoE 복습: 라우터와 전문가",widgetCap:"애니메이션 탭의 MoE 장면이에요. 전문가가 GPU마다 나뉘어 있다고 상상하며 다시 보세요.",
+ summary:["EP = MoE 전문가를 GPU들에 나눠 배치","토큰을 전문가 GPU로 보내고(dispatch) 결과를 받음(combine) = all-to-all","병목: 통신, 전문가 부하 불균형, 작은 행렬곱","해결: 전용 통신 라이브러리, 인기 전문가 복제, 큰 배치, 통신·계산 겹치기"],
+ quiz:[
+  {q:"EP에서 레이어마다 일어나는 대표적인 통신은?",o:["all-reduce","all-to-all","통신 없음","디스크 읽기"],a:1,e:"토큰을 여러 GPU의 전문가로 흩뿌리고 다시 모으는 all-to-all이에요."},
+  {q:"특정 전문가에 토큰이 몰리면 생기는 문제는?",o:["정확도가 오른다","그 GPU만 바쁘고 나머지가 기다린다","메모리가 줄어든다","통신이 사라진다"],a:1,e:"가장 느린 GPU가 전체 속도를 정해요. 인기 전문가 복제로 완화해요."}
+ ]};
+
+L["p5-3"]={
+ lead:"decode는 memory-bound라 토큰 1개를 계산하든 5개를 계산하든 시간이 거의 같아요. 그렇다면 <b>여러 토큰을 미리 추측해 두고 큰 모델이 한 번에 검사</b>하면 어떨까요? 이게 speculative decoding이에요. 품질 손해 없이 2~3배 빨라질 수 있어요.",
+ sections:[
+  {h:"1. 흐름",p:["① 작고 빠른 draft 모델이 다음 k개 토큰을 차례로 추측해요. ② 큰 target 모델이 'k개 추측이 붙은 문장'을 forward 한 번에 처리해서 각 자리의 확률을 구해요. ③ 앞에서부터 하나씩 받아들일지 정하고, 처음 거절된 자리에서 target 분포로 다시 뽑아요.","운이 좋으면 forward 한 번에 k+1개, 나빠도 1개는 얻어요. 손해 보는 경우가 없어요(draft 비용 빼고)."]},
+  {h:"2. 왜 품질이 그대로인가",p:["받아들이는 규칙: draft 확률 p, target 확률 q일 때 확률 min(1, q/p)로 받아들여요. 거절되면 max(0, q − p)를 정규화한 분포에서 다시 뽑아요. 이렇게 하면 최종 출력 분포가 target 혼자 만든 것과 <b>수학적으로 정확히 같아요</b>(Leviathan 2023, Chen 2023)."]},
+  {h:"3. 기대 이득",p:["draft가 한 토큰을 맞힐 확률을 α라 하면, forward 한 번에 평균 (1 − α<sup>k+1</sup>) ÷ (1 − α)개 토큰을 얻어요. α = 0.7, k = 4면 약 2.8개.","draft 종류: 같은 계열의 작은 모델, target에 붙인 작은 헤드(Medusa, EAGLE), 프롬프트에서 n-gram 찾기(코드 수정처럼 입력을 많이 베끼는 작업에 효과적)."]},
+  {h:"4. 엔진 입장에서 까다로운 점",p:["KV 캐시: 거절된 토큰의 KV는 되돌려야 해요(블록 테이블에서 길이를 줄이기). 배치가 크면 이미 compute-bound에 가까워 이득이 줄어요. 그래서 배치가 작을 때(지연이 중요한 서비스) 특히 유용해요.","실습: SmolLM2-135M을 draft, 360M을 target으로 기본 구현을 만들고, 출력 분포가 target과 같은지 확인하고 수락률을 재요."]}
+ ],
+ widget:"d_spec",widgetTitle:"추측하고 한 번에 검사하기",widgetCap:"다음 ▶으로 과정을 보고, 아래 슬라이더로 수락률과 추측 개수에 따른 기대 이득을 확인하세요.",
+ summary:["draft가 k개 추측 → target이 forward 한 번에 검사","거절된 첫 자리에서 target 분포로 다시 뽑음","출력 분포는 target과 수학적으로 동일","forward 한 번에 평균 (1 − α^(k+1)) ÷ (1 − α) 토큰","작은 배치(지연 중요)에서 특히 효과적"],
+ quiz:[
+  {q:"speculative decoding이 memory-bound decode에서 효과적인 이유는?",o:["메모리를 덜 써서","토큰 여러 개를 검사해도 forward 시간이 거의 같아서","모델이 작아져서","정밀도를 낮춰서"],a:1,e:"가중치 읽기 시간이 지배적이라 토큰 몇 개 더 계산해도 시간이 거의 안 늘어요."},
+  {q:"draft 추측이 전부 틀리면 forward 한 번에 얻는 토큰은?",o:["0개","1개","k개","k+1개"],a:1,e:"첫 자리에서 target 분포로 다시 뽑으니 최소 1개는 얻어요."}
+ ]};
+
+L["p5-4"]={
+ lead:"prefill은 계산을 많이 하고, decode는 메모리를 많이 읽어요. 같은 GPU에서 섞어 돌리면 서로 방해해요(2단계 5번). 그래서 대규모 서빙에서는 아예 <b>prefill 전용 GPU와 decode 전용 GPU를 나누고</b>, 그 사이로 KV 캐시를 보내요. 이게 PD 분리(disaggregation)예요.",
+ sections:[
+  {h:"1. 왜 나누나",p:["섞어 돌리면 긴 prefill이 들어올 때마다 decode가 느려져 TPOT가 흔들려요. chunked prefill로 완화해도 완전히 사라지진 않아요.","나누면 각자 최적화할 수 있어요. prefill 쪽은 TTFT에 맞춰 작은 배치·TP를 크게, decode 쪽은 TPOT에 맞춰 큰 배치로. GPU 수 비율도 따로 조절해요(예: prefill 1 : decode 3). DistServe, Splitwise 논문이 이 구조를 제안했어요."]},
+  {h:"2. 대가: KV 전송",p:["prefill이 끝나면 그 요청의 KV 캐시 전체를 decode GPU로 보내야 해요. 8B 모델에서 8,000토큰이면 약 1GB예요. 네트워크가 느리면 TTFT가 늘어요.","그래서 레이어별로 계산되는 즉시 보내서 전송을 prefill 계산 뒤에 숨기고, GPU끼리 직접 보내는 RDMA(NIXL, Mooncake 같은 전송 라이브러리)를 써요."]},
+  {h:"3. 실습 방향",p:["두 논문을 읽고, 아래 계산기로 모델과 프롬프트 길이별 KV 전송량과 시간을 추정해 보세요.","내 엔진을 프로세스 두 개로 나눠요. prefill 프로세스가 KV 블록을 만들어 decode 프로세스로 넘기고, decode 프로세스는 받은 블록을 자기 block table에 연결해 이어서 생성해요. 처음엔 같은 GPU 안에서 프로세스만 나눠도 구조를 익히기에 충분해요."]}
+ ],
+ widget:"d_pd",widgetTitle:"KV 캐시를 옮기는 비용",widgetCap:"모델, 프롬프트 길이, 네트워크 속도를 바꿔 보세요.",
+ summary:["prefill(계산)과 decode(메모리)를 다른 GPU 풀에서 실행","서로 방해가 사라져 TPOT 안정, 각자 따로 최적화","대가: prefill 끝난 KV 캐시를 네트워크로 전송","레이어별 파이프라이닝 + RDMA로 전송 시간 숨김"],
+ quiz:[
+  {q:"PD 분리의 주된 이점은?",o:["GPU가 적게 든다","prefill과 decode가 서로 방해하지 않아 지연이 안정된다","KV 캐시가 필요 없다","모델이 작아진다"],a:1,e:"각자 다른 GPU에서 돌아서 긴 prefill이 decode를 막지 않아요."},
+  {q:"PD 분리에서 새로 생기는 비용은?",o:["토크나이즈","KV 캐시 전송","샘플링","가중치 다운로드"],a:1,e:"prefill GPU에서 만든 KV를 decode GPU로 보내야 해요."}
+ ]};
+
+L["p5-5"]={
+ lead:"GPU 클러스터를 실제로 운영하면 커널 말고도 <b>네트워크, 스토리지, 장애</b>가 문제예요. Stas Bekman의 <b>Machine Learning Engineering</b>은 대규모 학습·추론을 운영하며 겪은 노하우를 모은 무료 책이에요.",
+ sections:[
+  {h:"1. 무엇을 읽을까",p:["<b>Compute</b> 장: GPU 종류별 실제 성능, 스펙과 실측의 차이, 가속기 고르는 법.","<b>Network</b> 장: NVLink, InfiniBand, 이더넷의 실제 대역폭과 지연. all-reduce가 왜 느린지, 측정하는 법(5-1, 5-4와 연결).","<b>Inference</b> 장: 서빙 지표, 프레임워크 비교, 배칭, 양자화 정리. 이 코스의 2단계를 다른 사람의 시선으로 복습하기 좋아요."]},
+  {h:"2. 읽는 법",p:["처음부터 끝까지 읽기보다, 지금 하는 일과 관련된 장을 찾아 읽어요. 각 장에 측정 스크립트가 많아서 직접 돌려 보면 내 환경의 숫자를 얻을 수 있어요.","영어가 부담되면 브라우저 번역을 켜고, 명령어와 표 위주로 봐도 충분해요."]},
+  {h:"3. 함께 보면 좋은 것",p:["NVIDIA의 GPU 아키텍처 백서, 클라우드 업체의 GPU 인스턴스 문서(네트워크 구성), 그리고 vLLM·SGLang의 배포 문서(멀티 노드 설정)."]}
+ ],
+ summary:["클러스터 운영 = 커널 + 네트워크 + 스토리지 + 장애 대응","Compute, Network, Inference 장을 우선 읽기","측정 스크립트를 내 환경에서 직접 돌려 보기"],
+ quiz:[
+  {q:"GPU 사이 all-reduce가 기대보다 느릴 때 먼저 확인할 것은?",o:["모델 정확도","GPU 연결 방식(NVLink/PCIe/네트워크)과 실측 대역폭","토크나이저","프롬프트 길이"],a:1,e:"통신 속도는 연결 방식에 따라 수십 배 차이 나요."}
+ ]};
+
+/* ================= 강의: 6단계 ================= */
+L["p6-1"]={
+ lead:"NVIDIA가 최고 성능 커널을 만드는 라이브러리가 <b>CUTLASS</b>이고, 그 바탕에 있는 언어가 <b>CuTe</b>예요. CuTe의 핵심은 <b>layout</b> 하나예요. '좌표를 메모리 주소로 바꾸는 규칙'을 조합 가능한 대수로 만들었어요. 이걸 알면 FlashAttention-3 같은 코드를 읽을 수 있어요.",
+ sections:[
+  {h:"1. layout = shape : stride",p:["4×8 행렬을 생각해요. shape (4, 8)은 모양이고, stride (1, 4)는 '행으로 한 칸 가면 주소 +1, 열로 한 칸 가면 주소 +4'라는 뜻이에요(열 우선). 좌표 (i, j)의 주소는 i × 1 + j × 4.","stride만 바꾸면 행 우선 (8, 1), 패딩 (1, 5), 브로드캐스트 (0, 1)이 돼요. 데이터는 그대로 두고 '보는 방법'만 바꾸는 거예요."]},
+  {h:"2. 계층적 layout",p:["CuTe의 shape와 stride는 중첩될 수 있어요. 예: ((2, 4), 8) : ((1, 16), 2). 이렇게 하면 '타일 안의 좌표'와 '타일 번호'를 한 layout으로 표현해요.","그리고 layout끼리 합성(composition), 나누기(logical_divide), 곱하기(product) 같은 연산이 있어서 '128×128 타일을 warp 4개에 나누고, 각 warp 안에서 텐서 코어 모양에 맞게 다시 나누기'를 수식으로 써요."]},
+  {h:"3. 왜 중요한가",p:["고성능 커널의 버그 대부분은 인덱스 계산이에요. 어느 스레드가 어느 원소를 들고 있나, shared memory 어디에 쓰나. CuTe는 이걸 layout 대수로 바꿔서 컴파일러가 확인하고 최적화하게 해요.","CUTLASS 3.x와 Hopper/Blackwell 커널은 전부 CuTe로 짜여 있어요. 파이썬에서 쓰는 CuTe DSL도 나왔어요."]},
+  {h:"4. 실습",p:["CuTe 튜토리얼(cute/ 폴더의 문서)을 따라 layout 예제를 손으로 계산해 보고 코드 출력과 맞춰 봐요. 그다음 CUTLASS 예제 GEMM을 빌드해 돌리고, 타일 크기 인자를 바꿔 성능 변화를 봐요. L4 이상 GPU가 필요해요."]}
+ ],
+ widget:"h_layout",widgetTitle:"layout이 주소를 만드는 법",widgetCap:"layout을 바꾸고 칸을 눌러 보세요. 칸 안 숫자가 메모리 주소예요. 같은 색 = 같은 주소.",
+ summary:["layout = shape : stride, 좌표 → 주소 규칙","stride만 바꿔 행 우선, 열 우선, 패딩, 브로드캐스트 표현","계층적 layout과 합성·분할 연산으로 타일링을 수식화","CUTLASS 3.x, Hopper/Blackwell 커널의 기반"],
+ quiz:[
+  {q:"layout (4,8):(8,1)에서 좌표 (2,3)의 주소는?",o:["11","19","35","26"],a:1,e:"2 × 8 + 3 × 1 = 19."},
+  {q:"stride가 0인 차원의 의미는?",o:["에러","그 방향으로 가도 같은 주소 (값 반복)","주소가 무한대","데이터 삭제"],a:1,e:"브로드캐스트예요. 같은 값을 여러 좌표에서 봐요."}
+ ]};
+
+L["p6-2"]={
+ lead:"H100(Hopper)은 커널 짜는 방식을 바꿨어요. 데이터를 나르는 전용 하드웨어 <b>TMA</b>와, warp 4개가 함께 큰 행렬곱을 하는 <b>WGMMA</b>가 생겼어요. 그래서 '나르는 warp'와 '계산하는 warp'를 나누는 <b>warp specialization</b>이 표준이 됐어요.",
+ sections:[
+  {h:"1. TMA (Tensor Memory Accelerator)",p:["이전 세대는 스레드들이 직접 주소를 계산해 HBM → shared memory로 복사했어요. 레지스터와 명령을 많이 썼죠.","TMA는 '이 텐서의 이 타일을 shared memory 여기로 복사해'라는 명령 하나로 하드웨어가 알아서 옮겨요. 스레드 하나만 명령을 내리면 되고, 완료는 barrier로 알려 줘요."]},
+  {h:"2. WGMMA",p:["warp 4개(=warpgroup, 128스레드)가 함께 큰 행렬 조각(예: 64×256)을 곱하는 비동기 명령이에요. 입력을 shared memory에서 바로 읽을 수 있어서 레지스터 부담이 줄어요.","'비동기'가 중요해요. 명령을 내려 두고 결과를 기다리는 동안 다른 일을 할 수 있어요."]},
+  {h:"3. warp specialization과 파이프라인",p:["생산자 warp는 TMA로 다음 타일들을 계속 불러와 shared memory 버퍼에 채우고, 소비자 warpgroup들은 버퍼가 차는 대로 WGMMA로 계산해요. 버퍼를 여러 단계(stage) 두면 둘이 거의 쉬지 않아요.","FlashAttention-3는 여기에 더해 두 warpgroup이 번갈아 행렬곱과 softmax를 하게 해서(ping-pong), softmax 계산 시간까지 행렬곱 뒤에 숨겨요. H100에서 FA2보다 1.5~2배 빨라요."]},
+  {h:"4. 실습",p:["FlashAttention-3 논문을 읽고, H100을 몇 시간 빌려 TMA + WGMMA GEMM을 바닥부터 짜요. 바닥부터 H100 GEMM을 짜며 cuBLAS를 따라잡는 공개 워크로그들을 길잡이로 삼으면 좋아요. 비싼 GPU라 코드를 미리 다 짜 두고 빌려서 측정만 하는 식으로 시간을 아껴요."]}
+ ],
+ widget:"h_ws",widgetTitle:"생산자와 소비자 파이프라인",widgetCap:"버퍼 단계 수를 바꿔 보세요. 소비자(텐서 코어) 줄의 빈칸이 줄어들어요.",
+ summary:["TMA: 타일 복사 전용 하드웨어, 명령 하나로 비동기 복사","WGMMA: warp 4개가 함께 하는 비동기 대형 행렬곱","warp specialization: 나르는 warp / 계산하는 warp 분리","다단 버퍼 파이프라인으로 텐서 코어가 쉬지 않게","FlashAttention-3 = 이 기법 + softmax 겹치기"],
+ quiz:[
+  {q:"warpgroup은 몇 개의 warp인가요?",o:["1","2","4","32"],a:2,e:"warp 4개, 스레드 128개가 함께 WGMMA를 실행해요."},
+  {q:"버퍼 단계(stage)를 늘리는 목적은?",o:["정밀도 향상","불러오기와 계산을 겹쳐 텐서 코어가 쉬지 않게","메모리 절약","커널 수 감소"],a:1,e:"소비자가 계산하는 동안 생산자가 다음 타일들을 미리 채워 둬요."}
+ ]};
+
+L["p6-3"]={
+ lead:"Hopper 커널을 CUDA로 바닥부터 짜면 수천 줄이 돼요. 그래서 '타일' 단위로 생각하게 해 주는 <b>커널 DSL</b>들이 나왔어요. Stanford의 <b>ThunderKittens</b>는 그중 하나로, 짧은 코드로 FlashAttention-3급 커널을 만드는 걸 보여 줬어요.",
+ sections:[
+  {h:"1. ThunderKittens의 생각",p:["기본 단위가 16×16 타일이에요. 레지스터 타일, shared memory 타일, 그리고 타일끼리의 연산(mma, exp, row_max…)을 제공해요. 텐서 코어가 원래 작은 타일 단위로 일하니까 그 모양을 그대로 드러낸 거예요.","TMA, WGMMA, warp specialization 같은 Hopper 기능을 '생산자/소비자 템플릿'으로 감싸서 쓰기 쉽게 해요."]},
+  {h:"2. DSL 비교하기",p:["<b>Triton</b>: 블록 단위 파이썬. 가장 쉽고 이식성 좋음. 하드웨어 세부는 컴파일러가 숨김. 최신 하드웨어 기능은 조금 늦게 따라옴.","<b>CuTe / CUTLASS</b>: layout 대수로 모든 걸 표현. 가장 강력하고 NVIDIA 공식. 배우기 어려움.","<b>ThunderKittens</b>: 그 중간. 타일을 드러내고 하드웨어 기능을 얇게 감쌈. 연구용으로 빠르게 실험하기 좋음.","그 밖에 TileLang, Mojo, CuTe DSL(파이썬) 같은 시도도 계속 나오고 있어요."]},
+  {h:"3. 실습",p:["ThunderKittens로 attention forward 커널을 짜고, 같은 커널을 Triton(3-4, 4-4)과 CuTe 버전으로 비교해요. 코드 길이, 성능, 고치기 쉬운 정도를 표로 정리하면 각 도구가 무엇을 숨기고 무엇을 드러내는지 보여요."]}
+ ],
+ summary:["커널 DSL = 하드웨어를 타일 단위로 다루게 해 주는 언어","ThunderKittens: 16×16 타일 + Hopper 기능 얇게 감싸기","Triton(쉬움) ↔ ThunderKittens(중간) ↔ CuTe(강력, 어려움)","같은 커널을 여러 DSL로 짜서 비교해 보기"],
+ quiz:[
+  {q:"ThunderKittens의 기본 단위는?",o:["스레드 하나","16×16 타일","레이어 하나","요청 하나"],a:1,e:"텐서 코어 모양에 맞춘 작은 타일 단위로 생각해요."},
+  {q:"가장 배우기 쉽고 이식성이 좋은 편인 것은?",o:["Triton","PTX 직접 작성","SASS 직접 작성","CuTe"],a:0,e:"Triton은 파이썬이고 하드웨어 세부를 컴파일러가 처리해요."}
+ ]};
+
+L["p6-4"]={
+ lead:"B200(Blackwell) 세대는 또 바뀌었어요. 텐서 코어 전용 메모리 <b>TMEM</b>, 새 행렬곱 명령 <b>tcgen05</b>, 그리고 <b>FP4/FP6</b> 같은 더 낮은 정밀도가 들어왔어요. 지금 추론 성능 경쟁이 가장 치열한 곳이에요.",
+ sections:[
+  {h:"1. Tensor Memory (TMEM)",p:["Hopper에서는 WGMMA 결과(누적값)가 레지스터에 쌓였어요. 큰 타일을 쓰면 레지스터가 모자랐죠.","Blackwell은 SM마다 텐서 코어 전용 메모리(TMEM)를 두고 누적값을 거기에 둬요. 레지스터가 자유로워져서 더 큰 타일, 더 복잡한 후처리(epilogue)가 가능해요."]},
+  {h:"2. tcgen05 명령",p:["5세대 텐서 코어 명령이에요. 스레드 하나가 행렬곱을 발행하고(warpgroup 전체가 아니라), 두 SM이 짝을 이뤄 더 큰 행렬곱을 하는 모드(2-CTA)도 있어요. TMEM 할당·복사 명령도 함께 생겼어요.","PTX ISA 문서의 tcgen05 장과 CUTLASS의 Blackwell 예제(SM100)가 1차 자료예요."]},
+  {h:"3. FP4, FP6와 블록 스케일",p:["FP4(E2M1)는 표현할 수 있는 값이 16개뿐이에요(0, 0.5, 1, 1.5, 2, 3, 4, 6과 음수). 그대로는 쓸 수 없어서 작은 블록(예: 16개 또는 32개)마다 scale을 붙여요. MXFP4, NVFP4 같은 형식이 이거예요.","텐서 코어가 scale 곱셈까지 하드웨어로 처리해서, 가중치와 활성값 모두 4비트로 계산할 수 있어요. 메모리도 줄고 연산도 FP8보다 대략 두 배 빨라요.","아래 위젯에서 FP4 E2M1을 골라 값을 넣어 보면 얼마나 거칠게 저장되는지 보여요. 그래서 scale과 양자화 기법(4-6)이 더 중요해져요."]},
+  {h:"4. 실습",p:["B200을 몇 시간 빌릴 수 있다면 CUTLASS의 FP4 GEMM 예제를 돌려 FP8, BF16과 속도·오차를 비교해요. 빌리기 어렵다면 문서와 예제 코드 분석까지만 해도 충분히 의미 있어요."]}
+ ],
+ widget:"k_dtype",widgetTitle:"FP4는 얼마나 거친가",widgetCap:"FP4 E2M1을 골라 값을 바꿔 보세요. 그리고 BF16, FP8과 비교해 보세요.",
+ summary:["TMEM: 텐서 코어 전용 메모리, 누적값을 레지스터 대신 저장","tcgen05: 5세대 텐서 코어 명령, 2-CTA 모드","FP4/FP6 + 블록 스케일(MXFP4, NVFP4)","4비트로 메모리 절반(FP8 대비), 연산 약 2배"],
+ quiz:[
+  {q:"FP4 E2M1이 표현할 수 있는 가장 큰 값은?",o:["4","6","15","448"],a:1,e:"지수 2비트, 가수 1비트로 최대 1.5 × 2² = 6이에요."},
+  {q:"FP4에 블록 스케일이 꼭 필요한 이유는?",o:["표현 가능한 값이 너무 적어서 블록마다 범위를 맞춰야 해서","속도를 늦추려고","정밀도를 높이려고 FP32로 바꾸는 것","필요 없다"],a:0,e:"값이 16개뿐이라 블록마다 scale로 범위를 맞춰야 정보가 덜 망가져요."}
+ ]};
+
+L["p6-5"]={
+ lead:"내가 짠 커널(CUDA든 Triton이든)은 결국 GPU가 실행하는 <b>기계어(SASS)</b>가 돼요. 컴파일러가 실제로 뭘 만들었는지 봐야 '왜 느린지'의 마지막 답을 찾을 수 있어요. 중간 단계인 <b>PTX</b>와 함께 읽는 법을 익혀요.",
+ sections:[
+  {h:"1. PTX와 SASS",p:["<b>PTX</b>: NVIDIA의 가상 어셈블리. GPU 세대에 상관없이 같은 형식이에요. 레지스터 수 제한이 없는 것처럼 써요.","<b>SASS</b>: 특정 GPU 세대의 진짜 기계어. ptxas가 PTX를 SASS로 바꾸면서 레지스터를 배정하고 명령 순서를 최적화해요. NVIDIA가 공식 문서를 거의 안 내서, 명령 이름으로 추측하며 읽어요."]},
+  {h:"2. 뽑아 보기",p:["CUDA: <code>nvcc -cubin</code> 후 <code>cuobjdump -sass</code>, 또는 <code>nvdisasm</code>. PTX는 <code>nvcc -ptx</code>.","Triton: 커널 객체의 <code>.asm['ptx']</code>, <code>.asm['sass']</code>(가능한 경우).","Nsight Compute의 Source 페이지는 CUDA 줄 ↔ SASS 줄을 연결하고 줄마다 실행 시간 비율도 보여 줘요. 가장 편한 방법이에요."]},
+  {h:"3. 무엇을 보나",p:["<b>루프 안 명령 수</b>: 적을수록 좋아요. 주소 계산이 루프 안에서 반복되면 밖으로 빼요.","<b>메모리 명령 폭</b>: LDG.E.128처럼 128비트로 묶였는지(벡터화 로드, 4-1).","<b>레지스터 스필</b>: LDL/STL(로컬 메모리)이 보이면 레지스터가 모자라 느린 메모리로 흘러넘친 거예요.","<b>텐서 코어 명령</b>: HMMA(Ampere), HGMMA(Hopper) 같은 명령이 나오는지."]}
+ ],
+ widget:"h_sass",widgetTitle:"한 줄의 CUDA가 기계어가 되기까지",widgetCap:"줄을 눌러 CUDA, PTX, SASS에서 같은 부분을 비교해 보세요.",
+ summary:["PTX = 세대 무관 가상 어셈블리, SASS = 실제 기계어","cuobjdump -sass, nvdisasm, Nsight Compute Source 페이지","루프 안 명령 수, 128비트 로드, 레지스터 스필, 텐서 코어 명령 확인"],
+ quiz:[
+  {q:"SASS에 LDL/STL이 많이 보이면?",o:["벡터화가 잘 됐다","레지스터가 모자라 로컬 메모리로 흘러넘쳤다","텐서 코어를 쓴다","정상이다"],a:1,e:"레지스터 스필이에요. 느린 메모리를 쓰게 돼 성능이 떨어져요."},
+  {q:"GPU 세대에 상관없이 같은 형식인 것은?",o:["SASS","PTX","cubin","둘 다 아님"],a:1,e:"PTX는 가상 명령어라 세대 무관, SASS는 세대마다 달라요."}
+ ]};
+
+L["p6-6"]={
+ lead:"NVIDIA는 캐시 구조, 정확한 지연 시간, 명령 처리량 같은 걸 다 공개하지 않아요. <b>마이크로벤치마크</b>는 아주 작은 커널로 이런 값을 직접 재서 하드웨어를 해부하는 기술이에요. 하드웨어를 '진짜로 아는' 사람이 되는 마지막 단계예요.",
+ sections:[
+  {h:"1. 대표 기법: pointer chasing",p:["배열에 '다음에 읽을 위치'를 적어 두고 j = arr[j]를 반복해요. 앞 읽기가 끝나야 다음 주소를 알 수 있으니 메모리 지연이 그대로 드러나요.","배열 크기를 키워 가며 평균 지연을 재면 계단 모양이 나와요. 계단이 꺾이는 크기 = 캐시 용량, 계단 높이 = 그 단계의 지연. 간격(stride)을 바꾸면 캐시 줄 크기도 알 수 있어요."]},
+  {h:"2. 다른 측정들",p:["<b>처리량</b>: 같은 명령을 서로 의존 없이 많이 실행해 1사이클에 몇 개 처리하는지.","<b>shared memory bank</b>: 스레드마다 주소 간격을 바꿔 가며 bank conflict가 생기는 패턴 찾기(3-3).","<b>시간 재기</b>: 커널 안에서 <code>clock64()</code>나 <code>%globaltimer</code>로 사이클을 직접 재요."]},
+  {h:"3. 논문 따라 하기",p:["Volta, Turing을 마이크로벤치마크로 해부한 Citadel 팀의 논문은 이 분야의 교과서예요. 측정 방법을 그대로 따라 T4(Turing)에서 L1, L2, 메모리 지연과 shared memory bank 동작을 재 보세요. 논문 숫자와 내 측정이 맞는지 비교하는 게 목표예요.","결과를 표와 그래프로 정리해 두면 7단계 5번(워크로그 공개)의 좋은 글감이 돼요."]}
+ ],
+ widget:"h_chase",widgetTitle:"지연 계단 읽기",widgetCap:"점을 눌러 배열 크기별 지연과 어느 캐시에 들어가는지 확인해 보세요. 값은 모양을 보여 주는 예시예요.",
+ summary:["마이크로벤치마크 = 작은 커널로 비공개 하드웨어 값 측정","pointer chasing으로 캐시 용량과 지연 측정 (계단 그래프)","처리량, bank 동작, clock64()로 사이클 측정","논문 방법을 T4에서 재현하고 비교"],
+ quiz:[
+  {q:"pointer chasing이 지연을 잘 드러내는 이유는?",o:["읽기가 서로 의존해서 겹쳐 실행할 수 없어서","계산이 많아서","캐시를 안 써서","병렬이 많아서"],a:0,e:"다음 주소를 알려면 앞 읽기가 끝나야 해서 지연이 숨겨지지 않아요."},
+  {q:"지연 그래프에서 계단이 꺾이는 배열 크기가 알려 주는 것은?",o:["캐시 용량","GPU 가격","클럭 속도","warp 크기"],a:0,e:"그 크기를 넘으면 캐시에 다 안 들어가 다음 단계로 가요."}
+ ]};
+
+/* ================= 강의: 7단계 ================= */
+L["p7-1"]={
+ lead:"이제 가장 널리 쓰이는 엔진 <b>vLLM</b>의 코드를 읽어요. 2단계에서 직접 만든 부품들이 있으니, 수십만 줄 코드도 '아, 이게 그거구나'로 보일 거예요. V1 엔진(2025년부터 기본)을 기준으로 봐요.",
+ sections:[
+  {h:"1. 읽는 순서",p:["<code>vllm/v1/core/sched/scheduler.py</code>: 스케줄러. 2-2(continuous batching), 2-5(chunked prefill)와 비교. V1은 prefill과 decode를 구분하지 않고 '요청마다 이번에 몇 토큰 계산할지'로 통일했어요.","<code>vllm/v1/core/kv_cache_manager.py</code> (+ block_pool): 2-3(PagedAttention), 2-4(prefix caching). 블록 해시 기반 prefix 캐시가 기본으로 켜져 있어요.","<code>vllm/v1/worker/gpu_model_runner.py</code>: 배치를 GPU 입력으로 만드는 곳. 입력 텐서를 미리 할당해 두고 재사용하는 방식, CUDA Graph 녹화(4-7)를 봐요."]},
+  {h:"2. 프로세스 구조",p:["API 서버 프로세스 ↔ EngineCore 프로세스(ZeroMQ, 2-6) ↔ GPU worker 프로세스(들). 스케줄링과 GPU 실행을 겹치는 장치도 있어요(2-8).","<code>vllm/v1/engine/</code> 폴더에서 이 연결을 따라가요."]},
+  {h:"3. 내 엔진과 비교표 만들기",p:["항목마다 '내 엔진은 어떻게, vLLM은 어떻게, 왜 다를까'를 적어요. 예: 블록 크기, preemption 방식, prefix 캐시 지우기 정책, 스텝당 토큰 예산 기본값, 샘플러 구현.","이 표가 7-3(정면 비교)에서 성능 차이의 원인을 찾을 때 지도가 돼요."]}
+ ],
+ summary:["V1 기준: scheduler → kv_cache_manager → gpu_model_runner 순서로 읽기","prefill/decode 구분 없이 '요청별 이번 스텝 토큰 수'로 통일","블록 해시 prefix 캐시, CUDA Graph, 프로세스 분리","내 엔진과의 차이를 표로 정리"],
+ quiz:[
+  {q:"vLLM V1에서 KV 블록과 prefix 캐시를 관리하는 곳은?",o:["scheduler.py","kv_cache_manager.py","api_server.py","sampler.py"],a:1,e:"kv_cache_manager(와 block pool)가 블록 할당과 prefix 캐시를 맡아요."}
+ ]};
+
+L["p7-2"]={
+ lead:"<b>SGLang</b>은 vLLM과 다른 선택을 많이 한 엔진이에요. radix tree 캐시, CPU·GPU 겹치기 스케줄러, 빠른 구조화 출력. 두 엔진을 비교하며 읽으면 '설계에는 정답이 하나가 아니다'라는 감각이 생겨요.",
+ sections:[
+  {h:"1. 읽는 순서",p:["<code>python/sglang/srt/managers/scheduler.py</code>: 스케줄러. 이벤트 루프, 배치 구성, overlap 모드(2-8)를 봐요.","<code>python/sglang/srt/mem_cache/radix_cache.py</code>: RadixAttention(2-4). 트리 노드, 일치 찾기, LRU 지우기, 참조 카운트.","그다음 <code>model_executor/</code>에서 forward 배치가 어떻게 만들어지는지 봐요."]},
+  {h:"2. vLLM과 다른 점 찾기",p:["prefix 캐시: 블록 해시(vLLM) vs radix tree(SGLang). 멀티턴 대화에서 각각 어떻게 동작하나.","스케줄링 정책: SGLang은 캐시 적중이 많은 요청을 먼저 돌리는 정책(cache-aware)도 있어요.","구조화 출력(JSON 스키마 강제): 문법 기반으로 다음 토큰 후보를 제한하는 방식과 속도 최적화."]},
+  {h:"3. 정리",p:["7-1에서 만든 비교표에 SGLang 열을 추가해요. 같은 문제를 두 엔진이 어떻게 다르게 풀었는지가 보이면 내 엔진의 다음 개선 방향도 보여요."]}
+ ],
+ summary:["scheduler.py와 radix_cache.py부터","radix tree 캐시, overlap 스케줄러, cache-aware 정책, 구조화 출력","vLLM과의 차이를 비교표에 추가"],
+ quiz:[
+  {q:"SGLang의 prefix 캐시 구조는?",o:["블록 해시만","radix tree","캐시 없음","디스크 캐시"],a:1,e:"RadixAttention이라는 radix tree 기반 캐시예요."}
+ ]};
+
+L["p7-3"]={
+ lead:"이제 내 엔진, vLLM, SGLang을 <b>같은 GPU, 같은 모델, 같은 부하</b>에서 맞붙여요. 숫자 차이가 곧 내가 놓친 최적화 목록이에요.",
+ sections:[
+  {h:"1. 공정한 비교 조건",p:["같은 GPU(L4나 A100을 몇 시간 대여), 같은 모델과 정밀도, 같은 최대 배치·토큰 예산, 같은 입력·출력 길이 분포(2-7의 부하 생성기 그대로). 워밍업을 빼고 여러 번 재요."]},
+  {h:"2. 무엇을 그리나",p:["요청률을 올려 가며 p50/p99 TTFT, p99 TPOT, 처리량 곡선을 세 엔진 모두 그려요. 그리고 SLO를 지키는 최대 요청률(goodput)을 비교해요.","prefix 캐시가 중요한 부하(같은 시스템 프롬프트)와 아닌 부하를 나눠서도 비교해요."]},
+  {h:"3. 차이의 원인 찾기",p:["차이가 나는 지점에서 nsys로 세 엔진의 decode 스텝을 찍어요(3-5). GPU 빈칸(CPU 오버헤드), 커널 수(퓨전, CUDA Graph), 어텐션 커널 시간(FlashInfer vs 내 커널)을 비교해요.","원인을 하나 찾을 때마다 내 엔진에 적용하고 다시 재요. 이 과정을 기록한 게 7-5의 워크로그가 돼요."]}
+ ],
+ summary:["같은 GPU, 모델, 부하, 설정으로 공정하게 비교","요청률별 TTFT, TPOT, 처리량, goodput 곡선","nsys로 차이의 원인(CPU, 퓨전, 커널) 추적","찾은 원인을 내 엔진에 적용하고 다시 측정"],
+ quiz:[
+  {q:"엔진 비교에서 가장 중요한 원칙은?",o:["각 엔진에 유리한 설정 쓰기","조건(GPU, 모델, 부하, 설정)을 동일하게 맞추기","한 번만 재기","평균만 보기"],a:1,e:"조건이 다르면 차이가 엔진 때문인지 알 수 없어요."}
+ ]};
+
+L["p7-4"]={
+ lead:"실제 사용자가 있는 오픈소스에 기여하면, 코드 리뷰를 통해 세계 최고 수준 엔지니어들에게 직접 피드백을 받아요. 처음엔 작게 시작해도 충분해요.",
+ sections:[
+  {h:"1. 어디서 시작하나",p:["vLLM, SGLang, FlashInfer, Triton 같은 저장소에서 <code>good first issue</code> 라벨을 찾아요. 또는 내가 직접 겪은 버그, 문서의 틀린 부분, 벤치마크 스크립트 개선처럼 작은 것부터.","이 코스에서 만든 것(예: 특정 커널의 작은 최적화, 측정 결과)이 기여 거리가 될 수도 있어요."]},
+  {h:"2. 좋은 PR의 조건",p:["무엇을 왜 바꿨는지 짧게, 성능 변경이면 전후 숫자와 측정 방법, 테스트 추가. 큰 변경은 먼저 이슈나 Discord/Slack에서 방향을 물어봐요.","영어가 부담되면 짧은 문장과 코드, 숫자 위주로 써요. 번역기를 써도 괜찮아요. 리뷰어는 문장보다 코드와 숫자를 봐요."]},
+  {h:"3. 리뷰 받는 법",p:["지적은 배움의 기회예요. 이해가 안 되면 정중히 되묻고, 고친 뒤 무엇을 고쳤는지 답글로 알려요. 첫 PR이 머지되기까지 시간이 걸려도 괜찮아요."]}
+ ],
+ summary:["good first issue, 직접 겪은 버그, 문서·벤치마크부터","변경 이유 + 전후 숫자 + 테스트","큰 변경은 먼저 방향 상의","짧은 영어와 코드·숫자 위주로 충분"],
+ quiz:[
+  {q:"성능 개선 PR에 꼭 넣어야 할 것은?",o:["긴 자기소개","전후 측정 숫자와 측정 방법","다른 엔진 비판","아무것도"],a:1,e:"숫자와 재현 방법이 있어야 리뷰어가 판단할 수 있어요."}
+ ]};
+
+L["p7-5"]={
+ lead:"설명할 수 있어야 진짜로 아는 거예요. 이 분야의 유명한 글 대부분은 누군가의 <b>정직한 실험 기록</b>(워크로그)이었어요. 이 코스에서 한 실험 하나를 골라 글로 공개해 봐요.",
+ sections:[
+  {h:"1. 무엇을 쓸까",p:["예: '맥미니에서 135M 모델로 미니 vLLM 만들기', 'T4에서 행렬곱 커널을 cuBLAS의 몇 %까지', 'online softmax 직접 유도하고 Triton으로 FlashAttention 짜기', 'T4 캐시 지연 직접 재 보기'."]},
+  {h:"2. 좋은 워크로그의 형식",p:["Simon Boehm의 행렬곱 글이 좋은 본보기예요. 단계마다 ① 무엇을 바꿨나 ② 왜 그렇게 생각했나 ③ 숫자가 어떻게 변했나 ④ 프로파일러에서 무엇이 보였나.","<b>실패도 적어요.</b> '이렇게 하면 빨라질 줄 알았는데 안 됐다, 이유는 이거였다'가 독자에게 가장 쓸모 있어요.","코드 저장소 링크, 실험 환경(GPU, 버전), 재현 방법을 꼭 넣어요."]},
+  {h:"3. 어디에 올릴까",p:["개인 블로그나 GitHub(이 사이트처럼 GitHub Pages도 좋아요). 한국어로 먼저 쓰고, 여유가 되면 영어 요약을 붙여요. GPU MODE Discord 같은 커뮤니티에 공유하면 피드백을 받을 수 있어요."]}
+ ],
+ summary:["실험 하나를 골라 단계별 기록으로 공개","단계마다 변경 → 이유 → 숫자 → 프로파일러 관찰","실패와 그 이유까지 기록","코드, 환경, 재현 방법 포함"],
+ quiz:[
+  {q:"좋은 워크로그에 꼭 들어가야 하는 것은?",o:["성공한 결과만","단계별 숫자와 실패, 재현 방법","다른 사람 글 복사","결론만"],a:1,e:"과정과 숫자, 실패가 있어야 다른 사람이 배우고 재현할 수 있어요."}
+ ]};
+
+})(window.LESSONS,window.WIDGETS);
+
+</script>
+<script>
 const E={mac:["mac","맥"],free:["free","무료 GPU"],paid:["paid","유료 GPU"],big:["big","H100+"],web:["","웹"]};
 const PHASES=[
 {id:"p0",depth:"L8 · 기초",title:"기초 다지기: 모델 안의 부품 하나씩",
@@ -2062,7 +3263,7 @@ function renderLesson(id){
    <p class="lead">${L.lead}</p>
    ${L.sections.map(s=>`<section class="lsec"><h2>${esc(s.h)}</h2>${s.p.map(x=>`<p>${x}</p>`).join("")}</section>`).join("")}
    ${(L.extra||[]).map((x,xi)=>`<div class="wbox"><h3>애니메이션 · ${esc(x.title)}</h3><p class="cap">${esc(x.cap)}</p><div id="extraMount${xi}"></div></div>`).join("")}
-   <div class="wbox"><h3>직접 만져 보기 · ${esc(L.widgetTitle)}</h3><p class="cap">${esc(L.widgetCap)}</p><div id="widgetMount"></div></div>
+   ${L.widget?`<div class="wbox"><h3>직접 만져 보기 · ${esc(L.widgetTitle)}</h3><p class="cap">${esc(L.widgetCap)}</p><div id="widgetMount"></div></div>`:""}
    <div class="sumbox"><h3>핵심 정리</h3><ul>${L.summary.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
    <div class="quiz"><h3>확인 퀴즈</h3>${L.quiz.map((q,qi)=>`<div class="qz" data-q="${qi}"><p class="qq">${qi+1}. ${esc(q.q)}</p><div class="opts">${q.o.map((o,oi)=>`<button type="button" class="op" data-o="${oi}">${esc(o)}</button>`).join("")}</div><p class="exp" hidden></p></div>`).join("")}</div>
    ${L.lab?`<div class="labbox"><h3>실습실에서 직접 해 보기 · ${esc(L.lab.file.replace(".ipynb",""))}</h3><p>${esc(L.lab.desc)}</p>
@@ -2080,7 +3281,7 @@ function renderLesson(id){
      ${next?`<a class="btn ghost" href="#lesson-${next.id}">${esc(next.t)} →</a>`:`<a class="btn ghost" href="#roadmap">로드맵으로</a>`}
    </div>`;
   (L.extra||[]).forEach((x,xi)=>{try{window.WIDGETS[x.widget]($("#extraMount"+xi));}catch(e){console.error(e);}});
-  try{window.WIDGETS[L.widget]($("#widgetMount"));}catch(e){$("#widgetMount").textContent="그림을 불러오지 못했어요.";console.error(e);}
+  if(L.widget)try{window.WIDGETS[L.widget]($("#widgetMount"));}catch(e){$("#widgetMount").textContent="그림을 불러오지 못했어요.";console.error(e);}
   root.querySelectorAll(".qz").forEach(qz=>{const q=L.quiz[+qz.dataset.q];
     qz.querySelectorAll(".op").forEach(b=>b.addEventListener("click",()=>{const o=+b.dataset.o;
       qz.querySelectorAll(".op").forEach(x=>x.classList.remove("right","wrong"));
